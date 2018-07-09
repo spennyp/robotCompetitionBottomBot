@@ -12,12 +12,13 @@
 class MenuItem
 {
  public:
+	String    Name;
+	uint16_t  Value;
+	uint16_t* EEPROMAddress;
+	static uint16_t MenuItemCount;
+	MenuItem(String name);
 	void Save();
 };
-
-void MenuItem::Save()
-{
-}
 
 #endif
 
