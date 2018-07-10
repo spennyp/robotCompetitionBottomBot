@@ -11,7 +11,7 @@
 #include <motor.h>
 #include <avr/EEPROM.h>
 #include <LiquidCrystal.h>
-#include "MenuItem.h"4
+#include "MenuItem.h"
 
 uint16_t MenuItem::MenuItemCount = 0;
 /* Add the menu items here */
