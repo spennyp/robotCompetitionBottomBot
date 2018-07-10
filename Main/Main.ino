@@ -5,6 +5,8 @@
     Author:     LAPTOP-6SDBLG4R\Willi
 */
 
+#include "Motor.h"
+#include "PID.h"
 #include <ServoTINAH.h>
 #include <phys253pins.h>
 #include <phys253.h>
@@ -19,6 +21,7 @@ MenuItem Speed = MenuItem("Speed");
 MenuItem ProportionalGain = MenuItem("P-gain");
 MenuItem DerivativeGain = MenuItem("D-gain");
 MenuItem IntegralGain = MenuItem("I-gain");
+MenuItem PIDThreshold = MenuItem("PID-thresh");
 MenuItem menuItems[] = { Speed, ProportionalGain, DerivativeGain };
 
 void setup()
@@ -50,7 +53,7 @@ void loop()
 		delay(100);
 		if (stopbutton())
 		{
-	
+			Run();
 		}
 	}
 }
@@ -97,3 +100,15 @@ void Menu()
 		}
 	}
 }
+<<<<<<< HEAD
+=======
+
+void Run()
+{
+	//Check Sensors
+	//Drive
+	//Deploy Claw
+	//Deploy Bridge
+	//Deploy Small Bot
+}
+>>>>>>> Initial MotorWheel class created

@@ -41,10 +41,11 @@ PIDState PID::getState()
 	return state;
 }
 
-uint16_t PID::getError(PIDState state)
+uint16_t PID::getError()
 {
 	uint16_t pErr = 0, dErr = 0;
 	int16_t err = 0;
+	PIDState state = getState();
 	pErr = p * ((int)state);
 	dErr = d * ((int)state);
 	err = pErr + dErr;

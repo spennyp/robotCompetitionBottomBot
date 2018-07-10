@@ -17,7 +17,7 @@ private:
 	PIDState getState();
  public:
 	PID(MenuItem pGain, MenuItem dGain, MenuItem iGain, MenuItem PIDThreshold);
-	uint16_t getError(PIDState state);
+	uint16_t getError();
 };
 
 #endif
