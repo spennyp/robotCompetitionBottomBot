@@ -1,7 +1,8 @@
 // Motor.h
 
-#ifndef _MOTOR_h
-#define _MOTOR_h
+#ifndef _MOTORWHEEL_h
+#define _MOTORWHEEL_h
+#include "PID.h"
 
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "arduino.h"
@@ -9,13 +10,13 @@
 	#include "WProgram.h"
 #endif
 
-class MotorWheel
-{
+class MotorWheel {
 private:
 	uint16_t motorSpeed;
 	PID pid;
 
  public:
+	enum Direction { LEFT, RIGHT };
 	MotorWheel(MenuItem speed, PID pid);
 	void turn(Direction dir);
 	void forward();
