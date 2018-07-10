@@ -19,6 +19,7 @@ PID::PID(MenuItem pGain, MenuItem dGain, MenuItem iGain, MenuItem PIDThreshold)
 
 PIDState PID::getState()
 {
+	//Potentially different Analog read positions
 	int lSensor = analogRead(0);
 	int rSensor = analogRead(1);
 	if (lSensor >= threshold && rSensor >= threshold) {
