@@ -12,19 +12,25 @@
 
 extern motorClass motor;
 
-enum DigitalValue { ON, OFF };
+enum DigitalState { on, off };
 struct DigitalPinAndValue {
-    int pin;
-    int value;
+    DigitalPinAndValue(int pinNum, DigitalState _state);
+    DigitalPinAndValue();
+    int pinNumber;
+    DigitalState state;
 };
 struct MotorOutput {
+    MotorOutput(int motorNum, DigitalState value);
+    MotorOutput();
     int motorNumber;
     DigitalPinAndValue digitalControl;
 };
 struct ServoOutput {
-    int servoNumber;
-    DigitalPinAndValue digitalOut1;
-    DigitalPinAndValue digitalOut2;
+    ServoOutput(int servoPinNum, DigitalState digitalState1, DigitalState digitalState2);
+    ServoOutput();
+    int servoPinNumber;
+    DigitalPinAndValue digitalControl1;
+    DigitalPinAndValue digitalControl2;
 };
 
 extern MotorOutput topLeftMotor;
@@ -36,8 +42,10 @@ extern ServoOutput clawGrabServo;
 extern ServoOutput clawDumpServo;
 extern ServoOutput storageDumpServoLeft;
 extern ServoOutput storageDumpServoRight;
-extern ServoOutput topBridgeServo;
-extern ServoOutput bottomBridgeServo;
+extern ServoOutput topBridgeUpperServo;
+extern ServoOutput topBridgeLowerServo;
+extern ServoOutput bottomBridgeUppserServo;
+extern ServoOutput bottomBridgeLowerServo;
 
 extern int topNearTapeFollowQRD;
 extern int topFarTapeFollowQRD;
