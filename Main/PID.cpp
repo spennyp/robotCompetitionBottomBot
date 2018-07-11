@@ -35,7 +35,7 @@ uint16_t PID::getError() {
 	int16_t err = 0;
 	PIDState state = getState();
 	pErr = p * ((int)state);
-	dErr = d * ((int)state);
+	dErr = d * ((int)state - (int)lastState);
 	err = pErr + dErr;
 	return err;
 }

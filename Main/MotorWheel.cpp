@@ -8,30 +8,37 @@ MotorWheel::MotorWheel(MenuItem speed, PID pid) : pid(pid) {
 }
 
 //Assumes motor 0 is the left wheel and motor 1 is the right wheel
-void MotorWheel::turn(Direction dir) {
-	switch (dir) {
-	case LEFT:
-		motor.speed(0, -motorSpeed);
-		motor.speed(1, motorSpeed);
-		break;
-	case RIGHT:
-		motor.speed(0, motorSpeed);
-		motor.speed(1, -motorSpeed);
-		break;
-	default:
-		break;
-	}
+//Top / bottom is arbitrary in below function calls due to shared pins
+
+void MotorWheel::turnLeft() {
+	motor.speed(topLeftMotor.motorNumber, -motorSpeed);
+	motor.speed(topRightMotor.motorNumber, motorSpeed);
+}
+
+void MotorWheel::turnRight() {
+	motor.speed(topLeftMotor.motorNumber, motorSpeed);
+	motor.speed(topRightMotor.motorNumber, -motorSpeed);
 }
 
 void MotorWheel::forward() {
-	motor.speed(0, motorSpeed);
-	motor.speed(1, motorSpeed);
+	motor.speed(topLeftMotor.motorNumber, motorSpeed);
+	motor.speed(topRightMotor.motorNumber, motorSpeed);
+}
+
+void MotorWheel::reverse() {
+	motor.speed(topLeftMotor.motorNumber, -motorSpeed);
+	motor.speed(topRightMotor.motorNumber, -motorSpeed);
 }
 
 void MotorWheel::runWithPID() {
 	int err = pid.getError();
-	motor.speed(0, motorSpeed - err);
-	motor.speed(1, motorSpeed);
+	// when err < 0 turns right. when err > 0 turns left
+	motor.speed(topLeftMotor.motorNumber, motorSpeed - err);
+	motor.speed(topRightMotor.motorNumber, motorSpeed + err);
+
+	// add dynamic speed changing?
+	// ie. if motor is consistently moving straight increase motor power
+	// if the motor is oscillating between (far) left and (far) right decrease motor power
 }
 
 void MotorWheel::stop() {
@@ -39,3 +46,8 @@ void MotorWheel::stop() {
 	motor.stop(0);
 	motor.stop(1);
 }
+
+void MotorWheel::switchToTopMotors() {
+	digitalWrite(topLeftMotor.digitalControl.pin, HIGH);
+}
+
