@@ -16,12 +16,14 @@ private:
 	PID pid;
 
  public:
-	enum Direction { LEFT, RIGHT };
 	MotorWheel(MenuItem speed, PID pid);
-	void turn(Direction dir);
+	void turnLeft();
+	void turnRight();
 	void forward();
+	void reverse();
 	void runWithPID();
 	void stop();
+	void switchToTopMotors();
 };
 
 #endif

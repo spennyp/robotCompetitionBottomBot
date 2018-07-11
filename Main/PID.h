@@ -21,9 +21,9 @@ class PID {
 	};
 	PID(MenuItem pGain, MenuItem dGain, MenuItem iGain, MenuItem PIDThreshold);
 	uint16_t getError();
+	PID::PIDState state, lastState;
 private:
 	uint16_t threshold, i, p, d;
-	PID::PIDState state, lastState;
 	PID::PIDState getState();
 };
 

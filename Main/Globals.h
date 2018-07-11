@@ -19,8 +19,7 @@ struct DigitalPinAndValue {
 };
 struct MotorOutput {
     int motorNumber;
-    DigitalPinAndValue digitalOut1;
-    DigitalPinAndValue digitalOut2;
+    DigitalPinAndValue digitalControl;
 };
 struct ServoOutput {
     int servoNumber;
