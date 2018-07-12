@@ -1,23 +1,18 @@
 // Globals.cpp
 
 #include "Globals.h"
+#include <TINAH_Pins.h>
 
-static int motorContolPin = 0;
-static int servoControlPin1 = 1;
-static int servoControlPin2 = 2;
-static int leftMotor = 0;
-static int rightMotor = 1;
-static int servoMotor1 = 0;
-static int servoMotor2 = 1;
-static DigitalState digitalOn = on;
-static DigitalState digitalOff = off;
+const int motorContolPin = 0;
+const int leftMotor = 0;
+const int rightMotor = 1;
+const DigitalState digitalOn = on;
+const DigitalState digitalOff = off;
+const int servoControlPin1 = 1;
+const int servoControlPin2 = 2;
 
-DigitalPinAndValue::DigitalPinAndValue(int pinNum, DigitalState _state) {
-    pinNumber = pinNum;
-    state = _state;
-};
-DigitalPinAndValue::DigitalPinAndValue() {};
 
+// Motors
 MotorOutput::MotorOutput(int motorNum, DigitalState state) {
     motorNumber = motorNum;
     DigitalPinAndValue pinAndVal(motorContolPin, state);
@@ -25,8 +20,20 @@ MotorOutput::MotorOutput(int motorNum, DigitalState state) {
 };
 MotorOutput::MotorOutput() {};
 
-ServoOutput::ServoOutput(int servoPinNum, DigitalState digitalState1, DigitalState digitalState2) {
-    servoPinNumber = servoPinNum;
+struct MotorOutput topLeftMotor(leftMotor, digitalOn);
+struct MotorOutput topRightMotor(rightMotor, digitalOn);
+struct MotorOutput bottomLeftMotor(leftMotor, digitalOff);
+struct MotorOutput bottomRightMotor(rightMotor, digitalOff);
+int winchMotor = 2;
+
+
+// Servos
+TINAH::Servo servo0(TINAH::pins::servo[0]);
+TINAH::Servo servo1(TINAH::pins::servo[1]);
+TINAH::Servo servo2(TINAH::pins::servo[2]);
+
+ServoOutput::ServoOutput(TINAH::Servo _servo, DigitalState digitalState1, DigitalState digitalState2) {
+    servo = _servo;
     DigitalPinAndValue pinAndVal1(servoControlPin1, digitalState1);
     DigitalPinAndValue pinAndVal2(servoControlPin2, digitalState2);
     digitalControl1 = pinAndVal1;
@@ -34,26 +41,62 @@ ServoOutput::ServoOutput(int servoPinNum, DigitalState digitalState1, DigitalSta
 }
 ServoOutput::ServoOutput() {};
 
-struct MotorOutput topLeftMotor(leftMotor, digitalOn);
-struct MotorOutput topRightMotor(rightMotor, digitalOn);
-struct MotorOutput bottomLeftMotor(leftMotor, digitalOff);
-struct MotorOutput bottomRightMotor(rightMotor, digitalOff);
+void setServo(ServoOutput servoInfo, int angle) {
+    digitalWrite(servoInfo.digitalControl1.pinNumber, servoInfo.digitalControl1.state);
+    digitalWrite(servoInfo.digitalControl2.pinNumber, servoInfo.digitalControl2.state);
+    servoInfo.servo.write(angle);
+}
 
-struct ServoOutput clawGrabServo(servoMotor1, digitalOff, digitalOn);
-struct ServoOutput clawDumpServo(servoMotor2, digitalOff, digitalOff);
-struct ServoOutput storageDumpServoLeft(servoMotor1, digitalOn, digitalOff);
-struct ServoOutput storageDumpServoRight(servoMotor2, digitalOff, digitalOn);
-struct ServoOutput topBridgeUpperServo(servoMotor1, digitalOff, digitalOff);
-struct ServoOutput topBridgeLowerServo(servoMotor2, digitalOn, digitalOn);
-struct ServoOutput bottomBridgeUppserServo(servoMotor1, digitalOn, digitalOn);
-struct ServoOutput bottomBridgeLowerServo(servoMotor2, digitalOn, digitalOff);
+struct ServoOutput clawGrabServo(servo0, digitalOff, digitalOn);
+struct ServoOutput clawDumpServo(servo1, digitalOff, digitalOff);
+struct ServoOutput storageDumpServoLeft(servo0, digitalOn, digitalOff);
+struct ServoOutput storageDumpServoRight(servo1, digitalOff, digitalOn);
+struct ServoOutput topBridgeUpperServo(servo0, digitalOff, digitalOff);
+struct ServoOutput topBridgeLowerServo(servo1, digitalOn, digitalOn);
+struct ServoOutput bottomBridgeUppserServo(servo0, digitalOn, digitalOn);
+struct ServoOutput bottomBridgeLowerServo(servo1, digitalOn, digitalOff);
 
-// Analog pins
+
+// Limit Switches, digital pins
+int topLimitSwitch = 9;
+int middleLimitSwitch = 10;
+int bottomLimitSwitch = 11;
+ClawHomePosition startingHomePosition = bottom;
+
+
+// Sensors, analog Pins
 int topFarTapeFollowQRD = 0;
 int topNearTapeFollowQRD = 1;
 int topCliffQRD = 2;
 int bottomFarTapeFollowQRD = 3;
 int bottomNearTapeFollowQRD = 4;
 int bottomCliffQRD = 5;
+
+
+// Sonar's, digital pins
+int sonarTrigPin = 7;
+int sonarEchoPin = 8;
+
+
+// Helpers
+DigitalPinAndValue::DigitalPinAndValue(int pinNum, DigitalState _state) {
+    pinNumber = pinNum;
+    state = _state;
+};
+DigitalPinAndValue::DigitalPinAndValue() {};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

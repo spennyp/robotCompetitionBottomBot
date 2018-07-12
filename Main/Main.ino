@@ -1,12 +1,10 @@
+#include "Globals.h"
 #include "MenuItem.h"
 #include "MotorWheel.h"
-#include "PID.h"#include <ServoTINAH.h>
-#include <phys253pins.h>
+#include "Claw.h"
 #include <phys253.h>
-#include <motor.h>
 #include <avr/EEPROM.h>
 #include <LiquidCrystal.h>
-#include "Globals.h"
 
 uint16_t MenuItem::MenuItemCount = 0;
 /* Add the menu items here */
@@ -17,11 +15,23 @@ MenuItem IntegralGain = MenuItem("I-gain");
 MenuItem PIDThreshold = MenuItem("PID-thresh");
 MenuItem menuItems[] = { Speed, ProportionalGain, DerivativeGain };
 
+Claw claw;
+
 void setup() {
 	#include <phys253setup.txt>
 	Serial.begin(9600);
 	LCD.clear();
 	LCD.home();
+
+	// Swithing first row of digital ins to outs
+	pinMode(0, OUTPUT);
+	pinMode(1, OUTPUT);
+	pinMode(2, OUTPUT);
+	pinMode(3, OUTPUT);
+	pinMode(4, OUTPUT);
+	pinMode(5, OUTPUT);
+	pinMode(6, OUTPUT);
+	pinMode(7, OUTPUT);
 }
 
 void loop() {
@@ -82,12 +92,22 @@ void Menu() {
 	}
 }
 
-void Run()
-{
+void Run() {
 	//Check Sensors
 	//Drive
 	//Deploy Claw
 	//Deploy Bridge
 	//Deploy Small Bot
+
+	// Calls switchToSmallBot when appropriate
+
+	while(true) {
+		claw.poll();
+	}
+}
+
+void switchToTopBot() {
+	claw.switchToTopBot();
+	// MotorWheel::switchToTopBot();
 }
 

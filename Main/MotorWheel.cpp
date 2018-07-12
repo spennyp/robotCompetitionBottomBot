@@ -30,6 +30,7 @@ void MotorWheel::reverse() {
 	motor.speed(topRightMotor.motorNumber, -motorSpeed);
 }
 
+// Must be in a loop
 void MotorWheel::runWithPID() {
 	int err = pid.getError();
 	// when err < 0 turns right. when err > 0 turns left
@@ -47,7 +48,7 @@ void MotorWheel::stop() {
 	motor.stop(1);
 }
 
-void MotorWheel::switchToTopMotors() {
-	digitalWrite(topLeftMotor.digitalControl.pin, HIGH);
+void MotorWheel::switchToTopBot() {
+	digitalWrite(topLeftMotor.digitalControl.pinNumber, HIGH);
 }
 
