@@ -23,7 +23,7 @@ private:
 	void reverse();
 	void runWithPID();
 	void stop();
-	void switchToTopMotors();
+	void switchToTopBot();
 };
 
 #endif
