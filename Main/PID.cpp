@@ -1,6 +1,9 @@
 // PID.cpp
 
 #include "PID.h"
+#include "Globals.h"
+
+const int8_t FAR_LEFT = -5, LEFT = -1, STRAIGHT = 0, RIGHT = 1, FAR_RIGHT = 5;
 
 PID::PID(MenuItem pGain, MenuItem dGain, MenuItem iGain, MenuItem PIDThreshold) {
 	threshold = PIDThreshold.Value;
@@ -8,10 +11,11 @@ PID::PID(MenuItem pGain, MenuItem dGain, MenuItem iGain, MenuItem PIDThreshold) 
 	d = dGain.Value;
 }
 
-PID::PIDState PID::getState() {
+int8_t PID::getState() {
 	//Potentially different Analog read positions
-	int lSensor = analogRead(0);
-	int rSensor = analogRead(1);
+	lastState = state;
+	int lSensor = analogRead(topNearTapeFollowQRD);
+	int rSensor = analogRead(topFarTapeFollowQRD);
 	if (lSensor >= threshold && rSensor >= threshold) {
 		state = STRAIGHT;
 	}
@@ -30,12 +34,12 @@ PID::PIDState PID::getState() {
 	return state;
 }
 
-uint16_t PID::getError() {
-	uint16_t pErr = 0, dErr = 0;
+int16_t PID::getError() {
+	int16_t pErr = 0, dErr = 0;
 	int16_t err = 0;
-	PIDState state = getState();
-	pErr = p * ((int)state);
-	dErr = d * ((int)state - (int)lastState);
+	int8_t state = getState();
+	pErr = p * (state);
+	dErr = d * (state - lastState);
 	err = pErr + dErr;
 	return err;
 }

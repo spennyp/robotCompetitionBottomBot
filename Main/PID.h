@@ -12,19 +12,12 @@
 
 class PID {
  public:
- 	enum PIDState { 
-		FAR_LEFT = -5,
-  		LEFT = -1,
-  		STRAIGHT = 0,
-  		RIGHT = 1,
-  		FAR_RIGHT = 5
-	};
 	PID(MenuItem pGain, MenuItem dGain, MenuItem iGain, MenuItem PIDThreshold);
-	uint16_t getError();
-	PID::PIDState state, lastState;
+	int16_t getError();
+	int8_t state, lastState;
 private:
 	uint16_t threshold, i, p, d;
-	PID::PIDState getState();
+	int8_t getState();
 };
 
 #endif
