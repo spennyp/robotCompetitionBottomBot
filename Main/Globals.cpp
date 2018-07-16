@@ -10,6 +10,9 @@ const DigitalState digitalOn = on;
 const DigitalState digitalOff = off;
 const int servoControlPin1 = 1;
 const int servoControlPin2 = 2;
+const int sonalClearDuration = 2; // [micro s]
+const int sonarPulseDuration = 10; // [micro s]
+const int speedOfSound = 0.34; // [mm / (micro s)]
 
 
 // Motors
@@ -73,9 +76,8 @@ int bottomNearTapeFollowQRD = 4;
 int bottomCliffQRD = 5;
 
 
-// Sonar's, digital pins
-int sonarTrigPin = 7;
-int sonarEchoPin = 8;
+// Claw IR, digital pin
+int clawIR = 12;
 
 
 // Helpers

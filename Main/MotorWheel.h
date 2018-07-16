@@ -14,16 +14,16 @@ class MotorWheel {
 private:
 	uint16_t motorSpeed;
 	PID pid;
-
- public:
+public:
 	MotorWheel(MenuItem speed, PID pid);
 	void turnLeft();
 	void turnRight();
 	void forward();
 	void reverse();
-	void runWithPID();
 	void stop();
+	bool runWithPID;
 	void switchToTopBot();
+	void poll();
 };
 
 #endif
