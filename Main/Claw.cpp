@@ -68,7 +68,8 @@ void Claw::lower() {
 }
 
 bool Claw::hasObject() {
-    // Fires and checks the sonar and see if it has contents
+    // Check if the object is in the claw somehow, may not use
+    return true;
 }
 
 void Claw::dump() {

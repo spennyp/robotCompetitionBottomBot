@@ -73,8 +73,7 @@ extern int bottomFarTapeFollowQRD;
 extern int bottomNearTapeFollowQRD;
 
 
-// Sonar's, digital pins
-extern int sonarTrigPin;
-extern int sonarEchoPin;
+// Claw IR, digital pin
+extern int clawIR;
 
 #endif
