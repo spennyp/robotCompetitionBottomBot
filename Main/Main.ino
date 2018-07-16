@@ -16,6 +16,7 @@ MenuItem PIDThreshold = MenuItem("PID-thresh");
 MenuItem menuItems[] = { Speed, ProportionalGain, DerivativeGain };
 
 Claw claw;
+MotorWheel motorWheel(Speed, PID(ProportionalGain, DerivativeGain, IntegralGain, PIDThreshold));
 
 void setup() {
 	#include <phys253setup.txt>
@@ -103,6 +104,7 @@ void Run() {
 
 	while(true) {
 		claw.poll();
+		motorWheel.poll();
 	}
 }
 

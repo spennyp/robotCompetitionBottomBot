@@ -14,6 +14,7 @@ const int winchSpeed = 255;
 
 
 // API
+
 Claw::Claw() {
     switchingBots = false;
     homeLimitSwitch = bottomLimitSwitch;
@@ -33,6 +34,7 @@ void Claw::switchToTopBot() {
 
 
 // Lifecycle
+
 void Claw::poll() {
     bool topSwitch = digitalRead(topLimitSwitch);
     bool homeSwitch = digitalRead(homeLimitSwitch);
@@ -53,6 +55,7 @@ void Claw::poll() {
 
 
 // Helpers
+
 void Claw::raise() {
     if (!digitalRead(topLimitSwitch)) {
         raising = true;
