@@ -10,14 +10,13 @@
 #endif
 
 class MenuItem {
- public:
- 	static uint16_t MenuItemCount;
-
-	String Name;
-	uint16_t Value;
-	uint16_t* EEPROMAddress;
-	MenuItem(String name);
-	void Save();
+	public:
+		static uint16_t MenuItemCount;
+		String Name;
+		uint16_t Value;
+		uint16_t* EEPROMAddress;
+		MenuItem(String name);
+		void Save();
 };
 
 #endif

@@ -18,6 +18,10 @@ MenuItem menuItems[] = { Speed, ProportionalGain, DerivativeGain };
 Claw claw;
 MotorWheel motorWheel(Speed, PID(ProportionalGain, DerivativeGain, IntegralGain, PIDThreshold));
 
+// TODO: Move this into a better place?
+int cliffQRDThreshold = 200;
+const int firstBridgeDropDelay = 2000; // [ms]
+
 void setup() {
 	#include <phys253setup.txt>
 	Serial.begin(9600);
@@ -97,6 +101,8 @@ void Menu() {
 
 void Run() {
 	unsigned long prevLoopStartTime = millis();
+	int numberOfTeddiesGrabbed = 0;
+	bool switchedToTopBot = false;
 	
 	//Check Sensors
 	//Drive
@@ -104,16 +110,47 @@ void Run() {
 	//Deploy Bridge
 	//Deploy Small Bot
 
-	// Calls switchToSmallBot when appropriate
-
-	LCD.clear(); LCD.print("Running PID"); LCD.setCursor(0, 1); LCD.print("Stop to return");
+	LCD.clear(); LCD.print("Running"); LCD.setCursor(0, 1); LCD.print("Stop to return");
 	while(true) {
 		//Regulate speed of the main loop to 10 ms
 		while (millis() - prevLoopStartTime < 10) {}
 		prevLoopStartTime = millis();
 
-		claw.poll();
+		if(clawIRTriggered()) {
+			motorWheel.stop();
+			claw.grab();
+			numberOfTeddiesGrabbed ++;
+			if(numberOfTeddiesGrabbed == 2) {
+				claw.switchToTopBot();
+				switchedToTopBot = true;
+			}
+		}
+
+		if(foundCliff(switchedToTopBot)) {
+			if(!switchedToTopBot) {
+				motorWheel.stop();
+				deployFirstBridge();
+				delay(firstBridgeDropDelay);
+			}
+		}
+
 		motorWheel.poll();
+		if(claw.poll()) {
+			motorWheel.runWithPID = true;
+		}
+
+		// Run all bottom bot only code
+		if(!switchedToTopBot) {
+			bottomBotPlankCheck();
+		}
+
+		// Run all top bot only code
+		if(switchedToTopBot) {
+			if(digitalRead(topBotFrontTouchSensor) && numberOfTeddiesGrabbed >= 4) {
+				motorWheel.stop();
+				activateDumper();
+			}
+		}
 
 		if (stopbutton()) {
 			delay(100);
@@ -125,7 +162,44 @@ void Run() {
 }
 
 void switchToTopBot() {
-	claw.switchToTopBot();
-	// MotorWheel::switchToTopBot();
+	claw.switchToTopBot(); // Should be a redundent call
+	motorWheel.switchToTopBot();
 }
+
+
+// Helpers
+
+/// Checks if there is an object between the claw arms
+bool clawIRTriggered() {
+	return digitalRead(clawIR);
+}
+
+/// Checks if the bottom bot is in position to deploy top bot, and adjusts if not
+void bottomBotPlankCheck() {
+	bool lPlankSensor = digitalRead(leftPlankQRD);
+	bool rPlankSensor = digitalRead(rightPlankQRD);
+	if(lPlankSensor && rPlankSensor) {
+		switchToTopBot();
+	} else if(lPlankSensor) {
+		motorWheel.turnLeft(5);
+	} else if(rPlankSensor) {
+		motorWheel.turnRight(5);
+	}
+}
+
+/// Checks if a cliff was found ahead 
+// TODO: Make this cleaner?
+bool foundCliff(bool switchedToTopBot) {
+	return (!switchedToTopBot && analogRead(bottomCliffQRD) > cliffQRDThreshold) || (switchedToTopBot && analogRead(topCliffQRD) > cliffQRDThreshold);
+}
+
+/// Deploys the first bridge
+void deployFirstBridge() {
+	// TODO: add bridge deploying code here
+}
+
+void activateDumper() {
+	// TODO: add code to activate the dumper here
+}
+
 

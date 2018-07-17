@@ -11,14 +11,14 @@
 #endif
 
 class PID {
- public:
-	PID(MenuItem pGain, MenuItem dGain, MenuItem iGain, MenuItem PIDThreshold);
-	int16_t getError();
-	int8_t state, lastState;
-private:
-	uint16_t threshold, i, p, d;
-	int8_t getTapeState();
-	int8_t getEdgeState();
+	private:
+		uint16_t threshold, i, p, d;
+		int8_t getTapeState();
+		int8_t getEdgeState();
+	public:
+		PID(MenuItem pGain, MenuItem dGain, MenuItem iGain, MenuItem PIDThreshold);
+		int16_t getError();
+		int8_t state, lastState;
 };
 
 #endif
