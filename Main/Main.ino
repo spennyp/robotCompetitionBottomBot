@@ -22,7 +22,7 @@ void setup() {
 	#include <phys253setup.txt>
 	Serial.begin(9600);
 	LCD.clear();
-	LCD.home();
+	LCD.print("Uploaded :)");
 
 	// Swithing first row of digital ins to outs
 	pinMode(0, OUTPUT);
@@ -33,24 +33,26 @@ void setup() {
 	pinMode(5, OUTPUT);
 	pinMode(6, OUTPUT);
 	pinMode(7, OUTPUT);
+
+	delay(1000);
 }
 
 void loop() {
 	LCD.clear(); LCD.home();
-	LCD.print("Press start");
+	LCD.print("Start -> Run PID");
 	LCD.setCursor(0, 1);
-	LCD.print("to open menu");
+	LCD.print("Stop -> Menu");
 	delay(100);
 
-	if (startbutton()) {
+	if (stopbutton()) {
 		delay(100);
-		if (startbutton()) {
+		if (stopbutton()) {
 			Menu();
 		}
 	}
-	else if (stopbutton()) {
+	else if (startbutton()) {
 		delay(100);
-		if (stopbutton()) {
+		if (startbutton()) {
 			Run();
 		}
 	}
@@ -102,9 +104,19 @@ void Run() {
 
 	// Calls switchToSmallBot when appropriate
 
+	LCD.clear(); LCD.print("Running PID"); LCD.setCursor(0, 1); LCD.print("Stop to return");
 	while(true) {
+		//Regulate speed of the main loop to 10 ms
+		while (millis() - prevLoopStartTime < 10) {}
 		claw.poll();
 		motorWheel.poll();
+
+		if (stopbutton()) {
+			delay(100);
+			if (stopbutton()) {
+				loop();
+			}
+		}
 	}
 }
 

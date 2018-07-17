@@ -17,7 +17,8 @@ class PID {
 	int8_t state, lastState;
 private:
 	uint16_t threshold, i, p, d;
-	int8_t getState();
+	int8_t getTapeState();
+	int8_t getEdgeState();
 };
 
 #endif
