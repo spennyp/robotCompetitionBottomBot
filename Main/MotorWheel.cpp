@@ -49,7 +49,7 @@ void MotorWheel::stop() {
 
 // Lifecycle
 
-int MotorWheel::poll() {
+void MotorWheel::poll() {
 	if(hardCodeTurning) {
 		turnLoopCount ++;
 		if(turnLoopCount == numberOfLoopsForTurn) {
@@ -63,8 +63,6 @@ int MotorWheel::poll() {
 		// when err < 0 turns right. when err > 0 turns left
 		motor.speed(topLeftMotor.motorNumber, motorSpeed - err);
 		motor.speed(topRightMotor.motorNumber, motorSpeed + err);
-
-		return err;
 	} 
 }
 

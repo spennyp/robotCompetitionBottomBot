@@ -96,6 +96,8 @@ void Menu() {
 }
 
 void Run() {
+	unsigned long prevLoopStartTime = millis();
+	
 	//Check Sensors
 	//Drive
 	//Deploy Claw
@@ -108,6 +110,8 @@ void Run() {
 	while(true) {
 		//Regulate speed of the main loop to 10 ms
 		while (millis() - prevLoopStartTime < 10) {}
+		prevLoopStartTime = millis();
+
 		claw.poll();
 		motorWheel.poll();
 
