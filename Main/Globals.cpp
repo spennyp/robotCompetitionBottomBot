@@ -60,13 +60,6 @@ struct ServoOutput bottomBridgeUppserServo(servo0, digitalOn, digitalOn);
 struct ServoOutput bottomBridgeLowerServo(servo1, digitalOn, digitalOff);
 
 
-// Limit Switches, digital pins
-int topLimitSwitch = 9;
-int middleLimitSwitch = 10;
-int bottomLimitSwitch = 11;
-ClawHomePosition startingHomePosition = bottom;
-
-
 // Sensors, analog Pins
 int topFarTapeFollowQRD = 0;
 int topNearTapeFollowQRD = 1;
@@ -76,8 +69,16 @@ int bottomNearTapeFollowQRD = 4;
 int bottomCliffQRD = 5;
 
 
-// Claw IR, digital pin
+// Digital pins
+int topLimitSwitch = 9;
+int middleLimitSwitch = 10;
+int bottomLimitSwitch = 11;
 int clawIR = 12;
+int leftPlankQRD = 13; // through comparator
+int rightPlankQRD = 14; // through comparator
+int topBotFrontTouchSensor = 15;
+
+ClawHomePosition startingHomePosition = bottom;
 
 
 // Helpers

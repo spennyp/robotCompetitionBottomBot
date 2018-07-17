@@ -27,15 +27,18 @@ void Claw::grab() {
 }
 
 void Claw::switchToTopBot() {
-    homeLimitSwitch = middleLimitSwitch;
-    switchingBots = true;
-    raise();
+    if(homeLimitSwitch != middleLimitSwitch) {
+        homeLimitSwitch = middleLimitSwitch;
+        switchingBots = true;
+        raise();
+    }
 }
 
 
 // Lifecycle
 
-void Claw::poll() {
+// returns true once starts to lower
+bool Claw::poll() {
     bool topSwitch = digitalRead(topLimitSwitch);
     bool homeSwitch = digitalRead(homeLimitSwitch);
     bool hasObj = hasObject();
@@ -44,13 +47,17 @@ void Claw::poll() {
         raising = false;
         if(topSwitch && hasObj) {
             dump();
+            lower();
+            return true;
         } else if(!homeSwitch) {
             lower();
             open();
+            return true;
         } else if(homeSwitch && switchingBots) {
             switchingBots = false;
         }
     }
+    return false;
 }
 
 
@@ -60,7 +67,7 @@ void Claw::raise() {
     if (!digitalRead(topLimitSwitch)) {
         raising = true;
         motor.speed(winchMotor, winchSpeed);
-    } 
+    }
 }
 
 void Claw::lower() {
@@ -81,7 +88,7 @@ void Claw::dump() {
     open();
     delay(grabServoDumpReleaseTime);
     setServo(clawDumpServo, dumpServoNormalAngle);
-    lower();
+    delay(grabServoDumpReleaseTime); // TODO: Change this delay?
 }
 
 void Claw::open() {

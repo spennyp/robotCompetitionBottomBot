@@ -56,14 +56,6 @@ extern ServoOutput topBridgeLowerServo;
 extern ServoOutput bottomBridgeUppserServo;
 extern ServoOutput bottomBridgeLowerServo;
 
-
-// Limit Switches, digital pins
-extern int topLimitSwitch;
-extern int middleLimitSwitch;
-extern int bottomLimitSwitch;
-extern ClawHomePosition startingHomePosition;
-
-
 // QRD's, analog pins
 extern int topNearTapeFollowQRD;
 extern int topFarTapeFollowQRD;
@@ -73,7 +65,15 @@ extern int bottomFarTapeFollowQRD;
 extern int bottomNearTapeFollowQRD;
 
 
-// Claw IR, digital pin
+// Digital pins
+extern int topLimitSwitch;
+extern int middleLimitSwitch;
+extern int bottomLimitSwitch;
 extern int clawIR;
+extern int leftPlankQRD; // through comparator
+extern int rightPlankQRD; // through comparator
+extern int topBotFrontTouchSensor;
+
+extern ClawHomePosition startingHomePosition;
 
 #endif

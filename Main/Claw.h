@@ -17,13 +17,14 @@ class Claw {
         void dump();
         void open();
         int homeLimitSwitch;
+        int numberOfTeddies;
         bool raising;
         bool switchingBots;
     public:
         Claw();
         void grab();
         void switchToTopBot();
-        void poll();
+        bool poll();
 };
 
 #endif
