@@ -18,7 +18,7 @@ MenuItem menuItems[] = { Speed, ProportionalGain, DerivativeGain };
 Claw claw;
 MotorWheel motorWheel(Speed, PID(ProportionalGain, DerivativeGain, IntegralGain, PIDThreshold));
 
-// TODO: Move this into a better place?
+// TODO: Move this in to a better place?
 int cliffQRDThreshold = 200;
 const int firstBridgeDropDelay = 2000; // [ms]
 
@@ -103,6 +103,7 @@ void Run() {
 	unsigned long prevLoopStartTime = millis();
 	int numberOfTeddiesGrabbed = 0;
 	bool switchedToTopBot = false;
+	bool codeRed = false;
 	
 	//Check Sensors
 	//Drive
@@ -115,6 +116,10 @@ void Run() {
 		//Regulate speed of the main loop to 10 ms
 		while (millis() - prevLoopStartTime < 10) {}
 		prevLoopStartTime = millis();
+
+		if(digitalRead(codeRedSwitch)) {
+			codeReddd();
+		}
 
 		if(clawIRTriggered()) {
 			motorWheel.stop();
@@ -200,6 +205,33 @@ void deployFirstBridge() {
 
 void activateDumper() {
 	// TODO: add code to activate the dumper here
+}
+
+// If all else fails
+void codeReddd() {
+	unsigned long prevLoopStartTime = millis();
+	switchToTopBot();
+	delay(3000); // Time to take top bot off bottom
+	motorWheel.runWithPID = true;
+
+	while(true) {
+		while (millis() - prevLoopStartTime < 10) {}
+		prevLoopStartTime = millis();
+
+		motorWheel.poll();
+
+		if(clawIRTriggered()) {
+			motorWheel.stop();
+			claw.grab();
+			delay(2000);
+			motorWheel.turnLeft(180);
+			motorWheel.forward();
+		}
+
+		if(foundCliff(true)) {
+			motorWheel.stop();
+		}
+	}
 }
 
 

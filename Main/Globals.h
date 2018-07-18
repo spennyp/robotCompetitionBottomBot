@@ -66,6 +66,7 @@ extern int bottomNearTapeFollowQRD;
 
 
 // Digital pins
+extern int codeRedSwitch;
 extern int topLimitSwitch;
 extern int middleLimitSwitch;
 extern int bottomLimitSwitch;

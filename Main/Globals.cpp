@@ -70,6 +70,7 @@ int bottomCliffQRD = 5;
 
 
 // Digital pins
+int codeRedSwitch = 8;
 int topLimitSwitch = 9;
 int middleLimitSwitch = 10;
 int bottomLimitSwitch = 11;
