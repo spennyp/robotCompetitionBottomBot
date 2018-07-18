@@ -119,11 +119,14 @@ void switchToTopBot() {
 void deployBottomBridge() {
 	setServo(bottomBridgeLeftServo, bottomBridgeLeftServoDeployPosition);
 	setServo(bottomBridgeRightServo, bottomBridgeRightServoDeployPosition);
+	delay(bridgeDropDelay);
 }
 
 void deployTopBridge() {
 	setServo(topBridgeLowerServo, topBridgeLowerServoDeployPosition);
+	delay(bridgeDropDelay / 2);
 	setServo(topBridgeUpperServo, topBridgeUpperServoDeployPosition);
+	delay(bridgeDropDelay);
 }
 
 void activateDumper() {
