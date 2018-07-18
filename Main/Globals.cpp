@@ -10,9 +10,6 @@ const DigitalState digitalOn = on;
 const DigitalState digitalOff = off;
 const int servoControlPin1 = 1;
 const int servoControlPin2 = 2;
-const int sonalClearDuration = 2; // [micro s]
-const int sonarPulseDuration = 10; // [micro s]
-const int speedOfSound = 0.34; // [mm / (micro s)]
 
 
 // Motors
