@@ -23,12 +23,21 @@ bool bottomBotFoundCliff() {
     return (analogRead(topCliffQRD) > cliffQRDThreshold);
 }
 
-extern bool leftPlankInPosition() {
+bool leftPlankInPosition() {
     return digitalRead(leftPlankQRD);
 }
 
-extern bool rightPlankInPosition() {
+bool rightPlankInPosition() {
     return digitalRead(rightPlankQRD);
+}
+
+bool endOfCourse() {
+    return digitalRead(topBotFrontTouchSensor);
+}
+
+// TODO: Write this
+bool clawHasObject() {
+    return true;
 }
 
 

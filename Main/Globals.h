@@ -59,8 +59,8 @@ extern ServoOutput storageDumpServoLeft;
 extern ServoOutput storageDumpServoRight;
 extern ServoOutput topBridgeUpperServo;
 extern ServoOutput topBridgeLowerServo;
-extern ServoOutput bottomBridgeUppserServo;
-extern ServoOutput bottomBridgeLowerServo;
+extern ServoOutput bottomBridgeLeftServo;
+extern ServoOutput bottomBridgeRightServo;
 
 // QRD's, analog pins
 extern int topNearTapeFollowQRD;

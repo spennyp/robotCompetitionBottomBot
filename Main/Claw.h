@@ -12,10 +12,10 @@
 class Claw {
     private:
         void raise();
-        void lower();
-        bool hasObject();
+        bool lower();
         void dump();
         void open();
+        void close();
         int homeLimitSwitch;
         int numberOfTeddies;
         bool raising;
@@ -24,6 +24,7 @@ class Claw {
         Claw();
         void grab();
         void switchToTopBot();
+        void reset();
         bool poll();
 };
 

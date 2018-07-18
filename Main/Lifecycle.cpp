@@ -10,10 +10,31 @@
 Claw claw;
 MotorWheel motorWheel(speed, PID(proportionalGain, derivativeGain, integralGain, pidThreshold));
 
-const int firstBridgeDropDelay = 2000; // [ms]
+const int bridgeDropDelay = 2000; // [ms]
 
+// TODO: Figure out all these contants
+
+// Reset constants
+const int bottomBridgeLeftServoResetPosition = 0;
+const int bottomBridgeRightServoResetPosition = 90;
+const int topBridgeLowerServoResetPosition = 0;
+const int topBridgeUpperServoResetPosition = 90;
+const int leftDumpServoResetPosition = 0;
+const int rightDumpServoResetPosition = 180;
+
+// Deploy constants
+const int bottomBridgeLeftServoDeployPosition = 90;
+const int bottomBridgeRightServoDeployPosition = 0;
+const int topBridgeLowerServoDeployPosition = 90;
+const int topBridgeUpperServoDeployPosition = 0;
+const int leftDumpServoDumpPosition = 180;
+const int rightDumpServoDumpPosition = 0;
+
+
+// API
 
 void run() {
+	reset();
 	unsigned long prevLoopStartTime = millis();
 	int numberOfTeddiesGrabbed = 0;
 	bool switchedToTopBot = false;
@@ -24,8 +45,8 @@ void run() {
 		while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
 		prevLoopStartTime = millis();
 
-		if(checkCodeRedSwitch()) {
-			codeRed();
+		if(checkCodeRedSwitch()) { 
+			codeRed(); 
 		}
 
 		if(clawIRTriggered()) {
@@ -58,12 +79,25 @@ void run() {
 	}
 }
 
+
+// Helpers
+
+void reset() {
+	claw.reset();
+	setServo(bottomBridgeLeftServo, bottomBridgeLeftServoResetPosition);
+	setServo(bottomBridgeRightServo, bottomBridgeRightServoResetPosition);
+	setServo(topBridgeLowerServo, topBridgeLowerServoResetPosition);
+	setServo(topBridgeUpperServo, topBridgeUpperServoResetPosition);
+	setServo(storageDumpServoLeft, leftDumpServoResetPosition);
+	setServo(storageDumpServoRight, rightDumpServoResetPosition);
+}
+
 // TODO: Write this
 void runBottomBot() {
     if(bottomBotFoundCliff()) {
 		motorWheel.stop();
-		deployFirstBridge();
-		delay(firstBridgeDropDelay);
+		deployBottomBridge();
+		delay(bridgeDropDelay);
 	}
 
     bottomBotPlankCheck();
@@ -71,7 +105,7 @@ void runBottomBot() {
 
 // TODO: Write this
 void runTopBot(int numberOfTeddiesGrabbed) {
-    if(digitalRead(topBotFrontTouchSensor) && numberOfTeddiesGrabbed >= 4) {
+    if(endOfCourse() && numberOfTeddiesGrabbed >= 4) {
         motorWheel.stop();
         activateDumper();
     }
@@ -82,14 +116,19 @@ void switchToTopBot() {
 	motorWheel.switchToTopBot();
 }
 
-// TODO: Write this
-void deployFirstBridge() {
-	// TODO: add bridge deploying code here
+void deployBottomBridge() {
+	setServo(bottomBridgeLeftServo, bottomBridgeLeftServoDeployPosition);
+	setServo(bottomBridgeRightServo, bottomBridgeRightServoDeployPosition);
 }
 
-// TODO: Write this
+void deployTopBridge() {
+	setServo(topBridgeLowerServo, topBridgeLowerServoDeployPosition);
+	setServo(topBridgeUpperServo, topBridgeUpperServoDeployPosition);
+}
+
 void activateDumper() {
-	// TODO: add code to activate the dumper here
+	setServo(storageDumpServoLeft, leftDumpServoDumpPosition);
+	setServo(storageDumpServoRight, rightDumpServoDumpPosition);
 }
 
 /// Checks if the bottom bot is in position to deploy top bot, and adjusts if not
@@ -99,8 +138,10 @@ void bottomBotPlankCheck() {
 	if(lPlank && rPlank) {
 		switchToTopBot();
 	} else if(lPlank) {
+		motorWheel.stop();
 		motorWheel.turnLeft(5);
 	} else if(rPlank) {
+		motorWheel.stop();
 		motorWheel.turnRight(5);
 	}
 }

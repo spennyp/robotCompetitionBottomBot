@@ -2,6 +2,7 @@
 
 #include "Claw.h"
 #include "Globals.h"
+#include "Sensors.h"
 
 // TODO: Figure out what these 6 values should be, also add them to the menu instead of here?
 const int clawServoOpenAngle = 50;
@@ -34,14 +35,21 @@ void Claw::switchToTopBot() {
     }
 }
 
+void Claw::reset() {
+    homeLimitSwitch = bottomLimitSwitch;
+    close();
+    while(!lower()) {}
+    open();
+}
+
 
 // Lifecycle
 
-// returns true once starts to lower
+// Returns true once starts to lower
 bool Claw::poll() {
     bool topSwitch = digitalRead(topLimitSwitch);
     bool homeSwitch = digitalRead(homeLimitSwitch);
-    bool hasObj = hasObject();
+    bool hasObj = clawHasObject();
     if(topSwitch || homeSwitch || (!hasObj && !switchingBots && raising)) {
         motor.speed(winchMotor, 0);
         raising = false;
@@ -70,15 +78,12 @@ void Claw::raise() {
     }
 }
 
-void Claw::lower() {
+bool Claw::lower() {
     if (!digitalRead(homeLimitSwitch)) {
         raising = false;
-        motor.speed(winchMotor, -winchSpeed);
+        motor.speed(winchMotor, -winchSpeed);  
+        return false;
     }
-}
-
-bool Claw::hasObject() {
-    // Check if the object is in the claw somehow, may not use
     return true;
 }
 
@@ -93,5 +98,9 @@ void Claw::dump() {
 
 void Claw::open() {
     setServo(clawGrabServo, clawServoOpenAngle); 
+}
+
+void Claw::close() {
+    setServo(clawGrabServo, clawServoGrabAngle); 
 }
 

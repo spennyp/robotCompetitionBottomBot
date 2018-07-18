@@ -53,8 +53,8 @@ struct ServoOutput storageDumpServoLeft(servo0, digitalOn, digitalOff);
 struct ServoOutput storageDumpServoRight(servo1, digitalOff, digitalOn);
 struct ServoOutput topBridgeUpperServo(servo0, digitalOff, digitalOff);
 struct ServoOutput topBridgeLowerServo(servo1, digitalOn, digitalOn);
-struct ServoOutput bottomBridgeUppserServo(servo0, digitalOn, digitalOn);
-struct ServoOutput bottomBridgeLowerServo(servo1, digitalOn, digitalOff);
+struct ServoOutput bottomBridgeLeftServo(servo0, digitalOn, digitalOn);
+struct ServoOutput bottomBridgeRightServo(servo1, digitalOn, digitalOff);
 
 
 // Sensors, analog Pins
