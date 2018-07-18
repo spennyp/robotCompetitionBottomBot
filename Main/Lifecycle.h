@@ -13,11 +13,10 @@ extern void run();
 void runBottomBot();
 void runTopBot(int numberOfTeddiesGrabbed);
 void switchToTopBot();
-void switchToTopBot();
-void deployFirstBridge();
 void deployFirstBridge();
 void deploySecondBridge();
 void activateDumper();
+void bottomBotPlankCheck();
 void codeRed();
 
 #endif

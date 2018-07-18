@@ -13,5 +13,7 @@ extern bool checkCodeRedSwitch();
 extern bool clawIRTriggered();
 extern bool topBotFoundCliff();
 extern bool bottomBotFoundCliff();
+extern bool leftPlankInPosition();
+extern bool rightPlankInPosition();
 
 #endif
