@@ -4,6 +4,8 @@
 #define _GLOBALS_h
 #include <motor.h>
 #include <TINAH_Servo.h>
+#include <TINAH_BufferedLCD.h>
+#include <phys253.h>
 
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "arduino.h"
@@ -21,6 +23,10 @@ struct DigitalPinAndValue {
     int pinNumber;
     DigitalState state;
 };
+
+
+// LCD
+extern TINAH::BufferedLCD LCD;
 
 
 // Motors
