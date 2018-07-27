@@ -57,10 +57,10 @@ extern ServoOutput clawGrabServo;
 extern ServoOutput clawDumpServo;
 extern ServoOutput storageDumpServoLeft;
 extern ServoOutput storageDumpServoRight;
-extern ServoOutput topBridgeUpperServo;
-extern ServoOutput topBridgeLowerServo;
-extern ServoOutput bottomBridgeLeftServo;
-extern ServoOutput bottomBridgeRightServo;
+extern ServoOutput topBridgeRightServo;
+extern ServoOutput topBridgeLeftServo;
+extern ServoOutput bottomBridgeServoA;
+extern ServoOutput topBridgeLowServo;
 
 // QRD's, analog pins
 extern int topNearTapeFollowQRD;
@@ -73,9 +73,9 @@ extern int bottomNearTapeFollowQRD;
 
 // Digital pins
 extern int codeRedSwitch;
-extern int topLimitSwitch;
-extern int middleLimitSwitch;
-extern int bottomLimitSwitch;
+extern int topHall;
+extern int middleHall;
+extern int bottomHall;
 extern int clawIR;
 extern int leftPlankQRD; // through comparator
 extern int rightPlankQRD; // through comparator

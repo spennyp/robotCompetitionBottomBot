@@ -48,33 +48,33 @@ void setServo(ServoOutput servoInfo, int angle) {
 }
 
 struct ServoOutput clawGrabServo(servo0, digitalOff, digitalOn);
-struct ServoOutput clawDumpServo(servo1, digitalOff, digitalOff);
+struct ServoOutput clawDumpServo(servo1, digitalOff, digitalOn);
 struct ServoOutput storageDumpServoLeft(servo0, digitalOn, digitalOff);
-struct ServoOutput storageDumpServoRight(servo1, digitalOff, digitalOn);
-struct ServoOutput topBridgeUpperServo(servo0, digitalOff, digitalOff);
-struct ServoOutput topBridgeLowerServo(servo1, digitalOn, digitalOn);
-struct ServoOutput bottomBridgeLeftServo(servo0, digitalOn, digitalOn);
-struct ServoOutput bottomBridgeRightServo(servo1, digitalOn, digitalOff);
+struct ServoOutput storageDumpServoRight(servo1, digitalOn, digitalOff);
+struct ServoOutput topBridgeLeftServo(servo0, digitalOff, digitalOff);
+struct ServoOutput topBridgeRightServo(servo1, digitalOff, digitalOff);
+struct ServoOutput bottomBridgeServoA(servo0, digitalOn, digitalOn);
+struct ServoOutput topBridgeLowServo(servo1, digitalOn, digitalOn);
 
 
 // Sensors, analog Pins
-int topFarTapeFollowQRD = 0;
+int topFarTapeFollowQRD = 2;
 int topNearTapeFollowQRD = 1;
-int topCliffQRD = 2;
-int bottomFarTapeFollowQRD = 3;
+int topCliffQRD = 0;
+int bottomFarTapeFollowQRD = 5;
 int bottomNearTapeFollowQRD = 4;
-int bottomCliffQRD = 5;
+int bottomCliffQRD = 3;
 
 
 // Digital pins
 int codeRedSwitch = 8;
-int topLimitSwitch = 9;
-int middleLimitSwitch = 10;
-int bottomLimitSwitch = 11;
-int clawIR = 12;
-int leftPlankQRD = 13; // through comparator
-int rightPlankQRD = 14; // through comparator
-int topBotFrontTouchSensor = 15;
+int topHall = 9;
+int middleHall = 10;
+int bottomHall = 11;
+int clawIR = 15;
+int leftPlankQRD = 12; // through comparator
+int rightPlankQRD = 13; // through comparator
+int topBotFrontTouchSensor = 8;
 
 ClawHomePosition startingHomePosition = bottom;
 

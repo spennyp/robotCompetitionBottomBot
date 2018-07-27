@@ -16,6 +16,7 @@ extern bool bottomBotFoundCliff();
 extern bool leftPlankInPosition();
 extern bool rightPlankInPosition();
 extern bool endOfCourse();
-extern bool clawHasObject();
+extern bool topHallPosition();
+extern bool homeHallPosition(int homeHallNumber);
 
 #endif

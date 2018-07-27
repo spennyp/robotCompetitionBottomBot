@@ -12,7 +12,7 @@
 class Claw {
     private:
         void raise();
-        bool lower();
+        void lower();
         void dump();
         void open();
         void close();

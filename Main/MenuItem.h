@@ -12,11 +12,11 @@
 class MenuItem {
 	public:
 		MenuItem(String name);
-		static uint16_t MenuItemCount;
-		String Name;
-		uint16_t Value;
+		static uint16_t menuItemCount;
+		String name;
+		uint16_t value;
 		uint16_t* EEPROMAddress;
-		void Save();
+		void save();
 };
 
 #endif

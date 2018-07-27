@@ -6,7 +6,7 @@ void setup() {
 	#include <phys253setup.txt>
 	Serial.begin(9600);
 	LCD.clear();
-	LCD.print("Uploaded :)");
+	LCD.print("Uploaded :D");
 
 	// Swithing first row of digital ins to outs
 	pinMode(0, OUTPUT);
@@ -36,6 +36,8 @@ void loop() {
 	else if (startbutton()) {
 		delay(100);
 		if (startbutton()) {
+			LCD.clear();
+			LCD.print("Running");
 			run();
 		}
 	}

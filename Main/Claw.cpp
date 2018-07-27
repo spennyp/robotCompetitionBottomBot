@@ -6,40 +6,44 @@
 
 // TODO: Figure out what these 6 values should be, also add them to the menu instead of here?
 const int clawServoOpenAngle = 50;
-const int clawServoGrabAngle = 0;
-const int dumpServoNormalAngle = 0;
-const int dumpServoDumpAngle = 180;
+const int clawServoGrabAngle = 180;
+const int dumpServoNormalAngle = 8;
+const int dumpServoDumpAngle = 125;
 const int dumpServoDumpTime = 2000;
 const int grabServoDumpReleaseTime = 1000;
-const int winchSpeed = 255;
+
+const int winchSpeed = 50; // TODO: Add to menu
 
 
 // API
 
 Claw::Claw() {
     switchingBots = false;
-    homeLimitSwitch = bottomLimitSwitch;
+    homeLimitSwitch = bottomHall;
     raising = false;
 }
 
 void Claw::grab() {
     setServo(clawGrabServo, clawServoGrabAngle); 
+    delay(500);
     raise();
 }
 
 void Claw::switchToTopBot() {
-    if(homeLimitSwitch != middleLimitSwitch) {
-        homeLimitSwitch = middleLimitSwitch;
+    if(homeLimitSwitch != middleHall) {
+        homeLimitSwitch = middleHall;
         switchingBots = true;
         raise();
     }
 }
 
 void Claw::reset() {
-    homeLimitSwitch = bottomLimitSwitch;
+    // homeLimitSwitch = bottomHall;
+    homeLimitSwitch = middleHall;
+    setServo(clawDumpServo, dumpServoNormalAngle);
     close();
-    while(!lower()) {}
-    open();
+    delay(0);
+    // lower();
 }
 
 
@@ -47,44 +51,54 @@ void Claw::reset() {
 
 // Returns true once starts to lower
 bool Claw::poll() {
-    bool topSwitch = digitalRead(topLimitSwitch);
-    bool homeSwitch = digitalRead(homeLimitSwitch);
-    bool hasObj = clawHasObject();
-    if(topSwitch || homeSwitch || (!hasObj && !switchingBots && raising)) {
+    bool topSwitch = topHallPosition();
+    bool homeSwitch = homeHallPosition(homeLimitSwitch);
+    if(homeSwitch || topSwitch) {
         motor.speed(winchMotor, 0);
-        raising = false;
-        if(topSwitch && hasObj) {
+        if(homeSwitch) {
+            open();
+        } else {
             dump();
             lower();
             return true;
-        } else if(!homeSwitch) {
-            lower();
-            open();
-            return true;
-        } else if(homeSwitch && switchingBots) {
-            switchingBots = false;
         }
     }
     return false;
+
+    // if(topSwitch || homeSwitch || (!hasObj && !switchingBots && raising)) {
+    //     motor.speed(winchMotor, 0);
+    //     raising = false;
+    //     if(topSwitch && hasObj) {
+    //         dump();
+    //         lower();
+    //         return true;
+    //     } else if(!homeSwitch) {
+    //         lower();
+    //         open();
+    //         return true;
+    //     } else if(homeSwitch && switchingBots) {
+    //         switchingBots = false;
+    //     } else if(homeSwitch) {
+    //         claw.open();
+    //     }
+    // }
 }
 
 
 // Helpers
 
 void Claw::raise() {
-    if (!digitalRead(topLimitSwitch)) {
+    if (!topHallPosition()) {
         raising = true;
         motor.speed(winchMotor, winchSpeed);
     }
 }
 
-bool Claw::lower() {
-    if (!digitalRead(homeLimitSwitch)) {
+void Claw::lower() {
+    if (!homeHallPosition(homeLimitSwitch)) {
         raising = false;
         motor.speed(winchMotor, -winchSpeed);  
-        return false;
     }
-    return true;
 }
 
 void Claw::dump() {
@@ -93,7 +107,8 @@ void Claw::dump() {
     open();
     delay(grabServoDumpReleaseTime);
     setServo(clawDumpServo, dumpServoNormalAngle);
-    delay(grabServoDumpReleaseTime); // TODO: Change this delay?
+    close();
+    delay(grabServoDumpReleaseTime); 
 }
 
 void Claw::open() {

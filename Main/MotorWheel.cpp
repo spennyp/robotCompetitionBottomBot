@@ -3,31 +3,47 @@
 #include "MotorWheel.h"
 #include "Globals.h"
 
-// TODO: Calibrate this number, take into account motor speed
-const int loopsPerAngleTurn = 10;
+const int delayPerDegreeTurnTopBot = 7; // For top bot
+const int delayPerDegreeTurnBottomBot = 28;
 
 MotorWheel::MotorWheel(MenuItem speed, PID pid) : pid(pid) {
-	motorSpeed = speed.Value;
+	motorSpeed = speed.value;
 	runWithPID = true;
-	hardCodeTurning = false;
-	numberOfLoopsForTurn = 0;
-	turnLoopCount = 0;
+	topBot = false;
 }
 
 // Top/bottom is arbitrary in below function calls due to shared pins
 
-void MotorWheel::turnLeft(int turnAngle) {
-	hardCodeTurning = true;
-	motor.speed(topLeftMotor.motorNumber, -motorSpeed);
-	motor.speed(topRightMotor.motorNumber, motorSpeed);
-	numberOfLoopsForTurn = turnAngle * loopsPerAngleTurn;
+void MotorWheel::turnLeft(int turnAngle, bool backup) {
+	runWithPID = false;
+	motor.speed(topLeftMotor.motorNumber, -150);
+	if(backup) {
+		motor.speed(topRightMotor.motorNumber, -150);
+		delay(400);
+	}
+	motor.speed(topRightMotor.motorNumber, 150);
+	if(topBot) {
+		delay(turnAngle * delayPerDegreeTurnTopBot);
+	} else {
+		delay(turnAngle * delayPerDegreeTurnBottomBot);
+	}
+	stop();
 }
 
-void MotorWheel::turnRight(int turnAngle) {
-	hardCodeTurning = true;
-	motor.speed(topLeftMotor.motorNumber, motorSpeed);
-	motor.speed(topRightMotor.motorNumber, -motorSpeed);
-	numberOfLoopsForTurn = turnAngle * loopsPerAngleTurn;
+void MotorWheel::turnRight(int turnAngle, bool backup) {
+	runWithPID = false;
+	motor.speed(topRightMotor.motorNumber, -150);
+	if(backup) {
+		motor.speed(topLeftMotor.motorNumber, -150);
+		delay(400);
+	}
+	motor.speed(topLeftMotor.motorNumber, 150);
+	if(topBot) {
+		delay(turnAngle * delayPerDegreeTurnTopBot);
+	} else {
+		delay(turnAngle * delayPerDegreeTurnBottomBot);
+	}
+	stop();
 }
 
 void MotorWheel::forward() {
@@ -43,6 +59,7 @@ void MotorWheel::reverse() {
 }
 
 void MotorWheel::stop() {
+	runWithPID = false;
 	motor.stop_all();
 }
 
@@ -50,16 +67,13 @@ void MotorWheel::stop() {
 // Lifecycle
 
 void MotorWheel::poll() {
-	if(hardCodeTurning) {
-		turnLoopCount ++;
-		if(turnLoopCount == numberOfLoopsForTurn) {
-			hardCodeTurning = false;
-			if(!runWithPID) {
-				stop();
-			}
+	if(runWithPID) {
+		int err;
+		if(topBot) {
+			err = pid.getTopError();
+		} else {
+			err = pid.getBottomError();
 		}
-	} else if(runWithPID) {
-		int err = pid.getError();
 		// when err < 0 turns right. when err > 0 turns left
 		motor.speed(topLeftMotor.motorNumber, motorSpeed - err);
 		motor.speed(topRightMotor.motorNumber, motorSpeed + err);
@@ -68,6 +82,7 @@ void MotorWheel::poll() {
 
 void MotorWheel::switchToTopBot() {
 	digitalWrite(topLeftMotor.digitalControl.pinNumber, HIGH);
+	topBot = true;
 }
 
 // add dynamic speed changing?

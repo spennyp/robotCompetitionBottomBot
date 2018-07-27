@@ -5,7 +5,7 @@
 #include <LiquidCrystal.h>
 #include <avr/EEPROM.h>
 
-uint16_t MenuItem::MenuItemCount = 0;
+uint16_t MenuItem::menuItemCount = 0;
 
 // Add Menu items here and in .h
 MenuItem speed = MenuItem("Speed");
@@ -13,6 +13,7 @@ MenuItem proportionalGain = MenuItem("P-gain");
 MenuItem derivativeGain = MenuItem("D-gain");
 MenuItem integralGain = MenuItem("I-gain");
 MenuItem pidThreshold = MenuItem("PID-thresh");
+MenuItem cliffThreshold = MenuItem("Cliff-thresh");
 MenuItem menuItems[] = { speed, proportionalGain, derivativeGain, integralGain, pidThreshold };
 
 void menu() {
@@ -22,9 +23,9 @@ void menu() {
 
 	while (true) {
 		/* Show MenuItem value and knob value */
-		int menuIndex = knob(6) * (MenuItem::MenuItemCount) / 1024;
+		int menuIndex = knob(6) * (MenuItem::menuItemCount) / 1024;
 		LCD.clear(); LCD.home();
-		LCD.print(menuItems[menuIndex].Name); LCD.print(" "); LCD.print(menuItems[menuIndex].Value);
+		LCD.print(menuItems[menuIndex].name); LCD.print(" "); LCD.print(menuItems[menuIndex].value);
 		LCD.setCursor(0, 1);
 		LCD.print("Set to "); LCD.print(knob(7)); LCD.print("?");
 		delay(100);
@@ -33,8 +34,8 @@ void menu() {
 		if (startbutton()) {
 			delay(100);
 			if (startbutton()) {
-				menuItems[menuIndex].Value = knob(7);
-				menuItems[menuIndex].Save();
+				menuItems[menuIndex].value = knob(7);
+				menuItems[menuIndex].save();
 				delay(250);
 			}
 		}

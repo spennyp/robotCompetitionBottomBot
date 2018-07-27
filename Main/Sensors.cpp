@@ -3,8 +3,9 @@
 #include "Sensors.h"
 #include "Globals.h"
 #include <Arduino.h>
+#include "Menu.h"
 
-const int cliffQRDThreshold = 200;
+const int cliffQRDThreshold = 300;
 
 
 bool checkCodeRedSwitch() {
@@ -16,11 +17,11 @@ bool clawIRTriggered() {
 }
 
 bool topBotFoundCliff() {
-	return (analogRead(bottomCliffQRD) > cliffQRDThreshold);
+	return (analogRead(topCliffQRD) > cliffThreshold.value);
 }
 
 bool bottomBotFoundCliff() {
-    return (analogRead(topCliffQRD) > cliffQRDThreshold);
+    return (analogRead(bottomCliffQRD) > cliffThreshold.value);
 }
 
 bool leftPlankInPosition() {
@@ -35,9 +36,12 @@ bool endOfCourse() {
     return digitalRead(topBotFrontTouchSensor);
 }
 
-// TODO: Write this
-bool clawHasObject() {
-    return true;
+bool topHallPosition() {
+    return !digitalRead(topHall);
+}
+
+bool homeHallPosition(int homeHallNumber) {
+    return !digitalRead(homeHallNumber);
 }
 
 

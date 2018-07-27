@@ -14,10 +14,11 @@ class PID {
 	private:
 		uint16_t threshold, i, p, d;
 		int8_t getTapeState();
-		int8_t getEdgeState();
+		int8_t getEdgeState(bool topBot);
 	public:
 		PID(MenuItem pGain, MenuItem dGain, MenuItem iGain, MenuItem PIDThreshold);
-		int16_t getError();
+		int16_t getTopError();
+		int16_t getBottomError();
 		int8_t state, lastState;
 };
 

@@ -20,5 +20,6 @@ extern MenuItem proportionalGain;
 extern MenuItem derivativeGain;
 extern MenuItem integralGain;
 extern MenuItem pidThreshold;
+extern MenuItem cliffThreshold;
 
 #endif

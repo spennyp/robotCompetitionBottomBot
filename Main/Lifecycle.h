@@ -14,7 +14,7 @@ extern void run();
 
 // Helpers
 void reset();
-void runBottomBot();
+void runBottomBot(int numberOfTeddiesGrabbed);
 void runTopBot(int numberOfTeddiesGrabbed);
 void switchToTopBot();
 void deployBottomBridge();
