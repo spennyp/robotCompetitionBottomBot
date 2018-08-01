@@ -17,7 +17,7 @@ MenuItem delayPerDegreeTurn = MenuItem("Delay/degTurn");
 MenuItem alignmentThreshold = MenuItem("align-thresh");
 MenuItem menuItems[] = { motorSpeed, proportionalGain, derivativeGain, pidThreshold, delayPerDegreeTurn, alignmentThreshold };
 
-
+	
 void menu() {
 	LCD.clear(); LCD.home();
 	LCD.print("Entering menu");
