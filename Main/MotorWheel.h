@@ -19,10 +19,10 @@ class MotorWheel {
 		void turnLeft(int angle, int speed = 0, bool backup = true);
 		void turnRight(int angle,  int speed = 0, bool backup = true);
 		void forward(int speed = 0);
-		void reverse();
+		void reverse(int speed = 0);
 		void stop();
 		bool runWithPID;
-		void poll();
+		void poll(int speed = 0);
 };
 
 #endif

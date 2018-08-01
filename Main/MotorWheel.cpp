@@ -3,19 +3,20 @@
 #include "MotorWheel.h"
 #include "Globals.h"
 
-const int defualtTurnSpeed = 150;
+const int defaultTurnSpeed = 150;
 
-MotorWheel::MotorWheel(MenuItem speed, PID pid) : pid(pid) {
+MotorWheel::MotorWheel(MenuItem speed, PID pid) : pid(pid)
+{
 	motorSpeed = speed.value;
 	runWithPID = true;
 }
 
-// Default perapeter of 0, which runs at defualtTurnSpeed
-// Default perapeter of 0, which runs at defualtTurnSpeed
+// Default parameter of 0, which runs at defualtTurnSpeed
+// Default parameter of 0, which runs at defualtTurnSpeed
 void MotorWheel::turnLeft(int angle, int speed, bool backup)
 {
 	runWithPID = false;
-	int turnSpeed = (speed == 0) ? defualtTurnSpeed : speed;
+	int turnSpeed = (speed == 0) ? defaultTurnSpeed : speed;
 	motor.speed(leftMotor, -turnSpeed);
 	if (backup)
 	{
@@ -27,11 +28,11 @@ void MotorWheel::turnLeft(int angle, int speed, bool backup)
 	stop();
 }
 
-// Default perapeter of 0, which runs at defualtTurnSpeed
+// Default parameter of 0, which runs at defualtTurnSpeed
 void MotorWheel::turnRight(int angle, int speed, bool backup)
 {
 	runWithPID = false;
-	int turnSpeed = (speed == 0) ? defualtTurnSpeed : speed;
+	int turnSpeed = (speed == 0) ? defaultTurnSpeed : speed;
 	motor.speed(rightMotor, -turnSpeed);
 	if (backup)
 	{
@@ -44,39 +45,59 @@ void MotorWheel::turnRight(int angle, int speed, bool backup)
 }
 
 // Default perapeter of 0, which runs motorSpeed from the menu
-void MotorWheel::forward(int speed) {
+void MotorWheel::forward(int speed)
+{
 	runWithPID = false;
-	if(speed == 0) {
+	if (speed == 0)
+	{
 		motor.speed(leftMotor, motorSpeed);
 		motor.speed(rightMotor, motorSpeed);
-	} else {
+	}
+	else
+	{
 		motor.speed(leftMotor, speed);
 		motor.speed(rightMotor, speed);
 	}
 }
 
-void MotorWheel::reverse() {
+void MotorWheel::reverse(int speed)
+{
 	runWithPID = false;
-	motor.speed(leftMotor, -motorSpeed);
-	motor.speed(rightMotor, -motorSpeed);
+	if (speed == 0)
+	{
+		motor.speed(leftMotor, -motorSpeed);
+		motor.speed(rightMotor, -motorSpeed);
+	}
+	else
+	{
+		motor.speed(leftMotor, -speed);
+		motor.speed(rightMotor, -speed);
+	}
 }
 
-void MotorWheel::stop() {
+void MotorWheel::stop()
+{
 	runWithPID = false;
 	motor.stop_all();
 }
 
-
 // Lifecycle
 
-void MotorWheel::poll() {
-	if(runWithPID) {
+void MotorWheel::poll(int speed)
+{
+	if (runWithPID)
+	{
 		int err = pid.getError();
-
 		// when err < 0 turns right. when err > 0 turns left
-		motor.speed(leftMotor, motorSpeed - err);
-		motor.speed(rightMotor, motorSpeed + err);
-	} 
+		if (!speed)
+		{
+			motor.speed(leftMotor, motorSpeed - err);
+			motor.speed(rightMotor, motorSpeed + err);
+		}
+		else
+		{
+			motor.speed(leftMotor, speed - err);
+			motor.speed(rightMotor, speed + err);
+		}
+	}
 }
-
-
