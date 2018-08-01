@@ -36,6 +36,8 @@ void run() {
 		prevLoopStartTime = millis();
 
 		// TODO: Add run code
+		motorWheel.poll();
+		
 
 		// TODO: Remove this for competition
 		if (stopbutton()) {
