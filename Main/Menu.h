@@ -21,6 +21,6 @@ extern MenuItem derivativeGain;
 extern MenuItem pidThreshold;
 extern MenuItem cliffThreshold;
 extern MenuItem delayPerDegreeTurn;
-extern MenuItem winchSpeed;
+extern MenuItem alignmentThreshold;
 
 #endif

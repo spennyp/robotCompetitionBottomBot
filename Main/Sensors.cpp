@@ -5,27 +5,27 @@
 #include <Arduino.h>
 #include "Menu.h"
 
-bool clawIRTriggered() {
-	return digitalRead(clawIR);
+bool clawTriggered() {
+	return digitalRead(stopPin);
 }
 
 bool foundCliff() {
-	return (analogRead(cliffQRD) > cliffThreshold.value);
+	return (analogRead(leftCliffQRD) > cliffThreshold.value);
 }
 
-bool frontTouchSensorTriggered() {
-    return digitalRead(frontTouchSensor);
-}
-
-bool topHallTriggered() {
-    return !digitalRead(topHall);
-}
-
-bool bottomHallTriggered() {
-    return !digitalRead(bottomHall);
+bool bridgeAligned() {
+    return (analogRead(rightBridgeQRD) < alignmentThreshold.value && analogRead(leftBridgeQRD) < alignmentThreshold.value);
 }
 
 
+bool leftBridgeAligned() {
+    return (analogRead(leftBridgeQRD) < alignmentThreshold.value);
+}
+
+
+bool rightBridgeAligned() {
+    return (analogRead(rightBridgeQRD) < alignmentThreshold.value);
+}
 
 
 

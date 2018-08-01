@@ -4,26 +4,17 @@
 #include "Globals.h"
 #include "Sensors.h"
 #include "MotorWheel.h"
-#include "Claw.h"
 #include "Test.h"
 
-Claw claw;
 MotorWheel motorWheel(motorSpeed, PID(proportionalGain, derivativeGain, pidThreshold));
 
 const int bridgeDropDelay = 2000; // [ms]
 
 // Reset constants
-const int bottomBridgeServoResetPosition = 90;
-const int topBridgeLowerServoResetPosition = 0;
-const int topBridgeUpperServoResetPosition = 90;
-const int leftDumpServoResetPosition = 160;
-const int rightDumpServoResetPosition = 10;
+const int bridgeServoResetPosition = 90;
 
 // Deploy constants
 const int bottomBridgeServoDeployPosition = 150;
-const int topBridgeLowerServoDeployPosition = 90;
-const int topBridgeUpperServoDeployPosition = 0;
-const int dumpDeployAngle = 150;
 
 int cliffCount = 0;
 
@@ -45,6 +36,8 @@ void run() {
 		prevLoopStartTime = millis();
 
 		// TODO: Add run code
+		motorWheel.poll();
+		
 
 		// TODO: Remove this for competition
 		if (stopbutton()) {
@@ -73,10 +66,7 @@ void deployBridge() {
 	// delay(bridgeDropDelay);
 }
 
-void activateDumper() {
-	// setServo(storageDumpServoLeft, leftDumpServoResetPosition - dumpDeployAngle, false);
-	// setServo(storageDumpServoRight, rightDumpServoResetPosition + dumpDeployAngle, false);
-}
+
 
 // If all else fails
 void codeRed() {
