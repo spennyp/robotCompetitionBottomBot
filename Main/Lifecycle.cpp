@@ -14,7 +14,7 @@ const int bridgeDropDelay = 2000; // [ms]
 const int bridgeServoResetPosition = 90;
 
 // Deploy constants
-const int bottomBridgeServoDeployPosition = 150;
+const int bridgeServoDeployPosition = 150;
 
 int cliffCount = 0;
 

@@ -32,11 +32,40 @@ void systemDiagnostics() {
 }
 
 void testFullSystem() {
-
+    LCD.clear(); LCD.print("Testing PID "); LCD.setCursor(0, 1); LCD.print("QRD's");
+    delay(1000);
+    while (!startbutton()){
+        testPIDQRDSensors();
+        delay(100);
+    }
+    LCD.clear(); LCD.print("Testing Cliff "); LCD.setCursor(0, 1); LCD.print("QRD's");
+    delay(1000);
+    while (!startbutton()){
+        testCliffQRDSensors();
+        delay(100);
+    }
+    LCD.clear(); LCD.print("Testing Servo");
+    delay(1000);
+    while (!startbutton()){
+        testServo();
+        delay(100);
+    }
 }
 
-void testQRDSensors() {
+void testPidQRD() {
+	LCD.clear(); LCD.print("FarQRD: "); LCD.print(analogRead(farTapeFollowQRD));
+	LCD.setCursor(0,1); LCD.print("NearQRD: "); LCD.print(analogRead(nearTapeFollowQRD));
+}
 
+void testCliffQRD() {
+	LCD.clear(); LCD.print("CliffQRD: "); LCD.print(analogRead(cliffQRD));
+}
+
+void testServo() {
+    LCD.clear(); LCD.print("Let Go"); 
+    bridgeServo.write(bridgeServoDeployPosition);
+    LCD.clear(); LCD.print("Hold");
+    bridgeServo.write(bridgeServoResetPosition);
 }
 
 
