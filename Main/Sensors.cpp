@@ -10,21 +10,21 @@ bool clawTriggered() {
 }
 
 bool foundCliff() {
-	return (analogRead(cliffQRD) > cliffThreshold.value);
+	return (analogRead(leftCliffQRD) > cliffThreshold.value);
 }
 
 bool bridgeAligned() {
-    return (analogRead(rightBridgeQRD) < alignmentThreshold && analogRead(leftBridgeQRD) < alignmentThreshold);
+    return (analogRead(rightBridgeQRD) < alignmentThreshold.value && analogRead(leftBridgeQRD) < alignmentThreshold.value);
 }
 
 
 bool leftBridgeAligned() {
-    return (analogRead(leftBridgeQRD) < alignmentThreshold);
+    return (analogRead(leftBridgeQRD) < alignmentThreshold.value);
 }
 
 
 bool rightBridgeAligned() {
-    return (analogRead(rightBridgeQRD) < alignmentThreshold);
+    return (analogRead(rightBridgeQRD) < alignmentThreshold.value);
 }
 
 

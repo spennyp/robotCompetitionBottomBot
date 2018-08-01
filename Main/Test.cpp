@@ -14,7 +14,7 @@ void systemDiagnostics() {
         Serial.println("");
         Serial.print("Far QRD: "); Serial.println(analogRead(farTapeFollowQRD));
         Serial.print("Near QRD: "); Serial.println(analogRead(nearTapeFollowQRD));
-        Serial.print("Cliff QRD: "); Serial.println(analogRead(cliffQRD));
+        Serial.print("Left Cliff QRD: "); Serial.println(analogRead(leftCliffQRD));
 		Serial.print("L Bridge QRD: "); Serial.println(analogRead(leftBridgeQRD));
 		Serial.print("R Bridge QRD: "); Serial.println(analogRead(rightBridgeQRD));
 

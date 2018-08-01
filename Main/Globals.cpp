@@ -28,10 +28,10 @@ int detachPin = 7;
 // Analog Pins
 int farTapeFollowQRD = 2;
 int nearTapeFollowQRD = 1;
-int rightcliffQRD = 0;
+int rightcliffQRD = 5;
 int rightBridgeQRD = 4;
 int leftBridgeQRD = 3;
-int leftCliffQRD = 5;
+int leftCliffQRD = 0;
 
 // Helpers
 DigitalPinAndValue::DigitalPinAndValue(int pinNum, DigitalState _state) {
