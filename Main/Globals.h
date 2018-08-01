@@ -33,40 +33,24 @@ extern TINAH::BufferedLCD LCD;
 extern motorClass motor;
 extern int leftMotor;
 extern int rightMotor;
-extern int winchMotor;
+
 
 
 // Servos
-class ServoOutput {
-    public:
-        ServoOutput(TINAH::Servo servo, DigitalState digitalState1, DigitalState digitalState2);
-        ServoOutput();
-        TINAH::Servo servo;
-        DigitalPinAndValue digitalControl1;
-        DigitalPinAndValue digitalControl2;
-        int lastAngle;
-};
-void setServo(ServoOutput servoInfo, int angle, bool sweep = false);
-extern ServoOutput leftStorageDumpServo;
-extern ServoOutput rightStorageDumpServo;
-extern ServoOutput rightBridgeServo;
-extern ServoOutput leftBridgeServo;
-extern ServoOutput clawDumpServo;
-extern ServoOutput clawGrabServo;
-extern ServoOutput ejectServo;
-extern ServoOutput bottomBridgeServo;
+extern int bridgeServo;
 
 
 // Digital pins
-extern int topHall;
-extern int bottomHall;
-extern int frontTouchSensor;
+extern int stopPin;
+extern int detachPin;
 
 
 // Analog pins
 extern int farTapeFollowQRD;
 extern int nearTapeFollowQRD;
-extern int cliffQRD;
-extern int clawIR;
+extern int leftCliffQRD;
+extern int rightCliffQRD;
+extern int rightBridgeQRD;
+extern int leftBridgeQRD;
 
 #endif

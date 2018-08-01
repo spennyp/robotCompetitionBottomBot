@@ -15,11 +15,7 @@ extern void run();
 // Helpers
 void reset();
 void deployBridge();
-void activateDumper();
-void bottomBotPlankCheck();
+void bottomBotAlignmentCheck();
 void codeRed();
-
-void testDump();
-void testClaw();
 
 #endif

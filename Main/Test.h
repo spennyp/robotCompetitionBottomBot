@@ -12,8 +12,6 @@
 extern void systemDiagnostics();
 extern void testFullSystem();
 
-extern void testDump();
-extern void testClaw();
 extern void testTouch();
 extern void testPid();
 extern void testBridge();

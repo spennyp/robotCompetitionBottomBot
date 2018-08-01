@@ -9,10 +9,10 @@
 	#include "WProgram.h"
 #endif
 
-extern bool clawIRTriggered();
+extern bool clawTriggered();
 extern bool foundCliff();
-extern bool frontTouchSensorTriggered();
-extern bool topHallTriggered();
-extern bool bottomHallTriggered();
+extern bool bridgeAligned();
+extern bool leftBridgeAligned();
+extern bool rightBridgeAligned();
 
 #endif
