@@ -22,22 +22,22 @@ void setup() {
 
 void loop() {
 	LCD.clear(); LCD.home();
-	LCD.print("Start -> Run");
+	LCD.print("Start -> Run Menu");
 	LCD.setCursor(0, 1);
-	LCD.print("Stop -> Menu");
+	LCD.print("Stop -> Config Menu");
 	delay(100);
 
 	if (stopbutton()) {
 		delay(100);
 		if (stopbutton()) {
-			menu();
+			configurationMenu();
 		}
 	}
 	else if (startbutton()) {
 		delay(100);
 		if (startbutton()) {
 			LCD.clear();
-			run();
+			runMenu();
 		}
 	}
 }
