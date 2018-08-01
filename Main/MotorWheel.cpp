@@ -11,28 +11,34 @@ MotorWheel::MotorWheel(MenuItem speed, PID pid) : pid(pid) {
 }
 
 // Default perapeter of 0, which runs at defualtTurnSpeed
-void MotorWheel::turnLeft(int angle, int speed, bool backup) {
+// Default perapeter of 0, which runs at defualtTurnSpeed
+void MotorWheel::turnLeft(int angle, int speed, bool backup)
+{
 	runWithPID = false;
 	int turnSpeed = (speed == 0) ? defualtTurnSpeed : speed;
-	motor.speed(leftMotor, -150);
-	if(backup) {
-		motor.speed(rightMotor, -150);
+	motor.speed(leftMotor, -turnSpeed);
+	if (backup)
+	{
+		motor.speed(rightMotor, -turnSpeed);
 		delay(400);
 	}
-	motor.speed(rightMotor, 150);
+	motor.speed(rightMotor, turnSpeed);
 	delay(angle * delayPerDegreeTurn.value);
 	stop();
 }
 
 // Default perapeter of 0, which runs at defualtTurnSpeed
-void MotorWheel::turnRight(int angle, int speed, bool backup) {
+void MotorWheel::turnRight(int angle, int speed, bool backup)
+{
 	runWithPID = false;
-	motor.speed(rightMotor, -150);
-	if(backup) {
-		motor.speed(leftMotor, -150);
+	int turnSpeed = (speed == 0) ? defualtTurnSpeed : speed;
+	motor.speed(rightMotor, -turnSpeed);
+	if (backup)
+	{
+		motor.speed(leftMotor, -turnSpeed);
 		delay(400);
 	}
-	motor.speed(leftMotor, 150);
+	motor.speed(leftMotor, turnSpeed);
 	delay(angle * delayPerDegreeTurn.value);
 	stop();
 }
