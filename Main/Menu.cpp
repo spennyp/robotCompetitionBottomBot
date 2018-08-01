@@ -2,6 +2,8 @@
 
 #include "Menu.h"
 #include "Globals.h"
+#include "Lifecycle.h"
+#include "Test.h"
 #include <LiquidCrystal.h>
 #include <avr/EEPROM.h>
 
@@ -15,19 +17,20 @@ MenuItem pidThreshold = MenuItem("PID-thresh");
 MenuItem cliffThreshold = MenuItem("Cliff-thresh");
 MenuItem delayPerDegreeTurn = MenuItem("Delay/degTurn");
 MenuItem alignmentThreshold = MenuItem("align-thresh");
-MenuItem menuItems[] = { motorSpeed, proportionalGain, derivativeGain, pidThreshold, delayPerDegreeTurn, alignmentThreshold };
+MenuItem configurationMenuItems[] = {motorSpeed, proportionalGain, derivativeGain, pidThreshold, delayPerDegreeTurn, alignmentThreshold};
 
-	
-void menu() {
+void configurationMenu() {
 	LCD.clear(); LCD.home();
-	LCD.print("Entering menu");
+	LCD.print("Entering");
+	LCD.setCursor(0, 1);
+	LCD.print("Config menu");
 	delay(500);
 
 	while (true) {
 		/* Show MenuItem value and knob value */
 		int menuIndex = knob(6) * (MenuItem::menuItemCount) / 1024;
 		LCD.clear(); LCD.home();
-		LCD.print(menuItems[menuIndex].name); LCD.print(" "); LCD.print(menuItems[menuIndex].value);
+		LCD.print(configurationMenuItems[menuIndex].name); LCD.print(" "); LCD.print(configurationMenuItems[menuIndex].value);
 		LCD.setCursor(0, 1);
 		LCD.print("Set to "); LCD.print(knob(7)); LCD.print("?");
 		delay(100);
@@ -36,8 +39,8 @@ void menu() {
 		if (startbutton()) {
 			delay(100);
 			if (startbutton()) {
-				menuItems[menuIndex].value = knob(7);
-				menuItems[menuIndex].save();
+				configurationMenuItems[menuIndex].value = knob(7);
+				configurationMenuItems[menuIndex].save();
 				delay(250);
 			}
 		}
@@ -48,6 +51,71 @@ void menu() {
 			if (stopbutton()) {
 				LCD.clear(); LCD.home();
 				LCD.print("Leaving menu");
+				delay(500);
+				return;
+			}
+		}
+	}
+}
+
+// Run menu
+
+String runBot = "Run Bot";
+String runSystemTest = "Run System Test";
+String runDiagonistics = "Run Diagonistics";
+String runMenuItems[] = {runBot, runSystemTest, runDiagonistics};
+
+void runMenu()
+{
+	LCD.clear();
+	LCD.print("Entering");
+	LCD.setCursor(0, 1);
+	LCD.print("Run menu");
+	delay(500);
+
+	while (true)
+	{
+		/* Show MenuItem value and knob value */
+		int menuIndex = knob(6) * sizeof(runMenuItems) / sizeof(runMenuItems[0]) / 1024;
+		LCD.clear();
+		LCD.home();
+		LCD.print(runMenuItems[menuIndex]);
+		LCD.setCursor(0, 1);
+		LCD.print("select -> start");
+		delay(100);
+
+		/* Press start button to save the new value */
+		if (startbutton())
+		{
+			delay(100);
+			if (startbutton())
+			{
+				String menuSelection = runMenuItems[menuIndex];
+				if (menuSelection == runBot)
+				{
+					run();
+				}
+				else if (menuSelection == runSystemTest)
+				{
+					testFullSystem();
+				}
+				else
+				{
+					systemDiagnostics();
+				}
+				return;
+			}
+		}
+
+		/* Press stop button to exit menu */
+		if (stopbutton())
+		{
+			delay(100);
+			if (stopbutton())
+			{
+				LCD.clear();
+				LCD.home();
+				LCD.print("Going home");
 				delay(500);
 				return;
 			}

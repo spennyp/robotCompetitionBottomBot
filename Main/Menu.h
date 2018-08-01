@@ -11,8 +11,9 @@
 	#include "WProgram.h"
 #endif
 
-extern void menu();
-extern MenuItem menuItems[];
+extern void configurationMenu();
+extern void runMenu();
+extern MenuItem configurationMenuItems[];
 
 // Add menu items here
 extern MenuItem motorSpeed; 
