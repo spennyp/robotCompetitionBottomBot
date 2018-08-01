@@ -22,7 +22,7 @@ void setup() {
 
 void loop() {
 	LCD.clear(); LCD.home();
-	LCD.print("Start -> Run PID");
+	LCD.print("Start -> Run");
 	LCD.setCursor(0, 1);
 	LCD.print("Stop -> Menu");
 	delay(100);
@@ -37,7 +37,6 @@ void loop() {
 		delay(100);
 		if (startbutton()) {
 			LCD.clear();
-			LCD.print("Running");
 			run();
 		}
 	}

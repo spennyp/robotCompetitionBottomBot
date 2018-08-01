@@ -8,13 +8,14 @@
 uint16_t MenuItem::menuItemCount = 0;
 
 // Add Menu items here and in .h
-MenuItem speed = MenuItem("Speed");
+MenuItem motorSpeed = MenuItem("Speed");
 MenuItem proportionalGain = MenuItem("P-gain");
 MenuItem derivativeGain = MenuItem("D-gain");
-MenuItem integralGain = MenuItem("I-gain");
 MenuItem pidThreshold = MenuItem("PID-thresh");
 MenuItem cliffThreshold = MenuItem("Cliff-thresh");
-MenuItem menuItems[] = { speed, proportionalGain, derivativeGain, integralGain, pidThreshold };
+MenuItem delayPerDegreeTurn = MenuItem("Delay/degTurn");
+MenuItem winchSpeed = MenuItem("winchSpeed");
+MenuItem menuItems[] = { motorSpeed, proportionalGain, derivativeGain, pidThreshold, delayPerDegreeTurn, winchSpeed };
 
 void menu() {
 	LCD.clear(); LCD.home();

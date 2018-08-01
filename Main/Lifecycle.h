@@ -14,13 +14,12 @@ extern void run();
 
 // Helpers
 void reset();
-void runBottomBot(int numberOfTeddiesGrabbed);
-void runTopBot(int numberOfTeddiesGrabbed);
-void switchToTopBot();
-void deployBottomBridge();
-void deployTopBridge();
+void deployBridge();
 void activateDumper();
 void bottomBotPlankCheck();
 void codeRed();
+
+void testDump();
+void testClaw();
 
 #endif

@@ -15,11 +15,12 @@ extern void menu();
 extern MenuItem menuItems[];
 
 // Add menu items here
-extern MenuItem speed; 
+extern MenuItem motorSpeed; 
 extern MenuItem proportionalGain;
 extern MenuItem derivativeGain;
-extern MenuItem integralGain;
 extern MenuItem pidThreshold;
 extern MenuItem cliffThreshold;
+extern MenuItem delayPerDegreeTurn;
+extern MenuItem winchSpeed;
 
 #endif

@@ -9,14 +9,10 @@
 	#include "WProgram.h"
 #endif
 
-extern bool checkCodeRedSwitch();
 extern bool clawIRTriggered();
-extern bool topBotFoundCliff();
-extern bool bottomBotFoundCliff();
-extern bool leftPlankInPosition();
-extern bool rightPlankInPosition();
-extern bool endOfCourse();
-extern bool topHallPosition();
-extern bool homeHallPosition(int homeHallNumber);
+extern bool foundCliff();
+extern bool frontTouchSensorTriggered();
+extern bool topHallTriggered();
+extern bool bottomHallTriggered();
 
 #endif
