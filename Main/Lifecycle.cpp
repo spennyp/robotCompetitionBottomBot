@@ -15,7 +15,7 @@ void run() {
 	reset();
 	unsigned long prevLoopStartTime = millis();
 	int numberOfTeddiesGrabbed = 0;
-	
+
 
 	LCD.clear(); LCD.print("Running"); LCD.setCursor(0, 1); LCD.print("Stop to return");
 
