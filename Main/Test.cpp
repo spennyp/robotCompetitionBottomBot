@@ -1,7 +1,9 @@
 // Test.cpp
 
-#include "Sensors.h"
+#include "Test.h"
+#include "Helpers.h"
 #include "Globals.h"
+#include "Helpers.h"
 #include <Arduino.h>
 #include "Menu.h"
 
@@ -35,13 +37,13 @@ void testFullSystem() {
     LCD.clear(); LCD.print("Testing PID "); LCD.setCursor(0, 1); LCD.print("QRD's");
     delay(1000);
     while (!startbutton()){
-        testPIDQRDSensors();
+        testPIDQRD();
         delay(100);
     }
     LCD.clear(); LCD.print("Testing Cliff "); LCD.setCursor(0, 1); LCD.print("QRD's");
     delay(1000);
     while (!startbutton()){
-        testCliffQRDSensors();
+        testCliffQRD();
         delay(100);
     }
     LCD.clear(); LCD.print("Testing Servo");
@@ -52,20 +54,20 @@ void testFullSystem() {
     }
 }
 
-void testPidQRD() {
+void testPIDQRD() {
 	LCD.clear(); LCD.print("FarQRD: "); LCD.print(analogRead(farTapeFollowQRD));
 	LCD.setCursor(0,1); LCD.print("NearQRD: "); LCD.print(analogRead(nearTapeFollowQRD));
 }
 
 void testCliffQRD() {
-	LCD.clear(); LCD.print("CliffQRD: "); LCD.print(analogRead(cliffQRD));
+	LCD.clear(); LCD.print("CliffQRD: "); LCD.print(analogRead(leftCliffQRD));
 }
 
 void testServo() {
     LCD.clear(); LCD.print("Let Go"); 
-    bridgeServo.write(bridgeServoDeployPosition);
+    deployBridge();
     LCD.clear(); LCD.print("Hold");
-    bridgeServo.write(bridgeServoResetPosition);
+    resetBridge();
 }
 
 

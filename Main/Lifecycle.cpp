@@ -2,19 +2,11 @@
 
 #include "Lifecycle.h"
 #include "Globals.h"
-#include "Sensors.h"
+#include "Helpers.h"
 #include "MotorWheel.h"
 #include "Test.h"
 
 MotorWheel motorWheel(motorSpeed, PID(proportionalGain, derivativeGain, pidThreshold));
-
-const int bridgeDropDelay = 2000; // [ms]
-
-// Reset constants
-const int bridgeServoResetPosition = 90;
-
-// Deploy constants
-const int bridgeServoDeployPosition = 150;
 
 int cliffCount = 0;
 
@@ -23,7 +15,6 @@ void run() {
 	reset();
 	unsigned long prevLoopStartTime = millis();
 	int numberOfTeddiesGrabbed = 0;
-	systemDiagnostics();
 
 
 	LCD.clear(); LCD.print("Running"); LCD.setCursor(0, 1); LCD.print("Stop to return");
@@ -56,14 +47,6 @@ void run() {
 
 void reset() {
 	// TODO: add reset code
-}
-
-// TODO: Fix this
-void deployBridge() {
-	// setServo(topBridgeLowerServo, topBridgeLowerServoDeployPosition);
-	// delay(bridgeDropDelay / 2);
-	// setServo(topBridgeUpperServo, topBridgeUpperServoDeployPosition);
-	// delay(bridgeDropDelay);
 }
 
 
