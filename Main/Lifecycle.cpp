@@ -25,7 +25,7 @@ void run()
 {
 	reset();
 	unsigned long prevLoopStartTime = millis();
-	// systemDiagnostics();
+	systemDiagnostics();
 
 	LCD.clear();
 	LCD.print("Running");
@@ -69,11 +69,13 @@ void run()
 		LCD.clear(); LCD.home();
 		LCD.print("C: "); LCD.print(analogRead(0));
 		LCD.setCursor(0,1); LCD.print("N: "); LCD.print(analogRead(1)); LCD.print("F: "); LCD.print(analogRead(2));
-		// checkForEwok();
+		checkForEwok();
 		checkCliffs();
 		while(!alignBridgeQRDS()){
 			delay(10);
 		}
+
+		//Exits run() loop for good
 		if(bridgeQRDSAligned){
 			motorWheel.stop();
 			break;
@@ -110,7 +112,7 @@ void checkForEwok()
 	if (digitalRead(stopPin))
 	{
 		motorWheel.stop();
-		delay(250); //delay is so that there is a quarantee that the ewok is or is not in the claw
+		delay(250); //delay is so that there is a guarantee that the ewok is or is not in the claw
 		//if the ewok is not in the claw then the bot reverses slowly until the ewok is in the claw again
 		while (!digitalRead(stopPin))
 		{
@@ -193,6 +195,7 @@ bool alignCliffQRDS()
 	if (isLeftCliffAligned && isRightCliffAligned)
 	{
 		motorWheel.stop();
+		//may need to reverse a small bit
 		return true;
 	}
 	else if (isLeftCliffAligned && !isRightCliffAligned)
@@ -210,12 +213,17 @@ bool alignCliffQRDS()
 	else if (!isLeftCliffAligned && !isRightCliffAligned)
 	{
 		motorWheel.stop();
+		//may need to drive forward a small bit
 		return true;
 	}
 }
 
 void deployBridge()
 {
+	//Tells the top bot to close the claw so that the bridge can be dropped
+	digitalWrite(detachPin, HIGH);
+	delay(1000);
+	digitalWrite(detachPin, LOW);
 	RCServo0.write(bottomBridgeServoDeployPosition);
 }
 
