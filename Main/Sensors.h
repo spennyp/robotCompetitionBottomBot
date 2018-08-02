@@ -10,7 +10,8 @@
 #endif
 
 extern bool clawTriggered();
-extern bool foundCliff();
+extern bool foundLeftCliff();
+extern bool foundRightCliff();
 extern bool bridgeAligned();
 extern bool leftBridgeAligned();
 extern bool rightBridgeAligned();

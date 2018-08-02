@@ -18,13 +18,14 @@ const int bridgeServoResetPosition = 90;
 const int bottomBridgeServoDeployPosition = 150;
 
 int cliffCount = 0;
+bool bridgeQRDSAligned = false;
 
 // API
 void run()
 {
 	reset();
 	unsigned long prevLoopStartTime = millis();
-	systemDiagnostics();
+	// systemDiagnostics();
 
 	LCD.clear();
 	LCD.print("Running");
@@ -39,17 +40,44 @@ void run()
 		} //Regulate speed of the main loop to 10 ms
 		prevLoopStartTime = millis();
 
+		// LCD.clear();
+		// LCD.home();
+		// LCD.print("L: ");
+		// LCD.print(analogRead(leftCliffQRD));
+		// LCD.print(" R: ");
+		// LCD.print(analogRead(rightCliffQRD));
+
+		// while (!alignCliffQRDS())
+		// {
+		// 	LCD.clear();
+		// 	LCD.home();
+		// 	LCD.print("L: ");
+		// 	LCD.print(analogRead(leftCliffQRD));
+		// 	LCD.print(" R: ");
+		// 	LCD.print(analogRead(rightCliffQRD));
+		// 	delay(10);
+		// }
+
 		if (cliffCount == 0)
 		{
 			motorWheel.poll();
 		}
 		else
 		{
-			motorWheel.poll(100);
+			motorWheel.poll(125);
 		}
-		checkForEwok();
+		LCD.clear(); LCD.home();
+		LCD.print("C: "); LCD.print(analogRead(0));
+		LCD.setCursor(0,1); LCD.print("N: "); LCD.print(analogRead(1)); LCD.print("F: "); LCD.print(analogRead(2));
+		// checkForEwok();
 		checkCliffs();
-		alignBridgeQRDS();
+		while(!alignBridgeQRDS()){
+			delay(10);
+		}
+		if(bridgeQRDSAligned){
+			motorWheel.stop();
+			break;
+		}
 
 		// TODO: Remove this for competition
 		if (stopbutton())
@@ -67,25 +95,31 @@ void run()
 
 // Helpers
 
+//Resets any vars and servo positions
 void reset()
 {
-	// TODO: add reset code
+	cliffCount = 0;
 	motorWheel.runWithPID = true;
-	// setServo(bottomServo, bottomBridgeServoResetPosition)
+	bridgeQRDSAligned = false;
+	RCServo0.write(bridgeServoResetPosition);
 }
 
 //Stops bot when an ewok is found. It then reverses a little bit and stops again when perfectly aligned.
-void checkForEwok(){
-	if(digitalRead(stopPin)){
+void checkForEwok()
+{
+	if (digitalRead(stopPin))
+	{
 		motorWheel.stop();
 		delay(250); //delay is so that there is a quarantee that the ewok is or is not in the claw
 		//if the ewok is not in the claw then the bot reverses slowly until the ewok is in the claw again
-		while(!digitalRead(stopPin)){
+		while (!digitalRead(stopPin))
+		{
 			motorWheel.reverse(50);
 			delay(10);
 		}
 		//once the ewok is in the claw again the bot is stopped until the top bot has fully reset
-		while(digitalRead(stopPin)){
+		while (digitalRead(stopPin))
+		{
 			motorWheel.stop();
 			delay(10);
 		}
@@ -96,50 +130,93 @@ void checkForEwok(){
 //Performs maneuvers necessary to navigate cliffs.
 void checkCliffs()
 {
-	bool foundCliffs = foundCliff();
+	bool foundCliffs = foundLeftCliff();
 	if (foundCliffs && cliffCount == 0)
 	{
 		motorWheel.stop();
 		motorWheel.reverse(100);
 		delay(50);
-		motorWheel.turnLeft(90, 100, false);
+		motorWheel.turnLeft(90, 110, false);
 		motorWheel.runWithPID = true;
 		cliffCount++;
 	}
 	else if (foundCliffs && cliffCount == 1)
 	{
-		motorWheel.reverse(100);
-		delay(20);
-		deployBridge();
-		cliffCount++;
-		delay(bridgeDropDelay);
-		motorWheel.forward(150);
-		delay(bridgeDriveDelay);
-		motorWheel.runWithPID = true;
+		motorWheel.stop();
+		delay(1000);
+		while (!alignCliffQRDS())
+		{
+			delay(10);
+		}
+		// motorWheel.reverse(100);
+		// delay(20);
+		// deployBridge();
+		// cliffCount++;
+		// delay(bridgeDropDelay);
+		// motorWheel.forward(150);
+		// delay(bridgeDriveDelay);
+		// motorWheel.runWithPID = true;
 	}
 }
 
-void alignBridgeQRDS(){
+bool alignBridgeQRDS()
+{
 	bool isLeftBridgeAligned = leftBridgeAligned();
 	bool isRightBridgeAligned = rightBridgeAligned();
-	if(cliffCount == 2 && isLeftBridgeAligned && isRightBridgeAligned){
+	if (cliffCount == 2 && isLeftBridgeAligned && isRightBridgeAligned)
+	{
 		motorWheel.stop();
 		digitalWrite(detachPin, HIGH);
-		while(true){
-			delay(5000);
-		}
-	} else if(cliffCount == 2 && isLeftBridgeAligned && !isRightBridgeAligned){
+		bridgeQRDSAligned = true;
+		return true;
+	}
+	else if (cliffCount == 2 && isLeftBridgeAligned && !isRightBridgeAligned)
+	{
 		motor.speed(leftMotor, -75);
 		motor.speed(rightMotor, 100);
-	} else if(cliffCount == 2 && !isLeftBridgeAligned && isRightBridgeAligned){
+		return false;
+	}
+	else if (cliffCount == 2 && !isLeftBridgeAligned && isRightBridgeAligned)
+	{
 		motor.speed(leftMotor, 100);
 		motor.speed(rightMotor, -75);
+		return false;
+	}
+	//breaks out of while loop
+	return true;
+}
+
+bool alignCliffQRDS()
+{
+	bool isLeftCliffAligned = foundLeftCliff();
+	bool isRightCliffAligned = foundRightCliff();
+	if (isLeftCliffAligned && isRightCliffAligned)
+	{
+		motorWheel.stop();
+		return true;
+	}
+	else if (isLeftCliffAligned && !isRightCliffAligned)
+	{
+		motor.speed(leftMotor, -100);
+		motor.speed(rightMotor, 0);
+		return false;
+	}
+	else if (!isLeftCliffAligned && isRightCliffAligned)
+	{
+		motor.speed(leftMotor, 0);
+		motor.speed(rightMotor, -100);
+		return false;
+	} 
+	else if (!isLeftCliffAligned && !isRightCliffAligned)
+	{
+		motorWheel.stop();
+		return true;
 	}
 }
 
 void deployBridge()
 {
-	// setServo(bottomServo, bottomBridgeServoDeployPosition);
+	RCServo0.write(bottomBridgeServoDeployPosition);
 }
 
 // If all else fails

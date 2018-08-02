@@ -28,7 +28,7 @@ int detachPin = 7;
 // Analog Pins
 int farTapeFollowQRD = 2;
 int nearTapeFollowQRD = 1;
-int rightcliffQRD = 5;
+int rightCliffQRD = 5;
 int rightBridgeQRD = 4;
 int leftBridgeQRD = 3;
 int leftCliffQRD = 0;

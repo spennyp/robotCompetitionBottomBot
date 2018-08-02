@@ -37,7 +37,7 @@ void loop() {
 		delay(100);
 		if (startbutton()) {
 			LCD.clear();
-			runMenu();
+			run();
 		}
 	}
 }

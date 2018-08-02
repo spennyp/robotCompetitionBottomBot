@@ -9,8 +9,12 @@ bool clawTriggered() {
 	return digitalRead(stopPin);
 }
 
-bool foundCliff() {
+bool foundLeftCliff() {
 	return (analogRead(leftCliffQRD) > cliffThreshold.value);
+}
+
+bool foundRightCliff() {
+	return (analogRead(rightCliffQRD) > cliffThreshold.value);
 }
 
 bool bridgeAligned() {
