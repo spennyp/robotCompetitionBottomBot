@@ -16,7 +16,6 @@ void run()
 {
 	reset();
 	unsigned long prevLoopStartTime = millis();
-	systemDiagnostics();
 
 	LCD.clear();
 	LCD.print("Running");
