@@ -17,8 +17,6 @@ void reset();
 void bottomBotAlignmentCheck();
 void codeRed();
 void checkForEwok();
-void checkCliffs();
-void alignBridgeQRDS();
 
 
 #endif

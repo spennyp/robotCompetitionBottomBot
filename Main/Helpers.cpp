@@ -1,20 +1,23 @@
 // Helpers.cpp
 
-#include "Helpers.h" 
+#include "Helpers.h"
 #include "Globals.h"
 
+const int bridgeDropDelay = 2000;
+const int bridgeDriveDelay = 3000;
+
+int cliffCount = 0;
+
 // Sensors
-bool clawTriggered(){
+bool clawTriggered()
+{
     return digitalRead(stopPin);
 }
-bool foundCliff(){
+bool foundCliff()
+{
     return (analogRead(leftCliffQRD) > cliffThreshold.value);
 }
 
-    
-
-
-// RunHelpers
 // Reset constants
 const int bridgeServoResetPosition = 90;
 
@@ -26,28 +29,29 @@ void deployBridge()
     bottomServo.write(bridgeServoDeployPosition);
 }
 
-void resetBridge() {
+void resetBridge()
+{
     bottomServo.write(bridgeServoResetPosition);
 }
 
-
 //Sensors
-bool bridgeAligned() {
+bool bridgeAligned()
+{
     return (analogRead(rightBridgeQRD) < alignmentThreshold.value && analogRead(leftBridgeQRD) < alignmentThreshold.value);
 }
 
-
-bool leftBridgeAligned() {
+bool leftBridgeAligned()
+{
     return (analogRead(leftBridgeQRD) < alignmentThreshold.value);
 }
 
-
-bool rightBridgeAligned() {
+bool rightBridgeAligned()
+{
     return (analogRead(rightBridgeQRD) < alignmentThreshold.value);
 }
 
 //Performs maneuvers necessary to navigate cliffs.
-void checkCliffs()
+void checkCliffs(MotorWheel motorWheel)
 {
     bool foundCliffs = foundCliff();
     if (foundCliffs && cliffCount == 0)
@@ -70,9 +74,10 @@ void checkCliffs()
         delay(bridgeDriveDelay);
         motorWheel.runWithPID = true;
     }
+    return;
 }
 
-void alignBridgeQRDS()
+void alignBridgeQRDS(MotorWheel motorWheel)
 {
     bool isLeftBridgeAligned = leftBridgeAligned();
     bool isRightBridgeAligned = rightBridgeAligned();

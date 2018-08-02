@@ -8,23 +8,22 @@
 #else 
 #include "WProgram.h" 
 #endif
+#include "MotorWheel.h"
 
 
 // Sensors
+extern int cliffCount;
 extern bool clawTriggered();
 extern bool foundCliff();
 
 
 // RunHelpers
-extern void activateDumper();
-extern void resetDumper();
 extern void deployBridge();
 extern void resetBridge();
 extern bool bridgeAligned();
 extern bool leftBridgeAligned();
 extern bool rightBridgeAligned();
-extern bool checkCliffs();
-extern bool alignBridgeQRDS();
-
+extern void checkCliffs(MotorWheel motorWheel);
+extern void alignBridgeQRDS(MotorWheel motorWheel);
 
 #endif

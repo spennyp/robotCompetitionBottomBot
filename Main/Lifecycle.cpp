@@ -8,7 +8,6 @@
 
 MotorWheel motorWheel(motorSpeed, PID(proportionalGain, derivativeGain, pidThreshold));
 
-int cliffCount = 0;
 
 // API
 void run()
@@ -45,8 +44,8 @@ void run()
 			motorWheel.poll(100);
 		}
 		checkForEwok();
-		checkCliffs();
-		alignBridgeQRDS();
+		checkCliffs(motorWheel);
+		alignBridgeQRDS(motorWheel);
 
 		// TODO: Remove this for competition
 		if (stopbutton())
@@ -64,8 +63,7 @@ void run()
 
 // Helpers
 
-void reset()
-{
+void reset(){
 	// TODO: add reset code
 	motorWheel.runWithPID = true;
 	// setServo(bottomServo, bottomBridgeServoResetPosition)
@@ -90,54 +88,6 @@ void checkForEwok(){
 	}
 }
 
-//Performs maneuvers necessary to navigate cliffs.
-void checkCliffs()
-{
-	bool foundCliffs = foundCliff();
-	if (foundCliffs && cliffCount == 0)
-	{
-		motorWheel.stop();
-		motorWheel.reverse(100);
-		delay(50);
-		motorWheel.turnLeft(90, 100, false);
-		motorWheel.runWithPID = true;
-		cliffCount++;
-	}
-	else if (foundCliffs && cliffCount == 1)
-	{
-		motorWheel.reverse(100);
-		delay(20);
-		deployBridge();
-		cliffCount++;
-		delay(bridgeDropDelay);
-		motorWheel.forward(150);
-		delay(bridgeDriveDelay);
-		motorWheel.runWithPID = true;
-	}
-}
-
-void alignBridgeQRDS(){
-	bool isLeftBridgeAligned = leftBridgeAligned();
-	bool isRightBridgeAligned = rightBridgeAligned();
-	if(cliffCount == 2 && isLeftBridgeAligned && isRightBridgeAligned){
-		motorWheel.stop();
-		digitalWrite(detachPin, HIGH);
-		while(true){
-			delay(5000);
-		}
-	} else if(cliffCount == 2 && isLeftBridgeAligned && !isRightBridgeAligned){
-		motor.speed(leftMotor, -75);
-		motor.speed(rightMotor, 100);
-	} else if(cliffCount == 2 && !isLeftBridgeAligned && isRightBridgeAligned){
-		motor.speed(leftMotor, 100);
-		motor.speed(rightMotor, -75);
-	}
-}
-
-void deployBridge()
-{
-	// setServo(bottomServo, bottomBridgeServoDeployPosition);
-}
 
 // If all else fails
 void codeRed()
