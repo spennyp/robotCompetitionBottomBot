@@ -13,14 +13,14 @@ void systemDiagnostics() {
     LCD.setCursor(0,1); LCD.print("Exit -> HoldStop");
     while(true) {
         Serial.println("");
-        Serial.println("");
-        Serial.print("Far QRD: "); Serial.println(analogRead(farTapeFollowQRD));
-        Serial.print("Near QRD: "); Serial.println(analogRead(nearTapeFollowQRD));
-        Serial.print("Left Cliff QRD: "); Serial.println(analogRead(leftCliffQRD));
-		Serial.print("L Bridge QRD: "); Serial.println(analogRead(leftBridgeQRD));
-		Serial.print("R Bridge QRD: "); Serial.println(analogRead(rightBridgeQRD));
+        Serial.print("Far QRD: "); Serial.print(analogRead(farTapeFollowQRD)); Serial.print("\t");
+        Serial.print("Near QRD: "); Serial.print(analogRead(nearTapeFollowQRD)); Serial.print("\t");
+        Serial.print("Left Cliff QRD: "); Serial.print(analogRead(leftCliffQRD)); Serial.print("\t");
+        Serial.print("Right Cliff QRD: "); Serial.print(analogRead(rightCliffQRD)); Serial.print("\t");
+		Serial.print("L Bridge QRD: "); Serial.print(analogRead(leftBridgeQRD)); Serial.print("\t");
+		Serial.print("R Bridge QRD: "); Serial.print(analogRead(rightBridgeQRD)); Serial.print("\t");
 
-        delay(4000);
+        delay(500);
 
         if (stopbutton()) {
 			delay(100);
@@ -60,7 +60,8 @@ void testPIDQRD() {
 }
 
 void testCliffQRD() {
-	LCD.clear(); LCD.print("CliffQRD: "); LCD.print(analogRead(leftCliffQRD));
+	LCD.clear(); LCD.print("LCliffQRD: "); LCD.print(analogRead(leftCliffQRD));
+    LCD.setCursor(0,1); LCD.print("RCliffQRD: "); LCD.print(analogRead(rightCliffQRD));
 }
 
 void testServo() {
