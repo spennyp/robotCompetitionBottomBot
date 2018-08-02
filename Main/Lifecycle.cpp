@@ -8,14 +8,6 @@
 
 MotorWheel motorWheel(motorSpeed, PID(proportionalGain, derivativeGain, pidThreshold));
 
-const int bridgeDropDelay = 2000; // [ms]
-const int bridgeDriveDelay = 3000;
-
-// Reset constants
-const int bridgeServoResetPosition = 90;
-
-// Deploy constants
-const int bottomBridgeServoDeployPosition = 150;
 
 int cliffCount = 0;
 
