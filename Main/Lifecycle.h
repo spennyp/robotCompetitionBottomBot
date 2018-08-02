@@ -14,7 +14,6 @@ extern void run();
 
 // Helpers
 void reset();
-void deployBridge();
 void bottomBotAlignmentCheck();
 void codeRed();
 void checkForEwok();

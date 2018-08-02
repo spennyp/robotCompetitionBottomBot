@@ -6,6 +6,7 @@
 #include <TINAH_Servo.h>
 #include <TINAH_BufferedLCD.h>
 #include <phys253.h>
+#include <TINAH_Pins.h>
 #include "Menu.h"
 
 #if defined(ARDUINO) && ARDUINO >= 100
@@ -37,8 +38,7 @@ extern int rightMotor;
 
 
 // Servos
-extern int bridgeServo;
-
+extern TINAH::Servo bottomServo;
 
 // Digital pins
 extern int stopPin;
