@@ -7,36 +7,45 @@
 #include "Test.h"
 
 MotorWheel motorWheel(motorSpeed, PID(proportionalGain, derivativeGain, pidThreshold));
+int stopCount;
 
-const int bridgeServoResetPosition = 90;
 // API
 void run() {
 	reset();
 	unsigned long prevLoopStartTime = millis();
-	int cliffCount = 0;
+	cliffCount = 0;
+	stopCount = 0;
 
 	LCD.clear(); LCD.print("Running"); LCD.setCursor(0, 1); LCD.print("Stop to return");
 	delay(2000);
+	//Waits for the top bot to give the signal to go
+	while(stopPin) {}
 
 	while (true) {
 		while (millis() - prevLoopStartTime < 10) { } //Regulate speed of the main loop to 10 ms
 		prevLoopStartTime = millis();
 
 		motorWheel.poll();
+		checkForEwok();
 
 		if(foundLeftCliff()) {
 			motorWheel.stop();
 			if(cliffCount == 0) {
 				delay(1000);
 				motorWheel.turnLeft(130, 100, false);
-				delay(5000);
+				delay(1000);
 			} else if(cliffCount == 1) {
 				LCD.clear(); LCD.print("Now deploy");
-				delay(10000); 
+				deployBridge();
+				delay(bridgeDropDelay); 
 			}
-			cliffCount ++;
+			cliffCount++;
 			motorWheel.runWithPID = true;
 		}
+		if(stopCount == 2) {
+			motorWheel.turnLeft(30,100,false);
+		}
+
 
 
 		// if (cliffCount == 0) {
@@ -79,31 +88,38 @@ void run() {
 void reset()
 {
 	cliffCount = 0;
+	stopCount = 0;
 	motorWheel.runWithPID = true;
 	bridgeQRDSAligned = false;
-	RCServo0.write(bridgeServoResetPosition);
+	resetBridge();
+
 }
 
 //Stops bot when an ewok is found. It then reverses a little bit and stops again when perfectly aligned.
 void checkForEwok()
 {
-	if (digitalRead(stopPin))
+	if (!digitalRead(stopPin))
 	{
 		motorWheel.stop();
-		delay(250); //delay is so that there is a guarantee that the ewok is or is not in the claw
+		delay(1000); //delay is so that there is a guarantee that the ewok is or is not in the claw
 		//if the ewok is not in the claw then the bot reverses slowly until the ewok is in the claw again
-		while (!digitalRead(stopPin))
+		// while(!digitalRead(stopPin)){
+		// 	delay(10);
+		// }
+		while (digitalRead(stopPin))
 		{
 			motorWheel.reverse(50);
 			delay(10);
 		}
 		//once the ewok is in the claw again the bot is stopped until the top bot has fully reset
-		while (digitalRead(stopPin))
+		while (!digitalRead(stopPin))
 		{
 			motorWheel.stop();
 			delay(10);
 		}
 		delay(250);
+		stopCount++;
+		motorWheel.runWithPID = true;
 	}
 }
 

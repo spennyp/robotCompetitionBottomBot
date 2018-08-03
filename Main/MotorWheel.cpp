@@ -27,6 +27,21 @@ void MotorWheel::turnLeft(int angle, int speed, bool backup)
 	stop();
 }
 
+void MotorWheel::turnOne(int angle, int speed, bool backup)
+{
+	runWithPID = false;
+	int turnSpeed = (speed == 0) ? defaultTurnSpeed : speed;
+	motor.speed(leftMotor, -turnSpeed + 50);
+	if (backup)
+	{
+		motor.speed(rightMotor, -turnSpeed);
+		delay(200);
+	}
+	motor.speed(rightMotor, turnSpeed + 20);
+	delay(angle * delayPerDegreeTurn.value);
+	stop();
+}
+
 // Default parameter of 0, which runs at defualtTurnSpeed
 void MotorWheel::turnRight(int angle, int speed, bool backup)
 {

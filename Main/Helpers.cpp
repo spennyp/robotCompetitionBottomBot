@@ -4,14 +4,12 @@
 #include "Globals.h"
 
 // Delays
-const int bridgeDropDelay = 2000;
-const int bridgeDriveDelay = 3000;
+extern int bridgeDropDelay = 2000;
 
-// Reset constants
-const int bridgeServoResetPosition = 90;
+extern int bridgeServoResetPosition = 0;
 
 // Deploy constants
-const int bridgeServoDeployPosition = 180;
+extern int bridgeServoDeployPosition = 90;
 
 int cliffCount = 0;
 bool bridgeQRDSAligned = false;

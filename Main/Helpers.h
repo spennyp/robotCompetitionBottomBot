@@ -10,6 +10,13 @@
 #endif
 #include "MotorWheel.h"
 
+extern int bridgeDropDelay;
+
+// Reset constants
+extern int bridgeServoResetPosition;
+
+// Deploy constants
+extern int bridgeServoDeployPosition;
 
 // Sensors
 extern int cliffCount;
