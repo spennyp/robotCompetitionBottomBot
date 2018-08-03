@@ -27,16 +27,11 @@ void MotorWheel::turnLeft(int angle, int speed, bool backup)
 	stop();
 }
 
-void MotorWheel::turnOne(int angle, int speed, bool backup)
+void MotorWheel::turnOne(int angle, int speed)
 {
 	runWithPID = false;
 	int turnSpeed = (speed == 0) ? defaultTurnSpeed : speed;
-	motor.speed(leftMotor, -turnSpeed + 50);
-	if (backup)
-	{
-		motor.speed(rightMotor, -turnSpeed);
-		delay(200);
-	}
+	motor.speed(leftMotor, -turnSpeed + 20);
 	motor.speed(rightMotor, turnSpeed + 20);
 	delay(angle * delayPerDegreeTurn.value);
 	stop();

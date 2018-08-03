@@ -29,25 +29,31 @@ void run() {
 		motorWheel.poll();
 		checkForEwok();
 
-		if(foundLeftCliff()) {
-			motorWheel.stop();
-			if(cliffCount == 0) {
-				delay(1000);
-				motorWheel.turnOne(130, 100, false);
-				delay(1000);
-			} else if(cliffCount == 1) {
-				LCD.clear(); LCD.print("Now deploy");
-				deployBridge();
-				delay(bridgeDropDelay); 
-			}
-			cliffCount++;
-			motorWheel.runWithPID = true;
-		}
-		if(stopCount == 2) {
+		// if(foundLeftCliff() && stopCount > 0) {
+		// 	motorWheel.stop();
+		// 	if(cliffCount == 0) {
+		// 		delay(1000);
+		// 		// motorWheel.reverse(75);
+		// 		// delay(100);
+		// 		motorWheel.turnOne(90, 100); // for turns per deg of 8 or 9. no weights on top
+		// 		delay(1000);
+		// 		motor.speed(leftMotor, -100);
+		// 		delay(100);
+		// 		motorWheel.stop();
+		// 	} else if(cliffCount == 1) {
+		// 		LCD.clear(); LCD.print("Now deploy");
+		// 		deployBridge();
+		// 		delay(bridgeDropDelay); 
+		// 	}
+		// 	cliffCount++;
+		// 	motorWheel.runWithPID = true;
+		// }
+		if(stopCount == 1) { //change back to 2 after testing
 			motorWheel.turnLeft(10,100,false);
 			motorWheel.forward(100);
 			delay(500);
 			motorWheel.stop();
+			stopCount++; //Incremented so that this statement is never called again
 		}
 
 
