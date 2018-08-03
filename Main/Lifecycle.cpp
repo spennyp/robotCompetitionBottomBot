@@ -17,7 +17,6 @@ void run()
 
 	LCD.clear(); LCD.print("Running"); LCD.setCursor(0, 1); LCD.print("Stop to return");
 
-	reset();
 	delay(2000);
 
 	LCD.clear();
@@ -50,7 +49,6 @@ void run()
 		// 	LCD.print(analogRead(rightCliffQRD));
 		// 	delay(10);
 		// }
-
 		if (cliffCount == 0)
 		{
 			motorWheel.poll();
@@ -60,9 +58,9 @@ void run()
 			motorWheel.poll(125);
 		}
 		LCD.clear(); LCD.home();
-		LCD.print("C: "); LCD.print(analogRead(0));
-		LCD.setCursor(0,1); LCD.print("N: "); LCD.print(analogRead(1)); LCD.print("F: "); LCD.print(analogRead(2));
-		checkForEwok();
+		LCD.print("LC: "); LCD.print(leftCliffQRD); LCD.print("RC: "); LCD.print(rightCliffQRD);
+		LCD.setCursor(0,1); LCD.print("N: "); LCD.print(nearTapeFollowQRD); LCD.print("F: "); LCD.print(farTapeFollowQRD);
+		// checkForEwok();
 		checkCliffs(motorWheel);
 		while(!alignBridgeQRDS(motorWheel)){
 			delay(10);

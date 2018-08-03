@@ -6,6 +6,12 @@
 const int bridgeDropDelay = 2000;
 const int bridgeDriveDelay = 3000;
 
+// Reset constants
+const int bridgeServoResetPosition = 90;
+
+// Deploy constants
+const int bridgeServoDeployPosition = 180;
+
 int cliffCount = 0;
 bool bridgeQRDSAligned = false;
 
@@ -22,12 +28,6 @@ bool foundRightCliff()
 {
     return (analogRead(rightCliffQRD) > cliffThreshold.value);
 }
-
-// Reset constants
-const int bridgeServoResetPosition = 90;
-
-// Deploy constants
-const int bridgeServoDeployPosition = 150;
 
 void resetBridge()
 {
@@ -147,5 +147,5 @@ void deployBridge()
 	digitalWrite(detachPin, HIGH);
 	delay(1000);
 	digitalWrite(detachPin, LOW);
-	RCServo0.write(bridgeServoDeployPosition);
+	bottomServo.write(bridgeServoDeployPosition);
 }
