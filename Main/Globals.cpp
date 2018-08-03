@@ -1,7 +1,6 @@
 // Globals.cpp
 
 #include "Globals.h"
-#include <TINAH_Pins.h>
 
 
 // Constants
@@ -17,13 +16,11 @@ int rightMotor = 1;
 
 
 // Servos
-TINAH::Servo servo0(TINAH::pins::servo[0]);
+TINAH::Servo bottomServo(TINAH::pins::servo[0]);
 
-int bottomServo = 0;
-
-// Digital pins
-int stopPin = 8;
-int detachPin = 7;
+    // Digital pins
+    int stopPin = 8;
+    int detachPin = 7;
 
 // Analog Pins
 int farTapeFollowQRD = 2;
