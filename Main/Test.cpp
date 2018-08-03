@@ -43,6 +43,11 @@ void testFullSystem() {
         testCliffQRD();
         delay(100);
     }
+    LCD.clear(); LCD.print("Testing Bridge "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
+    while (!startbutton()) {
+        testBridgeQRD();
+        delay(100);
+    }
     LCD.clear(); LCD.print("Testing Servo");
     delay(1000);
     while (!startbutton()){
@@ -66,10 +71,16 @@ void testCliffQRD() {
     LCD.setCursor(0,1); LCD.print("RCliffQRD: "); LCD.print(analogRead(rightCliffQRD));
 }
 
+void testBridgeQRD() {
+    LCD.clear(); LCD.print("LBridgeQRD: "); LCD.print(analogRead(leftBridgeQRD));
+    LCD.setCursor(0,1); LCD.print("RBridgeQRD: "); LCD.print(analogRead(rightBridgeQRD));
+}
+
 void testServo() {
     LCD.clear(); LCD.print("Let Go"); 
     deployBridge();
     delay(1000);
+    if(startbutton()) { return; }
     LCD.clear(); LCD.print("Hold");
     resetBridge();
     delay(1000);

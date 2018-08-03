@@ -32,7 +32,7 @@ void run() {
 			motorWheel.stop();
 			if(cliffCount == 0) {
 				delay(1000);
-				motorWheel.turnLeft(130, 100, false);
+				motorWheel.turnOne(130, 100, false);
 				delay(1000);
 			} else if(cliffCount == 1) {
 				LCD.clear(); LCD.print("Now deploy");
@@ -43,7 +43,10 @@ void run() {
 			motorWheel.runWithPID = true;
 		}
 		if(stopCount == 2) {
-			motorWheel.turnLeft(30,100,false);
+			motorWheel.turnLeft(10,100,false);
+			motorWheel.forward(100);
+			delay(500);
+			motorWheel.stop();
 		}
 
 
