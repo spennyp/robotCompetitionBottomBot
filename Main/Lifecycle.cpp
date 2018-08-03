@@ -10,67 +10,54 @@ MotorWheel motorWheel(motorSpeed, PID(proportionalGain, derivativeGain, pidThres
 
 const int bridgeServoResetPosition = 90;
 // API
-void run()
-{
+void run() {
 	reset();
 	unsigned long prevLoopStartTime = millis();
+	int cliffCount = 0;
 
 	LCD.clear(); LCD.print("Running"); LCD.setCursor(0, 1); LCD.print("Stop to return");
-
 	delay(2000);
 
-	LCD.clear();
-	LCD.print("Running");
-	LCD.setCursor(0, 1);
-	LCD.print("Stop to return");
-	delay(1000);
-
-	while (true)
-	{
-		while (millis() - prevLoopStartTime < 10)
-		{
-		} //Regulate speed of the main loop to 10 ms
+	while (true) {
+		while (millis() - prevLoopStartTime < 10) { } //Regulate speed of the main loop to 10 ms
 		prevLoopStartTime = millis();
 
-		// LCD.clear();
-		// LCD.home();
-		// LCD.print("L: ");
-		// LCD.print(analogRead(leftCliffQRD));
-		// LCD.print(" R: ");
-		// LCD.print(analogRead(rightCliffQRD));
+		motorWheel.poll();
 
-		// while (!alignCliffQRDS())
+		if(foundLeftCliff()) {
+			motorWheel.stop();
+			if(cliffCount == 0) {
+				delay(1000);
+				motorWheel.turnLeft(130, 100, false);
+				delay(5000);
+			} else if(cliffCount == 1) {
+				LCD.clear(); LCD.print("Now deploy");
+				delay(10000); 
+			}
+			cliffCount ++;
+			motorWheel.runWithPID = true;
+		}
+
+
+		// if (cliffCount == 0) {
+		// 	motorWheel.poll();
+		// }
+		// else
 		// {
-		// 	LCD.clear();
-		// 	LCD.home();
-		// 	LCD.print("L: ");
-		// 	LCD.print(analogRead(leftCliffQRD));
-		// 	LCD.print(" R: ");
-		// 	LCD.print(analogRead(rightCliffQRD));
+		// 	motorWheel.poll(125);
+		// }
+		// LCD.clear(); LCD.home();
+		// // checkForEwok();
+		// checkCliffs(motorWheel);
+		// while(!alignBridgeQRDS(motorWheel)){
 		// 	delay(10);
 		// }
-		if (cliffCount == 0)
-		{
-			motorWheel.poll();
-		}
-		else
-		{
-			motorWheel.poll(125);
-		}
-		LCD.clear(); LCD.home();
-		LCD.print("LC: "); LCD.print(leftCliffQRD); LCD.print("RC: "); LCD.print(rightCliffQRD);
-		LCD.setCursor(0,1); LCD.print("N: "); LCD.print(nearTapeFollowQRD); LCD.print("F: "); LCD.print(farTapeFollowQRD);
-		// checkForEwok();
-		checkCliffs(motorWheel);
-		while(!alignBridgeQRDS(motorWheel)){
-			delay(10);
-		}
 
-		//Exits run() loop for good
-		if(bridgeQRDSAligned){
-			motorWheel.stop();
-			break;
-		}
+		// //Exits run() loop for good
+		// if(bridgeQRDSAligned){
+		// 	motorWheel.stop();
+		// 	break;
+		// }
 
 		// TODO: Remove this for competition
 		if (stopbutton())

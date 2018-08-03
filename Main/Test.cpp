@@ -1,24 +1,23 @@
 // Test.cpp
 
 #include "Test.h"
-#include "Helpers.h"
 #include "Globals.h"
 #include "Helpers.h"
-#include <Arduino.h>
-#include "Menu.h"
+#include "MotorWheel.h"
 
+MotorWheel testMotorWheel(motorSpeed, PID(proportionalGain, derivativeGain, pidThreshold));
 
 void systemDiagnostics() {
     LCD.clear(); LCD.print("Diagnostics"); 
     LCD.setCursor(0,1); LCD.print("Exit -> HoldStop");
     while(true) {
         Serial.println("");
-        Serial.print("Far QRD: "); Serial.print(analogRead(farTapeFollowQRD)); Serial.print("  ");
-        Serial.print("Near QRD: "); Serial.print(analogRead(nearTapeFollowQRD)); Serial.print("  ");
-        Serial.print("Left Cliff QRD: "); Serial.print(analogRead(leftCliffQRD)); Serial.print("  ");
-        Serial.print("Right Cliff QRD: "); Serial.print(analogRead(rightCliffQRD)); Serial.print("  ");
-		Serial.print("L Bridge QRD: "); Serial.print(analogRead(leftBridgeQRD)); Serial.print("  ");
-		Serial.print("R Bridge QRD: "); Serial.print(analogRead(rightBridgeQRD)); Serial.print("  ");
+        Serial.print("Far QRD: "); Serial.println(analogRead(farTapeFollowQRD));
+        Serial.print("Near QRD: "); Serial.println(analogRead(nearTapeFollowQRD)); 
+        Serial.print("Left Cliff QRD: "); Serial.println(analogRead(leftCliffQRD)); 
+        Serial.print("Right Cliff QRD: "); Serial.println(analogRead(rightCliffQRD)); 
+		Serial.print("L Bridge QRD: "); Serial.println(analogRead(leftBridgeQRD)); 
+		Serial.print("R Bridge QRD: "); Serial.println(analogRead(rightBridgeQRD));
 
         delay(500);
 
@@ -34,14 +33,12 @@ void systemDiagnostics() {
 }
 
 void testFullSystem() {
-    LCD.clear(); LCD.print("Testing PID "); LCD.setCursor(0, 1); LCD.print("QRD's");
-    delay(1000);
+    LCD.clear(); LCD.print("Testing PID "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
     while (!startbutton()){
         testPIDQRD();
         delay(100);
     }
-    LCD.clear(); LCD.print("Testing Cliff "); LCD.setCursor(0, 1); LCD.print("QRD's");
-    delay(1000);
+    LCD.clear(); LCD.print("Testing Cliff "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
     while (!startbutton()){
         testCliffQRD();
         delay(100);
@@ -52,6 +49,11 @@ void testFullSystem() {
         testServo();
         delay(100);
     }
+
+    LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); delay(1000);
+	while(!startbutton()) {
+		testTurning();
+	}
 }
 
 void testPIDQRD() {
@@ -72,3 +74,20 @@ void testServo() {
     resetBridge();
     delay(1000);
 }
+
+void testTurning() {
+	testMotorWheel.turnRight(90);
+	delay(1000);
+	if(startbutton()) { return; }
+	testMotorWheel.turnLeft(90);
+	delay(1000);
+	if(startbutton()) { return; }
+	testMotorWheel.turnRight(180);
+	delay(1000);
+	if(startbutton()) { return; }
+	testMotorWheel.turnLeft(180);
+	delay(1000);
+}
+
+
+
