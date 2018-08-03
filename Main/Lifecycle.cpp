@@ -19,7 +19,8 @@ void run() {
 	LCD.clear(); LCD.print("Running"); LCD.setCursor(0, 1); LCD.print("Stop to return");
 	delay(2000);
 	//Waits for the top bot to give the signal to go
-	while(stopPin) {}
+	while(digitalRead(stopPin)) {}
+	delay(1000);
 
 	while (true) {
 		while (millis() - prevLoopStartTime < 10) { } //Regulate speed of the main loop to 10 ms
