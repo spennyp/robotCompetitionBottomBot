@@ -20,7 +20,7 @@ void run() {
 	delay(2000);
 
 	//Waits for the top bot to give the signal to go
-	while(digitalRead(stopPin)) {}
+	while(digitalRead(communicationIn)) {}
 	delay(1000);
 
 	while (true) {
@@ -31,15 +31,15 @@ void run() {
 		checkForEwok();
 
 		if(ewokCount == 1 && !bridgeDeployed) {
+			motorWheel.forward(100); // This left turn needs tuning
+			delay(300);
 			motorWheel.turnLeft(90);
 			delay(1000);
 			motorWheel.forward();
 			while(!foundLeftCliff()) {}
 			motorWheel.stop();
-			delay(1000);
 			deployBridge();
 			bridgeDeployed = true;
-			delay(2000);
 		} 
 
 		if(ewokCount >= 1) {
@@ -73,16 +73,15 @@ void run() {
 void reset() {
 	ewokCount = 0;
 	motorWheel.runWithPID = true;
-	bridgeQRDSAligned = false;
 	resetBridge();
-	digitalWrite(detachPin, HIGH);
+	digitalWrite(communicationOut, HIGH);
 }
 
 //Stops bot when an ewok is found. It then reverses a little bit and stops again when perfectly aligned.
 void checkForEwok() {
-	if (digitalRead(stopPin) == LOW) {
+	if (clawTriggered()) {
 		motorWheel.stop();
-		while(digitalRead(stopPin) == LOW) {}
+		while(clawTriggered()) {}
 		ewokCount++;
 		delay(500);
 	}

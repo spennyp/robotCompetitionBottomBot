@@ -41,8 +41,8 @@ extern int rightMotor;
 extern TINAH::Servo bottomServo;
 
 // Digital pins
-extern int stopPin;
-extern int detachPin;
+extern int communicationIn;
+extern int communicationOut;
 
 
 // Analog pins

@@ -18,7 +18,7 @@ void setup() {
 	pinMode(5, OUTPUT);
 	pinMode(6, OUTPUT);
 	pinMode(7, OUTPUT);
-	digitalWrite(detachPin, HIGH);
+	digitalWrite(communicationOut, HIGH);
 	delay(1000);
 }
 

@@ -19,8 +19,8 @@ int rightMotor = 1;
 TINAH::Servo bottomServo(TINAH::pins::servo[0]);
 
 // Digital pins
-int stopPin = 8;
-int detachPin = 7;
+int communicationIn = 8;
+int communicationOut = 7;
 
 // Analog Pins
 int farTapeFollowQRD = 2;

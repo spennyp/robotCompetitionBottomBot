@@ -18,7 +18,7 @@ bool bridgeQRDSAligned = false;
 // Sensors
 
 bool clawTriggered() {
-    return digitalRead(stopPin);
+    return (digitalRead(communicationIn) == LOW);
 }
 
 bool foundLeftCliff() {
@@ -45,38 +45,36 @@ bool rightBridgeAligned() {
 }
 
 void detatchTopBot() {
-	digitalWrite(detachPin, LOW);
+	digitalWrite(communicationOut, LOW);
 }
 
 
 // Run helpers
 
 void deployBridge() {
-	//Tells the top bot to close the claw so that the bridge can be dropped
-	digitalWrite(detachPin, HIGH);
-	delay(1000);
-	digitalWrite(detachPin, LOW);
+	digitalWrite(communicationOut, LOW); // Tells top bot to raise claw for the bridge
+	delay(2000);
 	bottomServo.write(bridgeServoDeployPosition);
+	delay(2000); // Wait for bridge to deploy
+	digitalWrite(communicationOut, HIGH); // Tells top bot to lower the claw again
+	delay(2000); // Wait for claw to lower
 }
 
 bool alignBridgeQRDS(MotorWheel motorWheel) {
 	bool isLeftBridgeAligned = leftBridgeAligned();
 	bool isRightBridgeAligned = rightBridgeAligned();
 	if(isLeftBridgeAligned && isRightBridgeAligned) {
-		motorWheel.stop();
-		digitalWrite(detachPin, HIGH);
-		bridgeQRDSAligned = true;
 		return true;
 	} else if(isLeftBridgeAligned && !isRightBridgeAligned) {
-		motor.speed(leftMotor, 75);
-		motor.speed(rightMotor, 100);
+		motor.speed(leftMotor, 100);
+		motor.speed(rightMotor, 125);
 		return false;
 	} else if(!isLeftBridgeAligned && isRightBridgeAligned) {
-		motor.speed(leftMotor, 100);
-		motor.speed(rightMotor, 75);
+		motor.speed(leftMotor, 125);
+		motor.speed(rightMotor, 100);
 		return false;
 	} else {
-		motorWheel.forward(100);
+		motorWheel.forward(125);
 		return false;
 	}
 }
