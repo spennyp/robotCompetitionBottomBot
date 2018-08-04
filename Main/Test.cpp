@@ -33,16 +33,16 @@ void systemDiagnostics() {
 }
 
 void testFullSystem() {
-    // LCD.clear(); LCD.print("Testing PID "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
-    // while (!startbutton()){
-    //     testPIDQRD();
-    //     delay(100);
-    // }
-    // LCD.clear(); LCD.print("Testing Cliff "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
-    // while (!startbutton()){
-    //     testCliffQRD();
-    //     delay(100);
-    // }
+    LCD.clear(); LCD.print("Testing PID "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
+    while (!startbutton()){
+        testPIDQRD();
+        delay(100);
+    }
+    LCD.clear(); LCD.print("Testing Cliff "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
+    while (!startbutton()){
+        testCliffQRD();
+        delay(100);
+    }
     // LCD.clear(); LCD.print("Testing Bridge "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
     // while (!startbutton()) {
     //     testBridgeQRD();
