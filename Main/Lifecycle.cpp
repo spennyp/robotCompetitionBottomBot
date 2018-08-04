@@ -19,8 +19,7 @@ void run() {
 	LCD.clear(); LCD.print("Running"); LCD.setCursor(0, 1); LCD.print("Stop to return");
 	delay(2000);
 
-	//Waits for the top bot to give the signal to go
-	while(digitalRead(communicationIn)) {}
+	while(digitalRead(communicationIn)) {} 	// Waits for the top bot to give the signal to go
 	delay(1000);
 
 	while (true) {
