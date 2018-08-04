@@ -80,8 +80,8 @@ void reset() {
 // Stops bot when an ewok is found.
 void checkForEwok() {
 	if(clawTriggered()) {
-		ewokCount++;
 		motorWheel.stop();
+		ewokCount++;
 		if(ewokCount == 1) {
 			digitalWrite(communicationOut, LOW); // Tells the claw to stay raised for the bridge drop
 		}
