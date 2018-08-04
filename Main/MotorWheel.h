@@ -17,7 +17,6 @@ class MotorWheel {
 	public:
 		MotorWheel(MenuItem speed, PID pid);
 		void turnLeft(int angle, int speed = 0, bool backup = true);
-		void turnOne();
 		void turnRight(int angle,  int speed = 0, bool backup = true);
 		void forward(int speed = 0);
 		void reverse(int speed = 0);

@@ -34,10 +34,12 @@ void run() {
 			motorWheel.forward(300); // This left turn needs tuning
 			delay(500);
 			motorWheel.turnLeft(90);
+			motorWheel.stop(); // Should be redundent
 			delay(1000);
 			motorWheel.forward();
 			while(!foundLeftCliff()) {}
 			motorWheel.stop();
+			delay(2000);
 			deployBridge();
 			bridgeDeployed = true;
 		}

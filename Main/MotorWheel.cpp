@@ -12,9 +12,7 @@ MotorWheel::MotorWheel(MenuItem speed, PID pid) : pid(pid)
 }
 
 // Default parameter of 0, which runs at defualtTurnSpeed
-// Default parameter of 0, which runs at defualtTurnSpeed
-void MotorWheel::turnLeft(int angle, int speed, bool backup)
-{
+void MotorWheel::turnLeft(int angle, int speed, bool backup) {
 	runWithPID = false;
 	int turnSpeed = (speed == 0) ? defaultTurnSpeed : speed;
 	motor.speed(leftMotor, -turnSpeed);
@@ -27,21 +25,8 @@ void MotorWheel::turnLeft(int angle, int speed, bool backup)
 	stop();
 }
 
-void MotorWheel::turnOne() {
-	runWithPID = false;
-	int turnSpeed = defaultTurnSpeed;
-	motor.speed(leftMotor, -turnSpeed);
-	motor.speed(rightMotor, -turnSpeed);
-	delay(100);
-	motor.speed(leftMotor, -turnSpeed + 20);
-	motor.speed(rightMotor, turnSpeed + 30);
-	delay(90 * delayPerDegreeTurn.value);
-	stop();
-}
-
 // Default parameter of 0, which runs at defualtTurnSpeed
-void MotorWheel::turnRight(int angle, int speed, bool backup)
-{
+void MotorWheel::turnRight(int angle, int speed, bool backup) {
 	runWithPID = false;
 	int turnSpeed = (speed == 0) ? defaultTurnSpeed : speed;
 	motor.speed(rightMotor, -turnSpeed);
@@ -86,10 +71,10 @@ void MotorWheel::reverse(int speed)
 	}
 }
 
-void MotorWheel::stop()
-{
+void MotorWheel::stop() {
 	runWithPID = false;
-	motor.stop_all();
+	motor.speed(leftMotor, 0);
+	motor.speed(rightMotor, 0);
 }
 
 // Lifecycle

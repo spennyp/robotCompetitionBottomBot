@@ -65,11 +65,6 @@ void testFullSystem() {
 	while(!startbutton()) {
 		testTurning();
 	}
-
-    // LCD.clear(); LCD.print("Turn one"); delay(1000);
-    // while(!startbutton()) {
-	// 	testTurnOne();
-	// }
 }
 
 void testPIDQRD() {
@@ -114,11 +109,6 @@ void testTurning() {
         // if(startbutton()) { return; }
         // testMotorWheel.turnLeft(180);
         // delay(1000);
-}
-
-void testTurnOne() {
-    testMotorWheel.turnOne();
-    delay(2000);
 }
 
 
