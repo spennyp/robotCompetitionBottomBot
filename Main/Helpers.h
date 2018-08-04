@@ -10,11 +10,21 @@
 #endif
 #include "MotorWheel.h"
 
+extern int bridgeDropDelay;
+
+// Reset constants
+extern int bridgeServoResetPosition;
+
+// Deploy constants
+extern int bridgeServoDeployPosition;
 
 // Sensors
 extern int cliffCount;
+extern bool bridgeQRDSAligned;
 extern bool clawTriggered();
-extern bool foundCliff();
+extern bool foundLeftCliff();
+extern bool foundRightCliff();
+extern void detatchTopBot();
 
 
 // RunHelpers
@@ -24,6 +34,7 @@ extern bool bridgeAligned();
 extern bool leftBridgeAligned();
 extern bool rightBridgeAligned();
 extern void checkCliffs(MotorWheel motorWheel);
-extern void alignBridgeQRDS(MotorWheel motorWheel);
+extern bool alignBridgeQRDS(MotorWheel motorWheel);
+extern bool alignCliffQRDS(MotorWheel motorWheel);
 
 #endif

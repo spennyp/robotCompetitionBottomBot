@@ -14,6 +14,10 @@ extern void testFullSystem();
 extern void testServo();
 extern void testPIDQRD();
 extern void testCliffQRD();
+extern void testBridgeQRD();
+extern void testTurning();
+extern void testTurnOne();
+extern void testBridgeAllign();
 
 
 #endif

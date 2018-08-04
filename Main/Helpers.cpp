@@ -3,101 +3,76 @@
 #include "Helpers.h"
 #include "Globals.h"
 
-const int bridgeDropDelay = 2000;
-const int bridgeDriveDelay = 3000;
+// Delays
+extern int bridgeDropDelay = 2000;
 
-int cliffCount = 0;
-
-// Sensors
-bool clawTriggered()
-{
-    return digitalRead(stopPin);
-}
-bool foundCliff()
-{
-    return (analogRead(leftCliffQRD) > cliffThreshold.value);
-}
-
-// Reset constants
-const int bridgeServoResetPosition = 90;
+extern int bridgeServoResetPosition = 0;
 
 // Deploy constants
-const int bridgeServoDeployPosition = 150;
+extern int bridgeServoDeployPosition = 90;
 
-void deployBridge()
-{
-    bottomServo.write(bridgeServoDeployPosition);
+int cliffCount = 0;
+bool bridgeQRDSAligned = false;
+
+
+// Sensors
+
+bool clawTriggered() {
+    return (digitalRead(communicationIn) == LOW);
 }
 
-void resetBridge()
-{
+bool foundLeftCliff() {
+    return (analogRead(leftCliffQRD) > cliffThreshold.value);
+}
+bool foundRightCliff() {
+    return (analogRead(rightCliffQRD) > cliffThreshold.value);
+}
+
+void resetBridge() {
     bottomServo.write(bridgeServoResetPosition);
 }
 
-//Sensors
-bool bridgeAligned()
-{
+bool bridgeAligned() {
     return (analogRead(rightBridgeQRD) < alignmentThreshold.value && analogRead(leftBridgeQRD) < alignmentThreshold.value);
 }
 
-bool leftBridgeAligned()
-{
+bool leftBridgeAligned() {
     return (analogRead(leftBridgeQRD) < alignmentThreshold.value);
 }
 
-bool rightBridgeAligned()
-{
+bool rightBridgeAligned() {
     return (analogRead(rightBridgeQRD) < alignmentThreshold.value);
 }
 
-//Performs maneuvers necessary to navigate cliffs.
-void checkCliffs(MotorWheel motorWheel)
-{
-    bool foundCliffs = foundCliff();
-    if (foundCliffs && cliffCount == 0)
-    {
-        motorWheel.stop();
-        motorWheel.reverse(100);
-        delay(50);
-        motorWheel.turnLeft(90, 100, false);
-        motorWheel.runWithPID = true;
-        cliffCount++;
-    }
-    else if (foundCliffs && cliffCount == 1)
-    {
-        motorWheel.reverse(100);
-        delay(20);
-        deployBridge();
-        cliffCount++;
-        delay(bridgeDropDelay);
-        motorWheel.forward(150);
-        delay(bridgeDriveDelay);
-        motorWheel.runWithPID = true;
-    }
-    return;
+void detatchTopBot() {
+	digitalWrite(communicationOut, LOW);
 }
 
-void alignBridgeQRDS(MotorWheel motorWheel)
-{
-    bool isLeftBridgeAligned = leftBridgeAligned();
-    bool isRightBridgeAligned = rightBridgeAligned();
-    if (cliffCount == 2 && isLeftBridgeAligned && isRightBridgeAligned)
-    {
-        motorWheel.stop();
-        digitalWrite(detachPin, HIGH);
-        while (true)
-        {
-            delay(5000);
-        }
-    }
-    else if (cliffCount == 2 && isLeftBridgeAligned && !isRightBridgeAligned)
-    {
-        motor.speed(leftMotor, -75);
-        motor.speed(rightMotor, 100);
-    }
-    else if (cliffCount == 2 && !isLeftBridgeAligned && isRightBridgeAligned)
-    {
-        motor.speed(leftMotor, 100);
-        motor.speed(rightMotor, -75);
-    }
+
+// Run helpers
+
+void deployBridge() {
+	bottomServo.write(bridgeServoDeployPosition);
+	delay(2000); // Wait for bridge to deploy
+	digitalWrite(communicationOut, HIGH); // Tells top bot to lower the claw again
+	delay(2000); // Wait for claw to lower
+}
+
+bool alignBridgeQRDS(MotorWheel motorWheel) {
+	bool isLeftBridgeAligned = leftBridgeAligned();
+	bool isRightBridgeAligned = rightBridgeAligned();
+	if(isLeftBridgeAligned && isRightBridgeAligned) {
+		return true;
+	} else if(isLeftBridgeAligned && !isRightBridgeAligned) {
+		motor.speed(leftMotor, 100);
+		motor.speed(rightMotor, 125);
+		return false;
+	} else if(!isLeftBridgeAligned && isRightBridgeAligned) {
+		motor.speed(leftMotor, 125);
+		motor.speed(rightMotor, 100);
+		return false;
+	} else {
+		motorWheel.forward(125);
+		return false;
+	}
 }
