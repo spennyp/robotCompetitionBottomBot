@@ -19,7 +19,7 @@ void run() {
 	LCD.clear(); LCD.print("Running"); LCD.setCursor(0, 1); LCD.print("Stop to return");
 	delay(2000);
 
-	while(digitalRead(communicationIn)) {} 	// Waits for the top bot to give the signal to go
+	while(digitalRead(communicationIn) == HIGH) {} 	// Waits for the top bot to give the signal to go
 	delay(1000);
 
 	while (true) {
@@ -29,9 +29,10 @@ void run() {
 		motorWheel.poll();
 		checkForEwok();
 
+		// Bridge deploy
 		if(ewokCount == 1 && !bridgeDeployed) {
-			motorWheel.forward(100); // This left turn needs tuning
-			delay(300);
+			motorWheel.forward(300); // This left turn needs tuning
+			delay(500);
 			motorWheel.turnLeft(90);
 			delay(1000);
 			motorWheel.forward();
@@ -39,7 +40,7 @@ void run() {
 			motorWheel.stop();
 			deployBridge();
 			bridgeDeployed = true;
-		} 
+		}
 
 		if(ewokCount >= 1) {
 			if(alignBridgeQRDS(motorWheel) && ewokCount == 2) {
@@ -51,8 +52,6 @@ void run() {
 				break;
 			}
 		} 
-
-		
 
 		// TODO: Remove this for competition
 		if (stopbutton()) {
@@ -83,6 +82,12 @@ void checkForEwok() {
 		while(clawTriggered()) {}
 		ewokCount++;
 		delay(500);
+
+		// Drives for a few sec to insure alignBridgeQRDS does not trigger true
+		if(ewokCount == 2) {
+			motorWheel.forward(); 
+			delay(5000);
+		}
 	}
 }
 
