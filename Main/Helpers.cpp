@@ -44,78 +44,12 @@ bool rightBridgeAligned() {
     return (analogRead(rightBridgeQRD) < alignmentThreshold.value);
 }
 
+void detatchTopBot() {
+	digitalWrite(detachPin, LOW);
+}
+
 
 // Run helpers
-
-//Performs maneuvers necessary to navigate cliffs.
-// void checkCliffs(MotorWheel motorWheel) {
-// 	bool foundCliffs = foundLeftCliff();
-// 	if (foundCliffs && cliffCount == 0) {
-// 		motorWheel.stop();
-// 		motorWheel.reverse(100);
-// 		delay(50);
-// 		motorWheel.turnLeft(90, 110, false);
-// 		motorWheel.runWithPID = true;
-// 		cliffCount++;
-// 	} else if (foundCliffs && cliffCount == 1) {
-// 		motorWheel.stop();
-// 		delay(1000);
-// 		while (!alignCliffQRDS(motorWheel)) {
-// 			delay(10);
-// 		}
-// 		// motorWheel.reverse(100);
-// 		// delay(20);
-// 		// deployBridge();
-// 		// cliffCount++;
-// 		// delay(bridgeDropDelay);
-// 		// motorWheel.forward(150);
-// 		// delay(bridgeDriveDelay);
-// 		// motorWheel.runWithPID = true;
-// 	}
-// }
-
-bool alignBridgeQRDS(MotorWheel motorWheel) {
-	bool isLeftBridgeAligned = leftBridgeAligned();
-	bool isRightBridgeAligned = rightBridgeAligned();
-	if(cliffCount == 2 && isLeftBridgeAligned && isRightBridgeAligned) {
-		motorWheel.stop();
-		digitalWrite(detachPin, HIGH);
-		bridgeQRDSAligned = true;
-		return true;
-	} else if(cliffCount == 2 && isLeftBridgeAligned && !isRightBridgeAligned) {
-		motor.speed(leftMotor, -75);
-		motor.speed(rightMotor, 100);
-		return false;
-	} else if(cliffCount == 2 && !isLeftBridgeAligned && isRightBridgeAligned) {
-		motor.speed(leftMotor, 100);
-		motor.speed(rightMotor, -75);
-		return false;
-	}
-	return true;
-}
-
-bool alignCliffQRDS(MotorWheel motorWheel) {
-	bool isLeftCliffAligned = foundLeftCliff();
-	bool isRightCliffAligned = foundRightCliff();
-	if(isLeftCliffAligned && isRightCliffAligned) {
-		motorWheel.stop();
-		//may need to reverse a small bit
-		return true;
-	} else if (isLeftCliffAligned && !isRightCliffAligned) {
-		motor.speed(leftMotor, -50);
-		motor.speed(rightMotor, 0);
-		return false;
-	} else if (!isLeftCliffAligned && isRightCliffAligned) {
-		motor.speed(leftMotor, 0);
-		motor.speed(rightMotor, -50);
-		return false;
-	} else if (!isLeftCliffAligned && !isRightCliffAligned) {
-		motorWheel.stop();
-		//may need to drive forward a small bit
-		return false;
-	} 
-    return false;
-}
 
 void deployBridge() {
 	//Tells the top bot to close the claw so that the bridge can be dropped
@@ -123,4 +57,26 @@ void deployBridge() {
 	delay(1000);
 	digitalWrite(detachPin, LOW);
 	bottomServo.write(bridgeServoDeployPosition);
+}
+
+bool alignBridgeQRDS(MotorWheel motorWheel) {
+	bool isLeftBridgeAligned = leftBridgeAligned();
+	bool isRightBridgeAligned = rightBridgeAligned();
+	if(isLeftBridgeAligned && isRightBridgeAligned) {
+		motorWheel.stop();
+		digitalWrite(detachPin, HIGH);
+		bridgeQRDSAligned = true;
+		return true;
+	} else if(isLeftBridgeAligned && !isRightBridgeAligned) {
+		motor.speed(leftMotor, 75);
+		motor.speed(rightMotor, 100);
+		return false;
+	} else if(!isLeftBridgeAligned && isRightBridgeAligned) {
+		motor.speed(leftMotor, 100);
+		motor.speed(rightMotor, 75);
+		return false;
+	} else {
+		motorWheel.forward(100);
+		return false;
+	}
 }

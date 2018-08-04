@@ -24,6 +24,7 @@ extern bool bridgeQRDSAligned;
 extern bool clawTriggered();
 extern bool foundLeftCliff();
 extern bool foundRightCliff();
+extern void detatchTopBot();
 
 
 // RunHelpers

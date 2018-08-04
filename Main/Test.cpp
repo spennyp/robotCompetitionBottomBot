@@ -33,32 +33,42 @@ void systemDiagnostics() {
 }
 
 void testFullSystem() {
-    LCD.clear(); LCD.print("Testing PID "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
-    while (!startbutton()){
-        testPIDQRD();
-        delay(100);
-    }
-    LCD.clear(); LCD.print("Testing Cliff "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
-    while (!startbutton()){
-        testCliffQRD();
-        delay(100);
-    }
-    LCD.clear(); LCD.print("Testing Bridge "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
-    while (!startbutton()) {
-        testBridgeQRD();
-        delay(100);
-    }
-    LCD.clear(); LCD.print("Testing Servo");
-    delay(1000);
-    while (!startbutton()){
-        testServo();
-        delay(100);
+    // LCD.clear(); LCD.print("Testing PID "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
+    // while (!startbutton()){
+    //     testPIDQRD();
+    //     delay(100);
+    // }
+    // LCD.clear(); LCD.print("Testing Cliff "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
+    // while (!startbutton()){
+    //     testCliffQRD();
+    //     delay(100);
+    // }
+    // LCD.clear(); LCD.print("Testing Bridge "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
+    // while (!startbutton()) {
+    //     testBridgeQRD();
+    //     delay(100);
+    // }
+    // LCD.clear(); LCD.print("Testing Servo");
+    // delay(1000);
+    // while (!startbutton()){
+    //     testServo();
+    //     delay(100);
+    // }
+
+    LCD.clear(); LCD.print("Test QRD align"); delay(1000);
+    while(!startbutton()) {
+        testBridgeAllign();
     }
 
-    LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); delay(1000);
-	while(!startbutton()) {
-		testTurning();
-	}
+    // LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); delay(1000);
+	// while(!startbutton()) {
+	// 	testTurning();
+	// }
+
+    // LCD.clear(); LCD.print("Turn one"); delay(1000);
+    // while(!startbutton()) {
+	// 	testTurnOne();
+	// }
 }
 
 void testPIDQRD() {
@@ -74,6 +84,11 @@ void testCliffQRD() {
 void testBridgeQRD() {
     LCD.clear(); LCD.print("LBridgeQRD: "); LCD.print(analogRead(leftBridgeQRD));
     LCD.setCursor(0,1); LCD.print("RBridgeQRD: "); LCD.print(analogRead(rightBridgeQRD));
+}
+
+void testBridgeAllign() {
+    alignBridgeQRDS(testMotorWheel);
+    delay(10);
 }
 
 void testServo() {
@@ -92,12 +107,17 @@ void testTurning() {
 	if(startbutton()) { return; }
 	testMotorWheel.turnLeft(90);
 	delay(1000);
-	if(startbutton()) { return; }
-	testMotorWheel.turnRight(180);
-	delay(1000);
-	if(startbutton()) { return; }
-	testMotorWheel.turnLeft(180);
-	delay(1000);
+        // if(startbutton()) { return; }
+        // testMotorWheel.turnRight(180);
+        // delay(1000);
+        // if(startbutton()) { return; }
+        // testMotorWheel.turnLeft(180);
+        // delay(1000);
+}
+
+void testTurnOne() {
+    testMotorWheel.turnOne();
+    delay(2000);
 }
 
 

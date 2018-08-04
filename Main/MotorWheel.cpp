@@ -3,7 +3,7 @@
 #include "MotorWheel.h"
 #include "Globals.h"
 
-const int defaultTurnSpeed = 150;
+const int defaultTurnSpeed = 200;
 
 MotorWheel::MotorWheel(MenuItem speed, PID pid) : pid(pid)
 {
@@ -27,13 +27,15 @@ void MotorWheel::turnLeft(int angle, int speed, bool backup)
 	stop();
 }
 
-void MotorWheel::turnOne(int angle, int speed)
-{
+void MotorWheel::turnOne() {
 	runWithPID = false;
-	int turnSpeed = (speed == 0) ? defaultTurnSpeed : speed;
+	int turnSpeed = defaultTurnSpeed;
+	motor.speed(leftMotor, -turnSpeed);
+	motor.speed(rightMotor, -turnSpeed);
+	delay(100);
 	motor.speed(leftMotor, -turnSpeed + 20);
-	motor.speed(rightMotor, turnSpeed + 20);
-	delay(angle * delayPerDegreeTurn.value);
+	motor.speed(rightMotor, turnSpeed + 30);
+	delay(90 * delayPerDegreeTurn.value);
 	stop();
 }
 
