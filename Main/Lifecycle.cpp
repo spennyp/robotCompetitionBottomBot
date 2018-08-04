@@ -75,20 +75,28 @@ void reset() {
 	digitalWrite(communicationOut, HIGH);
 }
 
-//Stops bot when an ewok is found. It then reverses a little bit and stops again when perfectly aligned.
+// Stops bot when an ewok is found.
 void checkForEwok() {
-	if (clawTriggered()) {
-		motorWheel.stop();
-		while(clawTriggered()) {}
+	if(clawTriggered()) {
 		ewokCount++;
+		motorWheel.stop();
+		if(ewokCount == 1) {
+			digitalWrite(communicationOut, LOW); // Tells the claw to stay raised for the bridge drop
+		}
+
+		while(clawTriggered()) {}
 		delay(500);
 
-		// Drives for a few sec to insure alignBridgeQRDS does not trigger true
+		// Drives for a sec to insure alignBridgeQRDS does not trigger true
 		if(ewokCount == 2) {
 			motorWheel.forward(); 
-			delay(5000);
+			delay(1000);
+			motorWheel.stop();
+			delay(1000); // Delay to know when it switches back to alignBridgeQRDS
 		}
 	}
 }
+
+
 
 

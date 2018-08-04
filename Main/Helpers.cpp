@@ -52,8 +52,6 @@ void detatchTopBot() {
 // Run helpers
 
 void deployBridge() {
-	digitalWrite(communicationOut, LOW); // Tells top bot to raise claw for the bridge
-	delay(2000);
 	bottomServo.write(bridgeServoDeployPosition);
 	delay(2000); // Wait for bridge to deploy
 	digitalWrite(communicationOut, HIGH); // Tells top bot to lower the claw again
