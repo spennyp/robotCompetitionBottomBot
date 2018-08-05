@@ -60,6 +60,8 @@ void sensorTest() {
         testBridgeQRD();
         delay(100);
     }
+
+    LCD.clear(); LCD.print("Leaving Sensor"); LCD.setCursor(0, 1); LCD.print("testing"); delay(1000);
 }
 
 void testPIDQRD() {
@@ -81,6 +83,7 @@ void testCommunicationOut() {
     LCD.clear(); LCD.print("High");
     digitalWrite(5, HIGH);
     delay(2000);
+    if(startbutton()) { return; }
     LCD.clear(); LCD.print("Low");
     digitalWrite(5, LOW);
     delay(2000);
@@ -97,7 +100,7 @@ void systemTest() {
         testBridge();
     }
 
-    LCD.clear(); LCD.print("Test Bridge align"); delay(1000);
+    LCD.clear(); LCD.print("Test Bridge"); LCD.setCursor(0, 1); LCD.print("align"); delay(1000);
     while(!startbutton()) {
         testBridgeAlign();
     }
@@ -113,13 +116,15 @@ void systemTest() {
 	while(!startbutton()) {
 		testTurning();
 	}
+
+    LCD.clear(); LCD.print("Leaving System"); LCD.setCursor(0, 1); LCD.print("Testing"); delay(1000);
 }
 
 void testBridge() {
     LCD.clear(); LCD.print("Let Go"); 
     deployBridge();
     delay(1000);
-    if(startbutton()) { return; }
+    if(startbutton()) { return ;}
     LCD.clear(); LCD.print("Hold");
     resetBridge();
     delay(1000);
