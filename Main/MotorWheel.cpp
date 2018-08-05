@@ -43,8 +43,7 @@ void MotorWheel::turnRight(int angle, int speed, bool backup) {
 }
 
 // Default perapeter of 0, which runs motorSpeed from the menu
-void MotorWheel::forward(int speed)
-{
+void MotorWheel::forward(int speed) {
 	runWithPID = false;
 	int forwardSpeed = (speed == 0) ? motorSpeed : speed;
 
@@ -52,19 +51,12 @@ void MotorWheel::forward(int speed)
 	motor.speed(rightMotor, forwardSpeed);
 }
 
-void MotorWheel::reverse(int speed)
-{
+void MotorWheel::reverse(int speed) {
 	runWithPID = false;
-	if (speed == 0)
-	{
-		motor.speed(leftMotor, -motorSpeed);
-		motor.speed(rightMotor, -motorSpeed);
-	}
-	else
-	{
-		motor.speed(leftMotor, -speed);
-		motor.speed(rightMotor, -speed);
-	}
+	int reverseSpeed = (speed == 0) ? motorSpeed : speed;
+
+	motor.speed(leftMotor, -reverseSpeed);
+	motor.speed(rightMotor, -reverseSpeed);
 }
 
 void MotorWheel::stop() {

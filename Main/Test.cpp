@@ -38,6 +38,8 @@ void systemDiagnostics() {
 
 // Sensor Test's
 
+int cliffAlignCount = 0;
+
 void sensorTest() {
     LCD.clear(); LCD.print("PID QRD's"); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
     while (!startbutton()){
@@ -95,11 +97,6 @@ void testCommunicationOut() {
 void systemTest() {
     LCD.clear(); LCD.print("Caution, motors"); LCD.setCursor(0, 1); LCD.print("will be on"); delay(1000);
 
-    LCD.clear(); LCD.print("Testing Bridge"); delay(1000);
-    while (!startbutton()){
-        testBridge();
-    }
-
     LCD.clear(); LCD.print("Test Bridge"); LCD.setCursor(0, 1); LCD.print("align"); delay(1000);
     while(!startbutton()) {
         testBridgeAlign();
@@ -111,6 +108,11 @@ void systemTest() {
         testCliffAlign();
     }
     testMotorWheel.stop();
+
+    LCD.clear(); LCD.print("Testing Bridge"); delay(1000);
+    while (!startbutton()){
+        testBridge();
+    }
 
     LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); delay(1000);
 	while(!startbutton()) {
@@ -138,7 +140,17 @@ void testBridgeAlign() {
 }
 
 void testCliffAlign() {
-    alignCliffQRDs(testMotorWheel);
+    if(alignCliffQRDs(testMotorWheel)) {
+		delay(100);
+		testMotorWheel.reverse(75);
+		while(foundLeftCliff() && foundRightCliff()) {}
+		testMotorWheel.stop();
+        cliffAlignCount ++;
+        if(cliffAlignCount == 5) {
+            cliffAlignCount = 0;
+            delay(5000);
+        }
+    }
     delay(10);
 }
 

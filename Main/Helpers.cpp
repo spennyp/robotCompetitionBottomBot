@@ -65,15 +65,15 @@ bool alignBridgeQRDs(MotorWheel motorWheel) {
 	if(isLeftBridgeAligned && isRightBridgeAligned) {
 		return true;
 	} else if(isLeftBridgeAligned && !isRightBridgeAligned) {
-		motor.speed(leftMotor, 125);
-		motor.speed(rightMotor, 150);
-		return false;
-	} else if(!isLeftBridgeAligned && isRightBridgeAligned) {
-		motor.speed(leftMotor, 150);
+		motor.speed(leftMotor, -60);
 		motor.speed(rightMotor, 125);
 		return false;
+	} else if(!isLeftBridgeAligned && isRightBridgeAligned) {
+		motor.speed(leftMotor, 125);
+		motor.speed(rightMotor, -60);
+		return false;
 	} else {
-		motorWheel.forward(125);
+		motorWheel.forward(75);
 		return false;
 	}
 }
@@ -85,15 +85,15 @@ bool alignCliffQRDs(MotorWheel motorWheel) {
 		motorWheel.stop();
 		return true;
 	} else if(leftCliff && !rightCliff) {
-		motor.speed(leftMotor, -50);
-		motor.speed(rightMotor, 50);
+		motor.speed(leftMotor, -100);
+		motor.speed(rightMotor, 100);
 		return false;
 	} else if(!leftCliff && rightCliff) {
-		motor.speed(leftMotor, 50);
-		motor.speed(rightMotor, -50);
+		motor.speed(leftMotor, 100);
+		motor.speed(rightMotor, -100);
 		return false;
 	} else {
-		motorWheel.forward(75);
+		motorWheel.forward(100);
 		return false;
 	}
 }

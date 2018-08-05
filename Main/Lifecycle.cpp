@@ -14,6 +14,7 @@ void run() {
 	reset();
 	unsigned long prevLoopStartTime = millis();
 	ewokCount = 0;
+	int cliffAlignCount = 0;
 	bool bridgeDeployed = false;
 
 	LCD.clear(); LCD.print("Running"); LCD.setCursor(0, 1); LCD.print("Stop to return");
@@ -36,14 +37,17 @@ void run() {
 			delay(300);
 			motorWheel.stop();
 			delay(1000);
-			motorWheel.turnLeft(90);
+			motorWheel.turnLeft(80);
 			motorWheel.stop();
 			delay(1000);
-			while(!alignCliffQRDs(motorWheel)) {}
-			delay(1000);
-			motorWheel.reverse();
-			delay(100);
-			motorWheel.stop();
+			while(cliffAlignCount < 3) {
+				if(alignCliffQRDs(motorWheel)) {
+					motorWheel.reverse(75);
+					while(foundLeftCliff() && foundRightCliff()) {}
+					motorWheel.stop();
+					cliffAlignCount ++;
+				}
+			}
 			delay(1000);
 			deployBridge();
 			bridgeDeployed = true;
@@ -90,20 +94,17 @@ void checkForEwok() {
 		ewokCount++; // Must be above
 		if(ewokCount == 1) {
 			digitalWrite(communicationOut, LOW); // Tells the claw to stay raised for the bridge drop
-		} else if(ewokCount == 2) {
-			motorWheel.forward();
-			delay(200);
-			motorWheel.stop();
 		}
+
 		motorWheel.stop();
 		
 
 		while(clawTriggered()) {}
-		delay(500);
+		delay(2000);
 
 		// Drives for a sec to insure alignBridgeQRDS does not trigger true
 		if(ewokCount == 2) {
-			motorWheel.forward(); 
+			motorWheel.forward(75); 
 			delay(500);
 			motorWheel.stop();
 			delay(1000); // Delay to know when it switches back to alignBridgeQRDS
