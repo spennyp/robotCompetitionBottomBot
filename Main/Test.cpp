@@ -7,6 +7,9 @@
 
 MotorWheel testMotorWheel(motorSpeed, PID(proportionalGain, derivativeGain, pidThreshold));
 
+
+// Diagnostics
+
 void systemDiagnostics() {
     LCD.clear(); LCD.print("Diagnostics"); 
     LCD.setCursor(0,1); LCD.print("Exit -> HoldStop");
@@ -14,7 +17,8 @@ void systemDiagnostics() {
         Serial.println("");
         Serial.print("Far QRD: "); Serial.println(analogRead(farTapeFollowQRD));
         Serial.print("Near QRD: "); Serial.println(analogRead(nearTapeFollowQRD)); 
-        Serial.print("Cliff QRD: "); Serial.println(analogRead(cliffQRD)); 
+        Serial.print("Left Cliff QRD: "); Serial.println(analogRead(leftCliffQRD)); 
+        Serial.print("Right Cliff QRD: "); Serial.println(analogRead(rightCliffQRD)); 
 		Serial.print("L Bridge QRD: "); Serial.println(analogRead(leftBridgeQRD)); 
 		Serial.print("R Bridge QRD: "); Serial.println(analogRead(rightBridgeQRD));
 
@@ -31,49 +35,31 @@ void systemDiagnostics() {
     }
 }
 
-void testFullSystem() {
-    // LCD.clear(); LCD.print("Testing PID "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
-    // while (!startbutton()){
-    //     testPIDQRD();
-    //     delay(100);
-    // }
-    LCD.clear(); LCD.print("Testing Cliff "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
+
+// Sensor Test's
+
+void sensorTest() {
+    LCD.clear(); LCD.print("PID QRD's"); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
+    while (!startbutton()){
+        testPIDQRD();
+        delay(100);
+    }
+    LCD.clear(); LCD.print("Cliff QRD's"); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
     while (!startbutton()){
         testCliffQRD();
         delay(100);
     }
 
-    LCD.clear(); LCD.print("Testing output pin"); delay(1000);
+    LCD.clear(); LCD.print("Output pin"); delay(1000);
     while(!startbutton()) {
-        LCD.clear(); LCD.print("High");
-        digitalWrite(5, HIGH);
-        delay(2000);
-        LCD.clear(); LCD.print("Low");
-        digitalWrite(5, LOW);
-        delay(2000);
+        testCommunicationOut();
     }
-    // LCD.clear(); LCD.print("Testing Bridge "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
-    // while (!startbutton()) {
-    //     testBridgeQRD();
-    //     delay(100);
-    // }
-    // LCD.clear(); LCD.print("Testing Servo");
-    // delay(1000);
-    // while (!startbutton()){
-    //     testServo();
-    //     delay(100);
-    // }
 
-    // LCD.clear(); LCD.print("Test QRD align"); delay(1000);
-    // while(!startbutton()) {
-    //     testBridgeAllign();
-    // }
-    // testMotorWheel.stop();
-
-    // LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); delay(1000);
-	// while(!startbutton()) {
-	// 	testTurning();
-	// }
+    LCD.clear(); LCD.print("birdge QRD"); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
+    while (!startbutton()) {
+        testBridgeQRD();
+        delay(100);
+    }
 }
 
 void testPIDQRD() {
@@ -82,7 +68,8 @@ void testPIDQRD() {
 }
 
 void testCliffQRD() {
-	LCD.clear(); LCD.print("LCliffQRD: "); LCD.print(analogRead(cliffQRD));
+	LCD.clear(); LCD.print("LCliffQRD: "); LCD.print(analogRead(leftCliffQRD));
+    LCD.setCursor(0, 1); LCD.print("RCliffQRD: "); LCD.print(analogRead(rightCliffQRD));
 }
 
 void testBridgeQRD() {
@@ -90,12 +77,45 @@ void testBridgeQRD() {
     LCD.setCursor(0,1); LCD.print("RBridgeQRD: "); LCD.print(analogRead(rightBridgeQRD));
 }
 
-void testBridgeAllign() {
-    alignBridgeQRDS(testMotorWheel);
-    delay(10);
+void testCommunicationOut() {
+    LCD.clear(); LCD.print("High");
+    digitalWrite(5, HIGH);
+    delay(2000);
+    LCD.clear(); LCD.print("Low");
+    digitalWrite(5, LOW);
+    delay(2000);
 }
 
-void testServo() {
+
+// System Test
+
+void systemTest() {
+    LCD.clear(); LCD.print("Caution, motors"); LCD.setCursor(0, 1); LCD.print("will be on"); delay(1000);
+
+    LCD.clear(); LCD.print("Testing Bridge"); delay(1000);
+    while (!startbutton()){
+        testBridge();
+    }
+
+    LCD.clear(); LCD.print("Test Bridge align"); delay(1000);
+    while(!startbutton()) {
+        testBridgeAlign();
+    }
+    testMotorWheel.stop();
+
+    LCD.clear(); LCD.print("Test Cliff align"); delay(1000);
+    while(!startbutton()) {
+        testCliffAlign();
+    }
+    testMotorWheel.stop();
+
+    LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); delay(1000);
+	while(!startbutton()) {
+		testTurning();
+	}
+}
+
+void testBridge() {
     LCD.clear(); LCD.print("Let Go"); 
     deployBridge();
     delay(1000);
@@ -105,18 +125,24 @@ void testServo() {
     delay(1000);
 }
 
+void testBridgeAlign() {
+    if(alignBridgeQRDs(testMotorWheel)) {
+        testMotorWheel.stop();
+    }
+    delay(10);
+}
+
+void testCliffAlign() {
+    alignCliffQRDs(testMotorWheel);
+    delay(10);
+}
+
 void testTurning() {
 	testMotorWheel.turnRight(90);
 	delay(1000);
 	if(startbutton()) { return; }
 	testMotorWheel.turnLeft(90);
 	delay(1000);
-        // if(startbutton()) { return; }
-        // testMotorWheel.turnRight(180);
-        // delay(1000);
-        // if(startbutton()) { return; }
-        // testMotorWheel.turnLeft(180);
-        // delay(1000);
 }
 
 

@@ -21,8 +21,12 @@ bool clawTriggered() {
     return (digitalRead(communicationIn) == LOW);
 }
 
-bool foundCliff() {
-    return (analogRead(cliffQRD) > cliffThreshold.value);
+bool foundRightCliff() {
+    return (analogRead(rightCliffQRD) > cliffThreshold.value);
+}
+
+bool foundLeftCliff() {
+	return (analogRead(leftCliffQRD) > cliffThreshold.value);
 }
 
 void resetBridge() {
@@ -55,7 +59,7 @@ void deployBridge() {
 	delay(2000); // Wait for claw to lower
 }
 
-bool alignBridgeQRDS(MotorWheel motorWheel) {
+bool alignBridgeQRDs(MotorWheel motorWheel) {
 	bool isLeftBridgeAligned = leftBridgeAligned();
 	bool isRightBridgeAligned = rightBridgeAligned();
 	if(isLeftBridgeAligned && isRightBridgeAligned) {
@@ -65,11 +69,31 @@ bool alignBridgeQRDS(MotorWheel motorWheel) {
 		motor.speed(rightMotor, 150);
 		return false;
 	} else if(!isLeftBridgeAligned && isRightBridgeAligned) {
-		motor.speed(leftMotor, 125);
-		motor.speed(rightMotor, 150);
+		motor.speed(leftMotor, 150);
+		motor.speed(rightMotor, 125);
 		return false;
 	} else {
 		motorWheel.forward(125);
+		return false;
+	}
+}
+
+bool alignCliffQRDs(MotorWheel motorWheel) {
+	bool leftCliff = foundLeftCliff();
+	bool rightCliff = foundRightCliff();
+	if(leftCliff && rightCliff) {
+		motorWheel.stop();
+		return true;
+	} else if(leftCliff && !rightCliff) {
+		motor.speed(leftMotor, -50);
+		motor.speed(rightMotor, 50);
+		return false;
+	} else if(!leftCliff && rightCliff) {
+		motor.speed(leftMotor, 50);
+		motor.speed(rightMotor, -50);
+		return false;
+	} else {
+		motorWheel.forward(75);
 		return false;
 	}
 }

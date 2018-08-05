@@ -9,14 +9,27 @@
 	#include "WProgram.h"
 #endif
 
+// Diagnostics
+
 extern void systemDiagnostics();
-extern void testFullSystem();
-extern void testServo();
+
+
+// Sensor Test
+
+extern void sensorTest();
 extern void testPIDQRD();
 extern void testCliffQRD();
 extern void testBridgeQRD();
+extern void testCommunicationOut();
+
+
+// System Test
+
+extern void systemTest();
+extern void testBridge();
+extern void testBridgeAlign();
+extern void testCliffAlign();
 extern void testTurning();
-extern void testBridgeAllign();
 
 
 #endif

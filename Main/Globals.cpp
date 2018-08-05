@@ -25,7 +25,8 @@ int communicationIn = 8;
 // Analog Pins
 int farTapeFollowQRD = 2;
 int nearTapeFollowQRD = 1;
-int cliffQRD = 0;
+int rightCliffQRD = 5;
+int leftCliffQRD = 0;
 int rightBridgeQRD = 4;
 int leftBridgeQRD = 3;
 

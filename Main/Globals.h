@@ -48,7 +48,8 @@ extern int communicationIn;
 // Analog pins
 extern int farTapeFollowQRD;
 extern int nearTapeFollowQRD;
-extern int cliffQRD;
+extern int rightCliffQRD;
+extern int leftCliffQRD;
 extern int rightBridgeQRD;
 extern int leftBridgeQRD;
 

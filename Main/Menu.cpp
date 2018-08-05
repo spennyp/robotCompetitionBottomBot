@@ -69,19 +69,18 @@ void configurationMenu() {
 
 String runBot = "Run Bot";
 String runSystemTest = "Run System Test";
+String runSensorTest = "Run Sensor Test";
 String runDiagonistics = "Run Diagonistics";
-String runMenuItems[] = {runBot, runSystemTest, runDiagonistics};
+String runMenuItems[] = {runBot, runSensorTest, runSystemTest, runDiagonistics};
 
-void runMenu()
-{
+void runMenu() {
 	LCD.clear();
 	LCD.print("Entering");
 	LCD.setCursor(0, 1);
 	LCD.print("Run menu");
 	delay(500);
 
-	while (true)
-	{
+	while (true) {
 		/* Show MenuItem value and knob value */
 		int menuIndex = knob(6) * sizeof(runMenuItems) / sizeof(runMenuItems[0]) / 1024;
 		LCD.clear();
@@ -92,22 +91,17 @@ void runMenu()
 		delay(100);
 
 		/* Press start button to save the new value */
-		if (startbutton())
-		{
+		if (startbutton()) {
 			delay(100);
-			if (startbutton())
-			{
+			if (startbutton()) {
 				String menuSelection = runMenuItems[menuIndex];
-				if (menuSelection == runBot)
-				{
+				if (menuSelection == runBot) {
 					run();
-				}
-				else if (menuSelection == runSystemTest)
-				{
-					testFullSystem();
-				}
-				else
-				{
+				} else if (menuSelection == runSensorTest) {
+					sensorTest();
+				} else if (menuSelection == runSystemTest) {
+					systemTest();
+				} else {
 					systemDiagnostics();
 				}
 				return;

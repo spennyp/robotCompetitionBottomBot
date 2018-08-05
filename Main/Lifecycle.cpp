@@ -29,7 +29,7 @@ void run() {
 		motorWheel.poll();
 		checkForEwok();
 
-		if(foundCliff() && ewokCount == 1 && !bridgeDeployed) {
+		if(foundRightCliff() && ewokCount == 1 && !bridgeDeployed) {
 			motorWheel.stop();
 			delay(1000);
 			motorWheel.reverse();
@@ -39,20 +39,19 @@ void run() {
 			motorWheel.turnLeft(90);
 			motorWheel.stop();
 			delay(1000);
-			motorWheel.forward();
-			while(!foundCliff()) {}
-			motorWheel.stop();
+			while(!alignCliffQRDs(motorWheel)) {}
 			delay(1000);
 			motorWheel.reverse();
-			delay(250);
+			delay(100);
 			motorWheel.stop();
+			delay(1000);
 			deployBridge();
 			bridgeDeployed = true;
 		}
 
 
 		if(ewokCount >= 1) {
-			if(alignBridgeQRDS(motorWheel) && ewokCount == 2) {
+			if(alignBridgeQRDs(motorWheel) && ewokCount == 2) {
 				motorWheel.stop();
 				delay(1000);
 				detatchTopBot();
