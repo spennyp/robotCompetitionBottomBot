@@ -10,7 +10,7 @@
 uint16_t MenuItem::menuItemCount = 0;
 
 // Add Menu items here and in .h
-MenuItem motorSpeed = MenuItem("Speed");
+MenuItem motorSpeed = MenuItem("motorSpeed");
 MenuItem proportionalGain = MenuItem("P-gain");
 MenuItem derivativeGain = MenuItem("D-gain");
 MenuItem pidThreshold = MenuItem("PID-thresh");

@@ -29,20 +29,24 @@ void run() {
 		motorWheel.poll();
 		checkForEwok();
 
-		// Bridge deploy
-		if(ewokCount == 1 && !bridgeDeployed) {
-			motorWheel.forward(300); // This left turn needs tuning
-			delay(500);
+		if(foundLeftCliff() && ewokCount == 1 && !bridgeDeployed) {
+			motorWheel.stop();
+			delay(1000);
+			motorWheel.reverse();
+			delay(300);
+			motorWheel.stop();
+			delay(1000);
 			motorWheel.turnLeft(90);
-			motorWheel.stop(); // Should be redundent
+			motorWheel.stop();
 			delay(1000);
 			motorWheel.forward();
 			while(!foundLeftCliff()) {}
 			motorWheel.stop();
-			delay(2000);
+			delay(1000);
 			deployBridge();
 			bridgeDeployed = true;
 		}
+
 
 		if(ewokCount >= 1) {
 			if(alignBridgeQRDS(motorWheel) && ewokCount == 2) {
@@ -81,6 +85,9 @@ void reset() {
 void checkForEwok() {
 	if(clawTriggered()) {
 		motorWheel.stop();
+		motorWheel.reverse();
+		delay(200);
+		motorWheel.stop();
 		ewokCount++;
 		if(ewokCount == 1) {
 			digitalWrite(communicationOut, LOW); // Tells the claw to stay raised for the bridge drop
@@ -92,7 +99,7 @@ void checkForEwok() {
 		// Drives for a sec to insure alignBridgeQRDS does not trigger true
 		if(ewokCount == 2) {
 			motorWheel.forward(); 
-			delay(1000);
+			delay(500);
 			motorWheel.stop();
 			delay(1000); // Delay to know when it switches back to alignBridgeQRDS
 		}

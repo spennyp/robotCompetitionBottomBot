@@ -44,16 +44,10 @@ void MotorWheel::turnRight(int angle, int speed, bool backup) {
 void MotorWheel::forward(int speed)
 {
 	runWithPID = false;
-	if (speed == 0)
-	{
-		motor.speed(leftMotor, motorSpeed);
-		motor.speed(rightMotor, motorSpeed);
-	}
-	else
-	{
-		motor.speed(leftMotor, speed);
-		motor.speed(rightMotor, speed);
-	}
+	int forwardSpeed = (speed == 0) ? motorSpeed : speed;
+
+	motor.speed(leftMotor, forwardSpeed);
+	motor.speed(rightMotor, forwardSpeed);
 }
 
 void MotorWheel::reverse(int speed)
