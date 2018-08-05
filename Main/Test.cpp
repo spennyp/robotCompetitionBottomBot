@@ -61,10 +61,10 @@ void testFullSystem() {
     // }
     // testMotorWheel.stop();
 
-    // LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); delay(1000);
-	// while(!startbutton()) {
-	// 	testTurning();
-	// }
+    LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); delay(1000);
+	while(!startbutton()) {
+		testTurning();
+	}
 }
 
 void testPIDQRD() {

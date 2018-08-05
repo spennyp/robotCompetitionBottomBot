@@ -21,6 +21,7 @@ void MotorWheel::turnLeft(int angle, int speed, bool backup) {
 		delay(200);
 	}
 	motor.speed(rightMotor, turnSpeed);
+	LCD.clear(); LCD.print(delayPerDegreeTurn.value);
 	delay(angle * delayPerDegreeTurn.value);
 	stop();
 }
@@ -36,6 +37,7 @@ void MotorWheel::turnRight(int angle, int speed, bool backup) {
 		delay(200);
 	}
 	motor.speed(leftMotor, turnSpeed);
+	LCD.clear(); LCD.print(delayPerDegreeTurn.value);
 	delay(angle * delayPerDegreeTurn.value);
 	stop();
 }
@@ -67,8 +69,7 @@ void MotorWheel::reverse(int speed)
 
 void MotorWheel::stop() {
 	runWithPID = false;
-	motor.speed(leftMotor, 0);
-	motor.speed(rightMotor, 0);
+	motor.stop_all();
 }
 
 // Lifecycle

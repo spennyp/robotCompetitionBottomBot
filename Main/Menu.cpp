@@ -14,9 +14,9 @@ MenuItem motorSpeed = MenuItem("motorSpeed");
 MenuItem proportionalGain = MenuItem("P-gain");
 MenuItem derivativeGain = MenuItem("D-gain");
 MenuItem pidThreshold = MenuItem("PID-thresh");
-MenuItem cliffThreshold = MenuItem("Cliff-thresh");
-MenuItem delayPerDegreeTurn = MenuItem("Delay/degTurn");
-MenuItem alignmentThreshold = MenuItem("align-thresh");
+MenuItem cliffThreshold = MenuItem("cliffThresh");
+MenuItem delayPerDegreeTurn = MenuItem("delay/degT");
+MenuItem alignmentThreshold = MenuItem("alignThresh");
 MenuItem configurationMenuItems[] = {motorSpeed, proportionalGain, derivativeGain, pidThreshold, cliffThreshold, delayPerDegreeTurn, alignmentThreshold};
 
 void configurationMenu() {
