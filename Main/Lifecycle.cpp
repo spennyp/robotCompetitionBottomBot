@@ -85,13 +85,13 @@ void reset() {
 void checkForEwok() {
 	if(clawTriggered()) {
 		motorWheel.stop();
+		if(ewokCount == 1) {
+			digitalWrite(communicationOut, LOW); // Tells the claw to stay raised for the bridge drop
+		}
 		motorWheel.reverse();
 		delay(200);
 		motorWheel.stop();
 		ewokCount++;
-		if(ewokCount == 1) {
-			digitalWrite(communicationOut, LOW); // Tells the claw to stay raised for the bridge drop
-		}
 
 		while(clawTriggered()) {}
 		delay(500);
