@@ -22,8 +22,7 @@ extern int bridgeServoDeployPosition;
 extern int cliffCount;
 extern bool bridgeQRDSAligned;
 extern bool clawTriggered();
-extern bool foundLeftCliff();
-extern bool foundRightCliff();
+extern bool foundCliff();
 extern void detatchTopBot();
 
 

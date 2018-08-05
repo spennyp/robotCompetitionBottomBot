@@ -14,8 +14,7 @@ void systemDiagnostics() {
         Serial.println("");
         Serial.print("Far QRD: "); Serial.println(analogRead(farTapeFollowQRD));
         Serial.print("Near QRD: "); Serial.println(analogRead(nearTapeFollowQRD)); 
-        Serial.print("Left Cliff QRD: "); Serial.println(analogRead(leftCliffQRD)); 
-        Serial.print("Right Cliff QRD: "); Serial.println(analogRead(rightCliffQRD)); 
+        Serial.print("Cliff QRD: "); Serial.println(analogRead(cliffQRD)); 
 		Serial.print("L Bridge QRD: "); Serial.println(analogRead(leftBridgeQRD)); 
 		Serial.print("R Bridge QRD: "); Serial.println(analogRead(rightBridgeQRD));
 
@@ -43,6 +42,16 @@ void testFullSystem() {
         testCliffQRD();
         delay(100);
     }
+
+    LCD.clear(); LCD.print("Testing output pin"); delay(1000);
+    while(!startbutton()) {
+        LCD.clear(); LCD.print("High");
+        digitalWrite(5, HIGH);
+        delay(2000);
+        LCD.clear(); LCD.print("Low");
+        digitalWrite(5, LOW);
+        delay(2000);
+    }
     // LCD.clear(); LCD.print("Testing Bridge "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
     // while (!startbutton()) {
     //     testBridgeQRD();
@@ -61,10 +70,10 @@ void testFullSystem() {
     // }
     // testMotorWheel.stop();
 
-    LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); delay(1000);
-	while(!startbutton()) {
-		testTurning();
-	}
+    // LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); delay(1000);
+	// while(!startbutton()) {
+	// 	testTurning();
+	// }
 }
 
 void testPIDQRD() {
@@ -73,8 +82,7 @@ void testPIDQRD() {
 }
 
 void testCliffQRD() {
-	LCD.clear(); LCD.print("LCliffQRD: "); LCD.print(analogRead(leftCliffQRD));
-    LCD.setCursor(0,1); LCD.print("RCliffQRD: "); LCD.print(analogRead(rightCliffQRD));
+	LCD.clear(); LCD.print("LCliffQRD: "); LCD.print(analogRead(cliffQRD));
 }
 
 void testBridgeQRD() {

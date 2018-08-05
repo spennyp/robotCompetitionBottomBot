@@ -41,15 +41,14 @@ extern int rightMotor;
 extern TINAH::Servo bottomServo;
 
 // Digital pins
-extern int communicationIn;
 extern int communicationOut;
+extern int communicationIn;
 
 
 // Analog pins
 extern int farTapeFollowQRD;
 extern int nearTapeFollowQRD;
-extern int leftCliffQRD;
-extern int rightCliffQRD;
+extern int cliffQRD;
 extern int rightBridgeQRD;
 extern int leftBridgeQRD;
 

@@ -19,16 +19,15 @@ int rightMotor = 1;
 TINAH::Servo bottomServo(TINAH::pins::servo[0]);
 
 // Digital pins
+int communicationOut = 5; // tinah outputs 7 and 6 dont work
 int communicationIn = 8;
-int communicationOut = 7;
 
 // Analog Pins
 int farTapeFollowQRD = 2;
 int nearTapeFollowQRD = 1;
-int rightCliffQRD = 5;
+int cliffQRD = 0;
 int rightBridgeQRD = 4;
 int leftBridgeQRD = 3;
-int leftCliffQRD = 0;
 
 // Helpers
 DigitalPinAndValue::DigitalPinAndValue(int pinNum, DigitalState _state) {

@@ -29,7 +29,7 @@ void run() {
 		motorWheel.poll();
 		checkForEwok();
 
-		if(foundLeftCliff() && ewokCount == 1 && !bridgeDeployed) {
+		if(foundCliff() && ewokCount == 1 && !bridgeDeployed) {
 			motorWheel.stop();
 			delay(1000);
 			motorWheel.reverse();
@@ -40,9 +40,12 @@ void run() {
 			motorWheel.stop();
 			delay(1000);
 			motorWheel.forward();
-			while(!foundLeftCliff()) {}
+			while(!foundCliff()) {}
 			motorWheel.stop();
 			delay(1000);
+			motorWheel.reverse();
+			delay(250);
+			motorWheel.stop();
 			deployBridge();
 			bridgeDeployed = true;
 		}
@@ -85,13 +88,16 @@ void reset() {
 void checkForEwok() {
 	if(clawTriggered()) {
 		motorWheel.stop();
+		ewokCount++; // Must be above
 		if(ewokCount == 1) {
 			digitalWrite(communicationOut, LOW); // Tells the claw to stay raised for the bridge drop
+		} else if(ewokCount == 2) {
+			motorWheel.forward();
+			delay(200);
+			motorWheel.stop();
 		}
-		motorWheel.reverse();
-		delay(200);
 		motorWheel.stop();
-		ewokCount++;
+		
 
 		while(clawTriggered()) {}
 		delay(500);

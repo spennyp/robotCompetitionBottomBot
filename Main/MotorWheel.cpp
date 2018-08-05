@@ -22,7 +22,7 @@ void MotorWheel::turnLeft(int angle, int speed, bool backup) {
 	}
 	motor.speed(rightMotor, turnSpeed);
 	LCD.clear(); LCD.print(delayPerDegreeTurn.value);
-	delay(angle * delayPerDegreeTurn.value);
+	delay(angle * delayPerDegreeTurn.value / 2.0); // Diveded by 2 which makes tuning more sensitive
 	stop();
 }
 
@@ -38,7 +38,7 @@ void MotorWheel::turnRight(int angle, int speed, bool backup) {
 	}
 	motor.speed(leftMotor, turnSpeed);
 	LCD.clear(); LCD.print(delayPerDegreeTurn.value);
-	delay(angle * delayPerDegreeTurn.value);
+	delay(angle * delayPerDegreeTurn.value / 2.0);
 	stop();
 }
 
