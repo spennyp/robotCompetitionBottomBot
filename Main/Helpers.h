@@ -31,10 +31,10 @@ extern bool rightBridgeTouchTriggered();
 
 
 // RunHelpers
+extern bool alignCliffQRDs(MotorWheel motorWheel);
 extern void deployBridge();
 extern void resetBridge();
-extern bool followBridgeQRDs(MotorWheel motorWheel);
-extern bool alignCliffQRDs(MotorWheel motorWheel);
+extern bool followBridgeQRDs(MotorWheel motorWheel, int forwardSpeed);
 extern bool alignTouchSensors(MotorWheel motorWheel);
 extern void detatchTopBot();
 

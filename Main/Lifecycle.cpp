@@ -33,8 +33,8 @@ void run() {
 		if(foundRightCliff() && ewokCount == 1 && !bridgeDeployed) {
 			motorWheel.stop();
 			delay(1000);
-			motorWheel.reverse();
-			delay(300);
+			motorWheel.reverse(120);
+			delay(400);
 			motorWheel.stop();
 			delay(1000);
 			motorWheel.turnLeft(80);
@@ -54,11 +54,18 @@ void run() {
 		}
 
 		if(ewokCount >= 1 && bridgeDeployed) {
-			followBridgeQRDs(motorWheel);
+			int followForwardSpeed = (ewokCount == 1) ? 100 : 60;
+			followBridgeQRDs(motorWheel, followForwardSpeed);
+			LCD.clear(); LCD.print("Following: "); LCD.print(ewokCount);
 			if(ewokCount == 2 && (leftBridgeTouchTriggered() || rightBridgeTouchTriggered())) {
+				LCD.clear(); LCD.print("Touch triggered"); 
 				motorWheel.stop();
 				delay(1000);
-				while(!alignTouchSensors(motorWheel)) {}
+				unsigned long alignTouchStartTime = millis();
+				while(!alignTouchSensors(motorWheel)) { 
+					delay(100); 
+					if((millis() - alignTouchStartTime) >= 5000) { break; }
+				} // Delay to stop oscilation, timer to insure it doesnt get stuck in this loop
 				motorWheel.stop();
 				delay(1000);
 				detatchTopBot();
@@ -85,7 +92,7 @@ void run() {
 //Resets any vars and servo positions
 void reset() {
 	ewokCount = 0;
-	motorWheel.runWithPID = true;
+	motorWheel.runWithPID();
 	resetBridge();
 	digitalWrite(communicationOut, HIGH);
 }
@@ -104,7 +111,7 @@ void checkForEwok() {
 		delay(2000);
 
 		if(ewokCount == 1) {
-			motorWheel.runWithPID = true;
+			motorWheel.runWithPID(160);
 		}
 	}
 }

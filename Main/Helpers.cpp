@@ -33,14 +33,6 @@ void resetBridge() {
     bottomServo.write(bridgeServoResetPosition);
 }
 
-bool leftBridgeQRDAligned() {
-    return (analogRead(leftBridgeQRD) < alignmentThreshold.value);
-}
-
-bool rightBridgeQRDAligned() {
-    return (analogRead(rightBridgeQRD) < alignmentThreshold.value);
-}
-
 bool leftBridgeTouchTriggered() {
 	return (digitalRead(leftBridgeTouch) == LOW);
 }
@@ -52,27 +44,6 @@ bool rightBridgeTouchTriggered() {
 
 // Run helpers
 
-void deployBridge() {
-	bottomServo.write(bridgeServoDeployPosition);
-	delay(2000); // Wait for bridge to deploy
-	digitalWrite(communicationOut, HIGH); // Tells top bot to lower the claw again
-	delay(2000); // Wait for claw to lower
-}
-
-bool followBridgeQRDs(MotorWheel motorWheel) {
-	bool isLeftBridgeAligned = leftBridgeQRDAligned();
-	bool isRightBridgeAligned = rightBridgeQRDAligned();
-	if(isLeftBridgeAligned && !isRightBridgeAligned) {
-		motor.speed(leftMotor, 60);
-		motor.speed(rightMotor, 100);
-	} else if(!isLeftBridgeAligned && isRightBridgeAligned) {
-		motor.speed(leftMotor, 100);
-		motor.speed(rightMotor, 60);
-	} else {
-		motorWheel.forward(80);
-	}
-}
-
 bool alignCliffQRDs(MotorWheel motorWheel) {
 	bool leftCliff = foundLeftCliff();
 	bool rightCliff = foundRightCliff();
@@ -80,15 +51,40 @@ bool alignCliffQRDs(MotorWheel motorWheel) {
 		motorWheel.stop();
 		return true;
 	} else if(leftCliff && !rightCliff) {
-		motor.speed(leftMotor, -100);
-		motor.speed(rightMotor, 100);
+		motor.speed(leftMotor, -130);
+		motor.speed(rightMotor, 130);
+		delay(100);
 	} else if(!leftCliff && rightCliff) {
-		motor.speed(leftMotor, 100);
-		motor.speed(rightMotor, -100);
+		motor.speed(leftMotor, 130);
+		motor.speed(rightMotor, -130);
+		delay(100);
 	} else {
-		motorWheel.forward(100);
+		motorWheel.forward(130);
 	}
 	return false;
+}
+
+void deployBridge() {
+	bottomServo.write(bridgeServoDeployPosition);
+	delay(2000); // Wait for bridge to deploy
+	digitalWrite(communicationOut, HIGH); // Tells top bot to lower the claw again
+	delay(2000); // Wait for claw to lower
+}
+
+bool followBridgeQRDs(MotorWheel motorWheel, int forwardSpeed) {
+	int leftValue = analogRead(leftBridgeQRD);
+	int rightValue = analogRead(rightBridgeQRD);
+	LCD.clear(); LCD.print(leftValue - rightValue);
+	if((rightValue - leftValue) >= bridgeQRDAlignDifference.value) {
+		motor.speed(leftMotor, forwardSpeed - 20);
+		motor.speed(rightMotor, forwardSpeed + 20);
+	} else if((leftValue - rightValue) >= bridgeQRDAlignDifference.value) {
+		motor.speed(leftMotor, forwardSpeed + 20);
+		motor.speed(rightMotor, forwardSpeed - 20);
+	} else {
+		motorWheel.forward(forwardSpeed);
+	}
+	delay(100);
 }
 
 bool alignTouchSensors(MotorWheel motorWheel) {
@@ -98,9 +94,15 @@ bool alignTouchSensors(MotorWheel motorWheel) {
 		motorWheel.stop();
 		return true;
 	} else if(left && !right) {
+		motor.speed(leftMotor, -100);
+		motor.speed(rightMotor, -100);
+		delay(200);
 		motor.speed(leftMotor, -75);
 		motor.speed(rightMotor, 75);
 	} else if(!left && right) {
+		motor.speed(leftMotor, -100);
+		motor.speed(rightMotor, -100);
+		delay(200);
 		motor.speed(leftMotor, 75);
 		motor.speed(rightMotor, -75);
 	} else {

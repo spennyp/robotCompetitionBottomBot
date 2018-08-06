@@ -16,8 +16,9 @@ MenuItem derivativeGain = MenuItem("D-gain");
 MenuItem pidThreshold = MenuItem("PID-thresh");
 MenuItem cliffThreshold = MenuItem("cliffThresh");
 MenuItem delayPerDegreeTurn = MenuItem("delay/degT");
-MenuItem alignmentThreshold = MenuItem("alignThresh");
-MenuItem configurationMenuItems[] = {motorSpeed, proportionalGain, derivativeGain, pidThreshold, cliffThreshold, delayPerDegreeTurn, alignmentThreshold};
+// MenuItem alignmentThreshold = MenuItem("alignThresh");
+MenuItem bridgeQRDAlignDifference = MenuItem("Align dif");
+MenuItem configurationMenuItems[] = {motorSpeed, proportionalGain, derivativeGain, pidThreshold, cliffThreshold, delayPerDegreeTurn, bridgeQRDAlignDifference};
 
 void configurationMenu() {
 	LCD.clear(); LCD.home();
@@ -35,7 +36,7 @@ void configurationMenu() {
 		int setValue = knob(7) / 3;
 
 		// Multiplier for values that need to go to 1000
-		if(configurationMenuItems[menuIndex].name == pidThreshold.name || configurationMenuItems[menuIndex].name == alignmentThreshold.name || configurationMenuItems[menuIndex].name == cliffThreshold.name) {
+		if(configurationMenuItems[menuIndex].name == pidThreshold.name || configurationMenuItems[menuIndex].name == bridgeQRDAlignDifference.name || configurationMenuItems[menuIndex].name == cliffThreshold.name) {
 			setValue *= 3;
 		} 
 

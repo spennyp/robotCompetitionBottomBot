@@ -14,7 +14,7 @@ class MenuItem {
 		MenuItem(String name);
 		static uint16_t menuItemCount;
 		String name;
-		uint16_t value;
+		int value;
 		uint16_t* EEPROMAddress;
 		void save();
 };

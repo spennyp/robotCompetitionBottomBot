@@ -21,6 +21,9 @@ void systemDiagnostics() {
         Serial.print("Right Cliff QRD: "); Serial.println(analogRead(rightCliffQRD)); 
 		Serial.print("L Bridge QRD: "); Serial.println(analogRead(leftBridgeQRD)); 
 		Serial.print("R Bridge QRD: "); Serial.println(analogRead(rightBridgeQRD));
+        Serial.print("L Bridge Touch: "); Serial.println(leftBridgeTouchTriggered());
+        Serial.print("R Bridge Touch: "); Serial.println(rightBridgeTouchTriggered());
+
 
         delay(500);
 
@@ -136,6 +139,25 @@ void systemTest() {
     }
     testMotorWheel.stop();
 
+    LCD.clear(); LCD.print("IR follow and"); LCD.setCursor(0, 1); LCD.print("touch align"); delay(1000);
+    while(!startbutton()) {
+        followBridgeQRDs(testMotorWheel, 100);
+			if(leftBridgeTouchTriggered() || rightBridgeTouchTriggered()) {
+				testMotorWheel.stop();
+				delay(1000);
+				int alignTouchStartTime = millis();
+				while(!alignTouchSensors(testMotorWheel)) { 
+					delay(100); 
+					if(alignTouchStartTime >= 5000) { break; }
+				} // Delay to stop oscilation
+				testMotorWheel.stop();
+				delay(1000);
+				LCD.clear(); LCD.print("DETATCHED!!"); 
+				break;
+			}
+    }
+
+
     LCD.clear(); LCD.print("Leaving System"); LCD.setCursor(0, 1); LCD.print("Testing"); delay(1000);
 }
 
@@ -173,7 +195,7 @@ void testBridge() {
 }
 
 void testBridgeQRDFollow() {
-    followBridgeQRDs(testMotorWheel);
+    followBridgeQRDs(testMotorWheel, 100);
     delay(10);
 }
 

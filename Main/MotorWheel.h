@@ -12,17 +12,19 @@
 
 class MotorWheel {
 	private:
-		uint16_t motorSpeed;
+		uint16_t motorWheelSpeed;
+		uint16_t menuMotorSpeed;
 		PID pid;
+		bool runningWithPID;
 	public:
 		MotorWheel(MenuItem speed, PID pid);
-		void turnLeft(int angle, int speed = 0, bool backup = true);
-		void turnRight(int angle,  int speed = 0, bool backup = true);
+		void turnLeft(int angle, bool backup = true);
+		void turnRight(int angle, bool backup = true);
 		void forward(int speed = 0);
 		void reverse(int speed = 0);
 		void stop();
-		bool runWithPID;
-		void poll(int speed = 0);
+		void runWithPID(int speed = 0);
+		void poll();
 };
 
 #endif
