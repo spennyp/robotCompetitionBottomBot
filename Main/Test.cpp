@@ -63,6 +63,11 @@ void sensorTest() {
         delay(100);
     }
 
+    LCD.clear(); LCD.print("Bridge Touch"); delay(1000);
+    while(!startbutton()) {
+        testBridgeTouch();
+    }
+
     LCD.clear(); LCD.print("Leaving Sensor"); LCD.setCursor(0, 1); LCD.print("testing"); delay(1000);
 }
 
@@ -91,17 +96,22 @@ void testCommunicationOut() {
     delay(2000);
 }
 
+void testBridgeTouch() {
+    LCD.clear(); LCD.print("L Touch: "); LCD.print(leftBridgeTouchTriggered());
+    LCD.setCursor(0, 1); LCD.print("R Touch: "); LCD.print(rightBridgeTouchTriggered());
+    delay(100);
+}
+
 
 // System Test
 
 void systemTest() {
-    LCD.clear(); LCD.print("Caution, motors"); LCD.setCursor(0, 1); LCD.print("will be on"); delay(1000);
+    LCD.clear(); LCD.print("Caution, motors"); LCD.setCursor(0, 1); LCD.print("on in 3"); delay(3000);
 
-    LCD.clear(); LCD.print("Test Bridge"); LCD.setCursor(0, 1); LCD.print("align"); delay(1000);
-    while(!startbutton()) {
-        testBridgeAlign();
-    }
-    testMotorWheel.stop();
+    LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); delay(1000);
+	while(!startbutton()) {
+		testTurning();
+	}
 
     LCD.clear(); LCD.print("Test Cliff align"); delay(1000);
     while(!startbutton()) {
@@ -114,29 +124,27 @@ void systemTest() {
         testBridge();
     }
 
-    LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); delay(1000);
-	while(!startbutton()) {
-		testTurning();
-	}
+    LCD.clear(); LCD.print("IR bridge"); LCD.setCursor(0, 1); LCD.print("QRD follow"); delay(1000);
+    while(!startbutton()) {
+        testBridgeQRDFollow();
+    }
+    testMotorWheel.stop();
+
+    LCD.clear(); LCD.print("Touch sensor"); LCD.setCursor(0, 1); LCD.print("align"); delay(1000);
+    while(!startbutton()) {
+        testBridgeTouchSensorAlign();
+    }
+    testMotorWheel.stop();
 
     LCD.clear(); LCD.print("Leaving System"); LCD.setCursor(0, 1); LCD.print("Testing"); delay(1000);
 }
 
-void testBridge() {
-    LCD.clear(); LCD.print("Let Go"); 
-    deployBridge();
-    delay(1000);
-    if(startbutton()) { return ;}
-    LCD.clear(); LCD.print("Hold");
-    resetBridge();
-    delay(1000);
-}
-
-void testBridgeAlign() {
-    if(alignBridgeQRDs(testMotorWheel)) {
-        testMotorWheel.stop();
-    }
-    delay(10);
+void testTurning() {
+	testMotorWheel.turnRight(90);
+	delay(1000);
+	if(startbutton()) { return; }
+	testMotorWheel.turnLeft(90);
+	delay(1000);
 }
 
 void testCliffAlign() {
@@ -154,13 +162,27 @@ void testCliffAlign() {
     delay(10);
 }
 
-void testTurning() {
-	testMotorWheel.turnRight(90);
-	delay(1000);
-	if(startbutton()) { return; }
-	testMotorWheel.turnLeft(90);
-	delay(1000);
+void testBridge() {
+    LCD.clear(); LCD.print("Let Go"); 
+    deployBridge();
+    delay(1000);
+    if(startbutton()) { return ;}
+    LCD.clear(); LCD.print("Hold");
+    resetBridge();
+    delay(1000);
 }
+
+void testBridgeQRDFollow() {
+    followBridgeQRDs(testMotorWheel);
+    delay(10);
+}
+
+void testBridgeTouchSensorAlign() {
+    alignTouchSensors(testMotorWheel);
+    delay(10);
+}
+
+
 
 
 

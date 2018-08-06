@@ -43,6 +43,8 @@ extern TINAH::Servo bottomServo;
 // Digital pins
 extern int communicationOut;
 extern int communicationIn;
+extern int leftBridgeTouch;
+extern int rightBridgeTouch;
 
 
 // Analog pins

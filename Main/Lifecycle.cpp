@@ -28,7 +28,7 @@ void run() {
 		prevLoopStartTime = millis();
 
 		motorWheel.poll();
-		checkForEwok();
+		checkForEwok(); // Must be called at beginning 
 
 		if(foundRightCliff() && ewokCount == 1 && !bridgeDeployed) {
 			motorWheel.stop();
@@ -53,13 +53,16 @@ void run() {
 			bridgeDeployed = true;
 		}
 
-
-		if(ewokCount >= 1) {
-			if(alignBridgeQRDs(motorWheel) && ewokCount == 2) {
+		if(ewokCount >= 1 && bridgeDeployed) {
+			followBridgeQRDs(motorWheel);
+			if(ewokCount == 2 && (leftBridgeTouchTriggered() || rightBridgeTouchTriggered())) {
+				motorWheel.stop();
+				delay(1000);
+				while(!alignTouchSensors(motorWheel)) {}
 				motorWheel.stop();
 				delay(1000);
 				detatchTopBot();
-				LCD.clear(); LCD.print("Detatched"); 
+				LCD.clear(); LCD.print("DETATCHED!!"); 
 				delay(5000);
 				break;
 			}
@@ -97,17 +100,11 @@ void checkForEwok() {
 		}
 
 		motorWheel.stop();
-		
-
 		while(clawTriggered()) {}
 		delay(2000);
 
-		// Drives for a sec to insure alignBridgeQRDS does not trigger true
-		if(ewokCount == 2) {
-			motorWheel.forward(75); 
-			delay(500);
-			motorWheel.stop();
-			delay(1000); // Delay to know when it switches back to alignBridgeQRDS
+		if(ewokCount == 1) {
+			motorWheel.runWithPID = true;
 		}
 	}
 }

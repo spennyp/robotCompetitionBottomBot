@@ -33,20 +33,20 @@ void resetBridge() {
     bottomServo.write(bridgeServoResetPosition);
 }
 
-bool bridgeAligned() {
-    return (analogRead(rightBridgeQRD) < alignmentThreshold.value && analogRead(leftBridgeQRD) < alignmentThreshold.value);
-}
-
-bool leftBridgeAligned() {
+bool leftBridgeQRDAligned() {
     return (analogRead(leftBridgeQRD) < alignmentThreshold.value);
 }
 
-bool rightBridgeAligned() {
+bool rightBridgeQRDAligned() {
     return (analogRead(rightBridgeQRD) < alignmentThreshold.value);
 }
 
-void detatchTopBot() {
-	digitalWrite(communicationOut, LOW);
+bool leftBridgeTouchTriggered() {
+	return (digitalRead(leftBridgeTouch) == LOW);
+}
+
+bool rightBridgeTouchTriggered() {
+	return (digitalRead(rightBridgeTouch) == LOW);
 }
 
 
@@ -59,22 +59,17 @@ void deployBridge() {
 	delay(2000); // Wait for claw to lower
 }
 
-bool alignBridgeQRDs(MotorWheel motorWheel) {
-	bool isLeftBridgeAligned = leftBridgeAligned();
-	bool isRightBridgeAligned = rightBridgeAligned();
-	if(isLeftBridgeAligned && isRightBridgeAligned) {
-		return true;
-	} else if(isLeftBridgeAligned && !isRightBridgeAligned) {
-		motor.speed(leftMotor, -60);
-		motor.speed(rightMotor, 125);
-		return false;
+bool followBridgeQRDs(MotorWheel motorWheel) {
+	bool isLeftBridgeAligned = leftBridgeQRDAligned();
+	bool isRightBridgeAligned = rightBridgeQRDAligned();
+	if(isLeftBridgeAligned && !isRightBridgeAligned) {
+		motor.speed(leftMotor, 60);
+		motor.speed(rightMotor, 100);
 	} else if(!isLeftBridgeAligned && isRightBridgeAligned) {
-		motor.speed(leftMotor, 125);
-		motor.speed(rightMotor, -60);
-		return false;
+		motor.speed(leftMotor, 100);
+		motor.speed(rightMotor, 60);
 	} else {
-		motorWheel.forward(75);
-		return false;
+		motorWheel.forward(80);
 	}
 }
 
@@ -87,13 +82,34 @@ bool alignCliffQRDs(MotorWheel motorWheel) {
 	} else if(leftCliff && !rightCliff) {
 		motor.speed(leftMotor, -100);
 		motor.speed(rightMotor, 100);
-		return false;
 	} else if(!leftCliff && rightCliff) {
 		motor.speed(leftMotor, 100);
 		motor.speed(rightMotor, -100);
-		return false;
 	} else {
 		motorWheel.forward(100);
-		return false;
 	}
+	return false;
+}
+
+bool alignTouchSensors(MotorWheel motorWheel) {
+	bool left = leftBridgeTouchTriggered();
+	bool right = rightBridgeTouchTriggered();
+	if(left && right) {
+		motorWheel.stop();
+		return true;
+	} else if(left && !right) {
+		motor.speed(leftMotor, -75);
+		motor.speed(rightMotor, 75);
+	} else if(!left && right) {
+		motor.speed(leftMotor, 75);
+		motor.speed(rightMotor, -75);
+	} else {
+		motorWheel.forward(80);
+	}
+	return false;
+}
+
+
+void detatchTopBot() {
+	digitalWrite(communicationOut, LOW);
 }

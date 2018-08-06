@@ -21,6 +21,8 @@ TINAH::Servo bottomServo(TINAH::pins::servo[0]);
 // Digital pins
 int communicationOut = 5; // tinah outputs 7 and 6 dont work
 int communicationIn = 8;
+int leftBridgeTouch = 10;
+int rightBridgeTouch = 11;
 
 // Analog Pins
 int farTapeFollowQRD = 2;

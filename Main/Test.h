@@ -21,14 +21,16 @@ extern void testPIDQRD();
 extern void testCliffQRD();
 extern void testBridgeQRD();
 extern void testCommunicationOut();
+extern void testBridgeTouch();
 
 
 // System Test
 
 extern void systemTest();
-extern void testBridge();
-extern void testBridgeAlign();
 extern void testCliffAlign();
+extern void testBridge();
+extern void testBridgeQRDFollow();
+extern void testBridgeTouchSensorAlign();
 extern void testTurning();
 
 

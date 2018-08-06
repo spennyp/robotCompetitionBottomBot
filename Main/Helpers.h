@@ -24,17 +24,18 @@ extern bool bridgeQRDSAligned;
 extern bool clawTriggered();
 extern bool foundRightCliff();
 extern bool foundLeftCliff();
-extern void detatchTopBot();
+extern bool leftBridgeQRDAligned();
+extern bool rightBridgeQRDAligned();
+extern bool leftBridgeTouchTriggered();
+extern bool rightBridgeTouchTriggered();
 
 
 // RunHelpers
 extern void deployBridge();
 extern void resetBridge();
-extern bool bridgeAligned();
-extern bool leftBridgeAligned();
-extern bool rightBridgeAligned();
-extern void checkCliffs(MotorWheel motorWheel);
-extern bool alignBridgeQRDs(MotorWheel motorWheel);
+extern bool followBridgeQRDs(MotorWheel motorWheel);
 extern bool alignCliffQRDs(MotorWheel motorWheel);
+extern bool alignTouchSensors(MotorWheel motorWheel);
+extern void detatchTopBot();
 
 #endif
