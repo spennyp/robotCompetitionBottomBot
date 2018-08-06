@@ -51,13 +51,11 @@ bool alignCliffQRDs(MotorWheel motorWheel) {
 		motorWheel.stop();
 		return true;
 	} else if(leftCliff && !rightCliff) {
-		motor.speed(leftMotor, -130);
-		motor.speed(rightMotor, 130);
-		delay(100);
+		motor.speed(leftMotor, -60);
+		motor.speed(rightMotor, 110);
 	} else if(!leftCliff && rightCliff) {
-		motor.speed(leftMotor, 130);
-		motor.speed(rightMotor, -130);
-		delay(100);
+		motor.speed(leftMotor, 110);
+		motor.speed(rightMotor, -60);
 	} else {
 		motorWheel.forward(130);
 	}
@@ -76,11 +74,11 @@ bool followBridgeQRDs(MotorWheel motorWheel, int forwardSpeed) {
 	int rightValue = analogRead(rightBridgeQRD);
 	LCD.clear(); LCD.print(leftValue - rightValue);
 	if((rightValue - leftValue) >= bridgeQRDAlignDifference.value) {
-		motor.speed(leftMotor, forwardSpeed - 20);
-		motor.speed(rightMotor, forwardSpeed + 20);
+		motor.speed(leftMotor, forwardSpeed - 30);
+		motor.speed(rightMotor, forwardSpeed + 30);
 	} else if((leftValue - rightValue) >= bridgeQRDAlignDifference.value) {
-		motor.speed(leftMotor, forwardSpeed + 20);
-		motor.speed(rightMotor, forwardSpeed - 20);
+		motor.speed(leftMotor, forwardSpeed + 30);
+		motor.speed(rightMotor, forwardSpeed - 30);
 	} else {
 		motorWheel.forward(forwardSpeed);
 	}
@@ -94,17 +92,17 @@ bool alignTouchSensors(MotorWheel motorWheel) {
 		motorWheel.stop();
 		return true;
 	} else if(left && !right) {
-		motor.speed(leftMotor, -100);
-		motor.speed(rightMotor, -100);
+		motor.speed(leftMotor, -60);
+		motor.speed(rightMotor, -60);
 		delay(200);
-		motor.speed(leftMotor, -75);
-		motor.speed(rightMotor, 75);
+		motor.speed(leftMotor, 20);
+		motor.speed(rightMotor, 40);
 	} else if(!left && right) {
-		motor.speed(leftMotor, -100);
-		motor.speed(rightMotor, -100);
+		motor.speed(leftMotor, -60);
+		motor.speed(rightMotor, -60);
 		delay(200);
-		motor.speed(leftMotor, 75);
-		motor.speed(rightMotor, -75);
+		motor.speed(leftMotor, 40);
+		motor.speed(rightMotor, 20);
 	} else {
 		motorWheel.forward(80);
 	}

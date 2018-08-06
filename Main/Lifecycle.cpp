@@ -34,7 +34,7 @@ void run() {
 			motorWheel.stop();
 			delay(1000);
 			motorWheel.reverse(120);
-			delay(400);
+			delay(200);
 			motorWheel.stop();
 			delay(1000);
 			motorWheel.turnLeft(80);
@@ -51,6 +51,8 @@ void run() {
 			delay(1000);
 			deployBridge();
 			bridgeDeployed = true;
+			motorWheel.forward();
+			delay(1000);
 		}
 
 		if(ewokCount >= 1 && bridgeDeployed) {
@@ -108,10 +110,10 @@ void checkForEwok() {
 
 		motorWheel.stop();
 		while(clawTriggered()) {}
-		delay(2000);
+		delay(1000);
 
 		if(ewokCount == 1) {
-			motorWheel.runWithPID(160);
+			motorWheel.runWithPID(140);
 		}
 	}
 }
