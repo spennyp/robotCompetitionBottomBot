@@ -28,6 +28,7 @@ extern bool leftBridgeQRDAligned();
 extern bool rightBridgeQRDAligned();
 extern bool leftBridgeTouchTriggered();
 extern bool rightBridgeTouchTriggered();
+extern bool rampTopFound();
 
 
 // RunHelpers

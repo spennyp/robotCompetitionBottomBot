@@ -21,8 +21,8 @@ extern MenuItem proportionalGain;
 extern MenuItem derivativeGain;
 extern MenuItem pidThreshold;
 extern MenuItem cliffThreshold;
+extern MenuItem rampTopThreshold;
 extern MenuItem delayPerDegreeTurn;
-// extern MenuItem alignmentThreshold;
 extern MenuItem bridgeQRDAlignDifference;
 
 #endif

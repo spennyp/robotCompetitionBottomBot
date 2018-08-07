@@ -16,9 +16,10 @@ MenuItem derivativeGain = MenuItem("D-gain");
 MenuItem pidThreshold = MenuItem("PID-thresh");
 MenuItem cliffThreshold = MenuItem("cliffThresh");
 MenuItem delayPerDegreeTurn = MenuItem("delay/degT");
-// MenuItem alignmentThreshold = MenuItem("alignThresh");
 MenuItem bridgeQRDAlignDifference = MenuItem("Align dif");
-MenuItem configurationMenuItems[] = {motorSpeed, proportionalGain, derivativeGain, pidThreshold, cliffThreshold, delayPerDegreeTurn, bridgeQRDAlignDifference};
+MenuItem rampTopThreshold = MenuItem("rampThresh");
+
+MenuItem configurationMenuItems[] = {motorSpeed, proportionalGain, derivativeGain, pidThreshold, cliffThreshold, delayPerDegreeTurn, bridgeQRDAlignDifference, rampTopThreshold };
 
 void configurationMenu() {
 	LCD.clear(); LCD.home();

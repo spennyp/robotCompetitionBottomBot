@@ -16,6 +16,7 @@ void run() {
 	ewokCount = 0;
 	int cliffAlignCount = 0;
 	bool bridgeDeployed = false;
+	bool foundTopRamp = false;
 
 	LCD.clear(); LCD.print("Running"); LCD.setCursor(0, 1); LCD.print("Stop to return");
 	delay(2000);
@@ -30,11 +31,16 @@ void run() {
 		motorWheel.poll();
 		checkForEwok(); // Must be called at beginning 
 
+		if(rampTopFound() && ewokCount == 0 && !foundTopRamp) {
+			motorWheel.runWithPID(180);
+			foundTopRamp = true;
+		}
+
 		if(foundRightCliff() && ewokCount == 1 && !bridgeDeployed) {
 			motorWheel.stop();
 			delay(1000);
-			motorWheel.reverse(120);
-			delay(200);
+			motorWheel.reverse(200);
+			delay(350);
 			motorWheel.stop();
 			delay(1000);
 			motorWheel.turnLeft(80);
@@ -42,21 +48,25 @@ void run() {
 			delay(1000);
 			while(cliffAlignCount < 3) {
 				if(alignCliffQRDs(motorWheel)) {
-					motorWheel.reverse(75);
+					motorWheel.reverse(200);
 					while(foundLeftCliff() && foundRightCliff()) {}
 					motorWheel.stop();
 					cliffAlignCount ++;
 				}
+				delay(10);
 			}
 			delay(1000);
 			deployBridge();
+			motorWheel.reverse(180);
+			delay(200);
+			motorWheel.stop();
 			bridgeDeployed = true;
-			motorWheel.forward();
-			delay(1000);
+			motorWheel.forward(200);
+			delay(750);
 		}
 
 		if(ewokCount >= 1 && bridgeDeployed) {
-			int followForwardSpeed = (ewokCount == 1) ? 100 : 60;
+			int followForwardSpeed = (ewokCount == 1) ? 120 : 100;
 			followBridgeQRDs(motorWheel, followForwardSpeed);
 			LCD.clear(); LCD.print("Following: "); LCD.print(ewokCount);
 			if(ewokCount == 2 && (leftBridgeTouchTriggered() || rightBridgeTouchTriggered())) {
@@ -65,7 +75,7 @@ void run() {
 				delay(1000);
 				unsigned long alignTouchStartTime = millis();
 				while(!alignTouchSensors(motorWheel)) { 
-					delay(100); 
+					delay(500); 
 					if((millis() - alignTouchStartTime) >= 5000) { break; }
 				} // Delay to stop oscilation, timer to insure it doesnt get stuck in this loop
 				motorWheel.stop();
@@ -113,7 +123,7 @@ void checkForEwok() {
 		delay(1000);
 
 		if(ewokCount == 1) {
-			motorWheel.runWithPID(140);
+			motorWheel.runWithPID(150);
 		}
 	}
 }
