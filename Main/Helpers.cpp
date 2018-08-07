@@ -47,23 +47,39 @@ bool rampTopFound() {
 
 // Run helpers
 
-bool alignCliffQRDs(MotorWheel motorWheel) {
-	bool leftCliff = foundLeftCliff();
-	bool rightCliff = foundRightCliff();
-	if(leftCliff && rightCliff) {
-		motorWheel.stop();
-		return true;
-	} else if(leftCliff && !rightCliff) {
-		motor.speed(leftMotor, -100);
-		motor.speed(rightMotor, 100);
-	} else if(!leftCliff && rightCliff) {
-		motor.speed(leftMotor, 100);
-		motor.speed(rightMotor, -100);
-	} else {
+// bool alignCliffQRDs(MotorWheel motorWheel) {
+// 	if(foundLeftCliff()) {
+// 		motor.speed(leftMotor, -180);
+// 	} else {
+// 		motor.speed(leftMotor, 160);
+// 	}
+// 	if(foundRightCliff()) {
+// 		motor.speed(rightMotor, -180);
+// 	} else {
+// 		motor.speed(rightMotor, 160);
+// 	}
+// 	delay(75);
+// }
+
+ bool alignCliffQRDs(MotorWheel motorWheel) {
+ 	bool leftCliff = foundLeftCliff();
+ 	bool rightCliff = foundRightCliff();
+ 	if(leftCliff && rightCliff) {
+ 		motorWheel.stop();
+ 		return true;
+ 	} else if(leftCliff && !rightCliff) {
+		motor.speed(leftMotor, -160);
+		motor.speed(rightMotor, 160);
+		delay(100);
+ 	} else if(!leftCliff && rightCliff) {
+		motor.speed(leftMotor, 160);
+		motor.speed(rightMotor, -160);
+		delay(100);
+ 	} else {
 		motorWheel.forward(160);
-	}
-	return false;
-}
+ 	}
+ 	return false;
+ }
 
 void deployBridge() {
 	bottomServo.write(bridgeServoDeployPosition);

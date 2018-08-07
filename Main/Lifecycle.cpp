@@ -32,7 +32,7 @@ void run() {
 		checkForEwok(); // Must be called at beginning 
 
 		if(rampTopFound() && ewokCount == 0 && !foundTopRamp) {
-			motorWheel.runWithPID(180);
+			motorWheel.runWithPID(200);
 			foundTopRamp = true;
 		}
 
@@ -46,22 +46,35 @@ void run() {
 			motorWheel.turnLeft(80);
 			motorWheel.stop();
 			delay(1000);
-			while(cliffAlignCount < 3) {
+
+			motorWheel.forward(150);
+			while(!foundLeftCliff() && !foundRightCliff()) { delay(10); } // Gets to the cliff
+			motorWheel.stop();
+			unsigned long cliffAlignStartTime = millis();
+			while((millis() - cliffAlignStartTime) <= 2000) { 
 				if(alignCliffQRDs(motorWheel)) {
-					motorWheel.reverse(200);
-					while(foundLeftCliff() && foundRightCliff()) {}
-					motorWheel.stop();
-					cliffAlignCount ++;
+					motorWheel.reverse(160);
+					delay(100);
 				}
-				delay(10);
+				delay(10); 
 			}
+			if(foundLeftCliff() || foundRightCliff()) {
+				motorWheel.reverse(160);
+				while(foundLeftCliff() || foundRightCliff()) {}
+			}
+			motorWheel.reverse(160);
+    		delay(150);
+    		motorWheel.forward(200); // Hard stop
+    		delay(20);
+    		motorWheel.stop();
+
 			delay(1000);
 			deployBridge();
 			motorWheel.reverse(180);
-			delay(200);
+			delay(150);
 			motorWheel.stop();
 			bridgeDeployed = true;
-			motorWheel.forward(200);
+			motorWheel.forward(220);
 			delay(750);
 		}
 
@@ -123,6 +136,8 @@ void checkForEwok() {
 		delay(1000);
 
 		if(ewokCount == 1) {
+			motorWheel.forward(180); // Gets the wheels rolling
+			delay(50);
 			motorWheel.runWithPID(150);
 		}
 	}

@@ -170,18 +170,56 @@ void testTurning() {
 }
 
 void testCliffAlign() {
-    if(alignCliffQRDs(testMotorWheel)) {
-		delay(100);
-		testMotorWheel.reverse(75);
-		while(foundLeftCliff() && foundRightCliff()) {}
-		testMotorWheel.stop();
-        cliffAlignCount ++;
-        if(cliffAlignCount == 5) {
-            cliffAlignCount = 0;
-            delay(5000);
+    // testMotorWheel.forward(140);
+    // while(!foundLeftCliff() || !foundRightCliff()) {}
+    // unsigned long cliffAlignStartTime = millis();
+    // while((millis() - cliffAlignStartTime) <= 2000) { 
+    //     alignCliffQRDs(testMotorWheel);
+    //     delay(50); 
+    // }
+    // if(foundLeftCliff() || foundRightCliff()) {
+    //     testMotorWheel.reverse(100);
+    //     while(foundLeftCliff() && foundRightCliff()) {}
+    // }
+    // testMotorWheel.forward(200);
+    // delay(50);
+    // testMotorWheel.stop();
+
+    // delay(1000);
+    // deployBridge();
+    // delay(100);
+    // testMotorWheel.reverse(180);
+	// delay(100);
+	// testMotorWheel.stop();
+    // delay(5000);
+    // resetBridge();
+    // delay(1000);
+
+    testMotorWheel.forward(150);
+	while(!foundLeftCliff() && !foundRightCliff()) { delay(10); } // Gets to the cliff
+	testMotorWheel.stop();
+
+    unsigned long cliffAlignStartTime = millis();
+    while((millis() - cliffAlignStartTime) <= 2000) { 
+        if(alignCliffQRDs(testMotorWheel)) {
+            testMotorWheel.reverse(160);
+            delay(100);
         }
+        delay(10); 
     }
-    delay(10);
+
+    if(foundLeftCliff() || foundRightCliff()) {
+        testMotorWheel.reverse(160);
+        while(foundLeftCliff() || foundRightCliff()) {}
+        
+    }
+    testMotorWheel.reverse(160);
+    delay(150);
+    testMotorWheel.forward(200); // Hard stop
+    delay(20);
+    testMotorWheel.stop();
+
+    delay(3000);
 }
 
 void testBridge() {
