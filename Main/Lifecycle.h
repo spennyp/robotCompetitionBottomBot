@@ -16,7 +16,6 @@ extern void run();
 void reset();
 void bottomBotAlignmentCheck();
 void codeRed();
-void checkForEwok();
 
 
 #endif

@@ -5,7 +5,7 @@
 #include "Helpers.h"
 #include "MotorWheel.h"
 
-MotorWheel testMotorWheel(motorSpeed, PID(proportionalGain, derivativeGain, pidThreshold));
+extern MotorWheel motorWheel;
 
 
 // Diagnostics
@@ -120,7 +120,7 @@ void systemTest() {
     while(!startbutton()) {
         testCliffAlign();
     }
-    testMotorWheel.stop();
+    motorWheel.stop();
 
     LCD.clear(); LCD.print("Testing Bridge"); delay(1000);
     while (!startbutton()){
@@ -131,93 +131,69 @@ void systemTest() {
     while(!startbutton()) {
         testBridgeQRDFollow();
     }
-    testMotorWheel.stop();
+    motorWheel.stop();
 
     LCD.clear(); LCD.print("Touch sensor"); LCD.setCursor(0, 1); LCD.print("align"); delay(1000);
     while(!startbutton()) {
         testBridgeTouchSensorAlign();
     }
-    testMotorWheel.stop();
+    motorWheel.stop();
 
     LCD.clear(); LCD.print("IR follow and"); LCD.setCursor(0, 1); LCD.print("touch align"); delay(1000);
     while(!startbutton()) {
-        followBridgeQRDs(testMotorWheel, 100);
+        followBridgeQRDs(100);
 			if(leftBridgeTouchTriggered() || rightBridgeTouchTriggered()) {
-				testMotorWheel.stop();
+				motorWheel.stop();
 				delay(1000);
 				int alignTouchStartTime = millis();
-				while(!alignTouchSensors(testMotorWheel)) { 
+				while(!alignTouchSensors()) { 
 					delay(100); 
 					if(alignTouchStartTime >= 5000) { break; }
 				} // Delay to stop oscilation
-				testMotorWheel.stop();
+				motorWheel.stop();
 				delay(1000);
 				LCD.clear(); LCD.print("DETATCHED!!"); 
 				break;
 			}
     }
+    motorWheel.stop();
 
 
     LCD.clear(); LCD.print("Leaving System"); LCD.setCursor(0, 1); LCD.print("Testing"); delay(1000);
 }
 
 void testTurning() {
-	testMotorWheel.turnRight(90);
+	motorWheel.turnRight(90);
 	delay(1000);
 	if(startbutton()) { return; }
-	testMotorWheel.turnLeft(90);
+	motorWheel.turnLeft(90);
 	delay(1000);
 }
 
 void testCliffAlign() {
-    // testMotorWheel.forward(140);
-    // while(!foundLeftCliff() || !foundRightCliff()) {}
-    // unsigned long cliffAlignStartTime = millis();
-    // while((millis() - cliffAlignStartTime) <= 2000) { 
-    //     alignCliffQRDs(testMotorWheel);
-    //     delay(50); 
-    // }
-    // if(foundLeftCliff() || foundRightCliff()) {
-    //     testMotorWheel.reverse(100);
-    //     while(foundLeftCliff() && foundRightCliff()) {}
-    // }
-    // testMotorWheel.forward(200);
-    // delay(50);
-    // testMotorWheel.stop();
-
-    // delay(1000);
-    // deployBridge();
-    // delay(100);
-    // testMotorWheel.reverse(180);
-	// delay(100);
-	// testMotorWheel.stop();
-    // delay(5000);
-    // resetBridge();
-    // delay(1000);
-
-    testMotorWheel.forward(150);
+    motorWheel.forward(150);
 	while(!foundLeftCliff() && !foundRightCliff()) { delay(10); } // Gets to the cliff
-	testMotorWheel.stop();
+	motorWheel.stop();
 
     unsigned long cliffAlignStartTime = millis();
     while((millis() - cliffAlignStartTime) <= 2000) { 
-        if(alignCliffQRDs(testMotorWheel)) {
-            testMotorWheel.reverse(160);
+        if(alignCliffQRDs()) {
+            motorWheel.reverse(160);
             delay(100);
         }
         delay(10); 
     }
 
     if(foundLeftCliff() || foundRightCliff()) {
-        testMotorWheel.reverse(160);
+        motorWheel.reverse(160);
         while(foundLeftCliff() || foundRightCliff()) {}
         
     }
-    testMotorWheel.reverse(160);
+    motorWheel.reverse(160);
     delay(150);
-    testMotorWheel.forward(200); // Hard stop
+    motorWheel.forward(200); // Hard stop
     delay(20);
-    testMotorWheel.stop();
+    motorWheel.stop();
 
     delay(3000);
 }
@@ -233,12 +209,12 @@ void testBridge() {
 }
 
 void testBridgeQRDFollow() {
-    followBridgeQRDs(testMotorWheel, 100);
+    followBridgeQRDs(100);
     delay(10);
 }
 
 void testBridgeTouchSensorAlign() {
-    alignTouchSensors(testMotorWheel);
+    alignTouchSensors();
     delay(10);
 }
 

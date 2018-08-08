@@ -1,13 +1,13 @@
 #include "Menu.h"
-#include "Lifecycle.h"
 #include "Globals.h"
 #include <phys253.h>
+#include "Helpers.h"
 
 void setup() {
 	#include <phys253setup.txt>
 	Serial.begin(9600);
-	LCD.clear();
-	LCD.print("Uploaded :D");
+	LCD.clear(); LCD.print("Uploaded");
+	LCD.setCursor(0, 1); LCD.print("TURN ON SENSORS");
 
 	// Swithing first row of digital ins to outs
 	pinMode(0, OUTPUT);
@@ -19,6 +19,7 @@ void setup() {
 	pinMode(6, OUTPUT);
 	pinMode(7, OUTPUT);
 	digitalWrite(communicationOut, HIGH);
+	softReset();
 	delay(1000);
 }
 

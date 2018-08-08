@@ -19,24 +19,42 @@ extern int bridgeLeftServoResetPosition;
 extern int bridgeLeftServoDeployPosition;
 
 // Sensors
-extern int cliffCount;
-extern bool bridgeQRDSAligned;
 extern bool clawTriggered();
 extern bool foundRightCliff();
 extern bool foundLeftCliff();
-extern bool leftBridgeQRDAligned();
-extern bool rightBridgeQRDAligned();
 extern bool leftBridgeTouchTriggered();
 extern bool rightBridgeTouchTriggered();
 extern bool rampTopFound();
 
 
-// RunHelpers
-extern bool alignCliffQRDs(MotorWheel motorWheel);
+// Core Functionality
+
 extern void deployBridge();
 extern void resetBridge();
-extern bool followBridgeQRDs(MotorWheel motorWheel, int forwardSpeed);
-extern bool alignTouchSensors(MotorWheel motorWheel);
+
+
+// RunHelpers
+
+extern void checkForEwok();
+extern bool atTopOfRamp();
+extern bool hitFirstEdge();
+extern void makeFirstLeftTurn();
+extern void alignForBridgeDrop();
+extern bool alignCliffQRDs();
+extern bool followBridgeQRDs(int forwardSpeed);
+extern bool triggeredBridgeTouch();
+extern bool alignTouchSensors();
 extern void detatchTopBot();
+
+
+// Setup
+
+extern void setupRobot();
+
+
+// Reset
+
+extern void reset();
+extern void softReset();
 
 #endif
