@@ -120,19 +120,19 @@ void alignForBridgeDrop() {
 	unsigned long cliffAlignStartTime = millis();
 	while((millis() - cliffAlignStartTime) <= 2000) { 
 		if(alignCliffQRDs()) {
-			motorWheel.reverse(160);
+			motorWheel.reverse(170);
 			delay(100);
 		}
 		delay(10); 
 	}
 	if(foundLeftCliff() || foundRightCliff()) {
-		motorWheel.reverse(160);
+		motorWheel.reverse(170);
 		while(foundLeftCliff() || foundRightCliff()) {}
 	}
 	motorWheel.reverse(160);
-	delay(150);
+	delay(60);
 	motorWheel.forward(200); // Hard stop
-	delay(20);
+	delay(10);
 	motorWheel.stop();
 }
 
@@ -143,15 +143,15 @@ bool alignCliffQRDs() {
 		motorWheel.stop();
 		return true;
 	} else if(leftCliff && !rightCliff) {
-		motor.speed(leftMotor, -160);
-		motor.speed(rightMotor, 160);
+		motor.speed(leftMotor, -190);
+		motor.speed(rightMotor, 190);
 		delay(100);
 	} else if(!leftCliff && rightCliff) {
-		motor.speed(leftMotor, 160);
-		motor.speed(rightMotor, -160);
+		motor.speed(leftMotor, 190);
+		motor.speed(rightMotor, -190);
 		delay(100);
 	} else {
-		motorWheel.forward(160);
+		motorWheel.forward(190);
 	}
 	return false;
 }

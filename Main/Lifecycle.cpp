@@ -37,11 +37,11 @@ void run() {
 			delay(500);
 			deployBridge();
 			motorWheel.forward(220); // Drive fast over bridge
-			delay(750);
+			delay(1000);
 		}
 
 		if(bridgeDeployed) {
-			int followForwardSpeed = (numberOfTeddiesGrabbed == 1) ? 120 : 100;
+			int followForwardSpeed = (numberOfTeddiesGrabbed == 1) ? 160 : 130;
 			followBridgeQRDs(followForwardSpeed);
 			if(triggeredBridgeTouch()) {
 				motorWheel.stop();
