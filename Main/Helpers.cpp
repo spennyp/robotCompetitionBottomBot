@@ -6,10 +6,12 @@
 // Delays
 extern int bridgeDropDelay = 2000;
 
-extern int bridgeServoResetPosition = 0;
+extern int bridgeLeftServoResetPosition = 0;
+extern int bridgeRightServoResetPosition = 90;
 
-// Deploy constants
-extern int bridgeServoDeployPosition = 90;
+	// Deploy constants
+	extern int bridgeLeftServoDeployPosition = 90;
+extern int bridgeRightServoDeployPosition = 0;
 
 int cliffCount = 0;
 bool bridgeQRDSAligned = false;
@@ -30,7 +32,8 @@ bool foundLeftCliff() {
 }
 
 void resetBridge() {
-    bottomServo.write(bridgeServoResetPosition);
+    bottomLeftServo.write(bridgeLeftServoResetPosition);
+	bottomRightServo.write(bridgeRightServoResetPosition);
 }
 
 bool leftBridgeTouchTriggered() {
@@ -82,7 +85,8 @@ bool rampTopFound() {
  }
 
 void deployBridge() {
-	bottomServo.write(bridgeServoDeployPosition);
+	bottomLeftServo.write(bridgeLeftServoDeployPosition);
+	bottomRightServo.write(bridgeRightServoDeployPosition);
 	delay(2000); // Wait for bridge to deploy
 	digitalWrite(communicationOut, HIGH); // Tells top bot to lower the claw again
 	delay(2000); // Wait for claw to lower

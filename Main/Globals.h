@@ -38,7 +38,8 @@ extern int rightMotor;
 
 
 // Servos
-extern TINAH::Servo bottomServo;
+extern TINAH::Servo bottomLeftServo;
+extern TINAH::Servo bottomRightServo;
 
 // Digital pins
 extern int communicationOut;

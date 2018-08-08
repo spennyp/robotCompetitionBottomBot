@@ -13,10 +13,10 @@
 extern int bridgeDropDelay;
 
 // Reset constants
-extern int bridgeServoResetPosition;
+extern int bridgeLeftServoResetPosition;
 
 // Deploy constants
-extern int bridgeServoDeployPosition;
+extern int bridgeLeftServoDeployPosition;
 
 // Sensors
 extern int cliffCount;

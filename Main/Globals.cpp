@@ -16,7 +16,8 @@ int rightMotor = 1;
 
 
 // Servos
-TINAH::Servo bottomServo(TINAH::pins::servo[0]);
+TINAH::Servo bottomLeftServo(TINAH::pins::servo[0]);
+TINAH::Servo bottomRightServo(TINAH::pins::servo[1]);
 
 // Digital pins
 int communicationOut = 5; // tinah outputs 7 and 6 dont work
