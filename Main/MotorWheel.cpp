@@ -67,6 +67,18 @@ void MotorWheel::stop() {
 	motor.stop_all();
 }
 
+void MotorWheel::hardStop(bool goingForward) {
+	if(goingForward) {
+		reverse(200);
+		delay(30);
+		stop();
+	} else {
+		forward(200);
+		delay(30);
+		stop();
+	}
+}
+
 // Lifecycle
 
 void MotorWheel::poll() {

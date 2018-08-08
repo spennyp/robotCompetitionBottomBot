@@ -128,12 +128,12 @@ void alignForBridgeDrop() {
 	if(foundLeftCliff() || foundRightCliff()) {
 		motorWheel.reverse(170);
 		while(foundLeftCliff() || foundRightCliff()) {}
+		motorWheel.hardStop(false);
+	} else {
+		motorWheel.forward(160);
+		while(!foundLeftCliff() || !foundRightCliff()) {}
+		motorWheel.hardStop();
 	}
-	motorWheel.reverse(160);
-	delay(60);
-	motorWheel.forward(200); // Hard stop
-	delay(10);
-	motorWheel.stop();
 }
 
 bool alignCliffQRDs() {

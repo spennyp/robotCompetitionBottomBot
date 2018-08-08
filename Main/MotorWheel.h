@@ -25,6 +25,7 @@ class MotorWheel {
 		void stop();
 		void runWithPID(int speed = 0);
 		void poll();
+		void hardStop(bool goingForward = true);
 };
 
 #endif
