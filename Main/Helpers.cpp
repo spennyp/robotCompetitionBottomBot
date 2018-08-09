@@ -86,8 +86,8 @@ void checkForEwok() {
 		delay(500);
 
 		if(numberOfTeddiesGrabbed == 1) {
-			motorWheel.forward(180); // Gets the wheels rolling
-			delay(50);
+			motorWheel.forward(220); // Gets the wheels rolling
+			delay(100);
 			motorWheel.runWithPID(150);
 		}
 	}
