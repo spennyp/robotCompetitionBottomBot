@@ -40,7 +40,7 @@ extern bool atTopOfRamp();
 extern bool hitFirstEdge();
 extern void makeFirstLeftTurn();
 extern void alignForBridgeDrop();
-extern bool alignCliffQRDs();
+extern void alignCliffQRDs();
 extern bool followBridgeQRDs(int forwardSpeed);
 extern bool triggeredBridgeTouch();
 extern bool alignTouchSensors();

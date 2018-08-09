@@ -114,44 +114,52 @@ void makeFirstLeftTurn() {
 }
 
 void alignForBridgeDrop() {
-	motorWheel.forward(150);
+	for(int i = 0; i <= 3; i++) {
+		alignCliffQRDs();
+	}
+}
+
+void alignCliffQRDs() {
+    motorWheel.forward(150);
 	while(!foundLeftCliff() && !foundRightCliff()) { delay(10); } // Gets to the cliff
 	motorWheel.stop();
 
-    unsigned long cliffAlignStartTime = millis();
-    while((millis() - cliffAlignStartTime) <= 2000) { 
-        if(alignCliffQRDs()) {
-            motorWheel.reverse(160);
-            delay(100);
+    if(foundLeftCliff()) {
+        while(!foundRightCliff()) {
+            if(!foundLeftCliff()) {
+                motorWheel.forward(200);
+            } else {
+                motor.speed(leftMotor, -220);
+                motor.speed(rightMotor, 180);
+            }
+            delay(10);
         }
-        delay(10); 
+        motor.speed(leftMotor, 200);
+        motor.speed(rightMotor, -200);
+        delay(30);
+    } else { // Found right
+        while(!foundLeftCliff()) {
+            if(!foundRightCliff()) {
+                motorWheel.forward(200);
+            } else {
+                motor.speed(leftMotor, 180);
+                motor.speed(rightMotor, -220);
+            }
+            delay(10);
+        }
+        motor.speed(leftMotor, -200);
+        motor.speed(rightMotor, 200);
+        delay(30);
     }
+    motorWheel.stop();
+    delay(100);
 
-    if(foundLeftCliff() || foundRightCliff()) {
-        motorWheel.reverse(160);
-        while(foundLeftCliff() || foundRightCliff()) {}
+    if(foundRightCliff() || foundLeftCliff()) {
+        motorWheel.reverse(120);
+        while(foundRightCliff() || foundLeftCliff()) { delay(10); }
+        motorWheel.hardStop(false);
     }
-	motorWheel.hardStop();
-}
-
-bool alignCliffQRDs() {
-	bool leftCliff = foundLeftCliff();
-	bool rightCliff = foundRightCliff();
-	if(leftCliff && rightCliff) {
-		motorWheel.stop();
-		return true;
-	} else if(leftCliff && !rightCliff) {
-		motor.speed(leftMotor, -190);
-		motor.speed(rightMotor, 190);
-		delay(100);
-	} else if(!leftCliff && rightCliff) {
-		motor.speed(leftMotor, 190);
-		motor.speed(rightMotor, -190);
-		delay(100);
-	} else {
-		motorWheel.forward(190);
-	}
-	return false;
+    motorWheel.stop();
 }
 
 bool followBridgeQRDs(int forwardSpeed) {
