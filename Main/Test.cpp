@@ -111,15 +111,16 @@ void testBridgeTouch() {
 void systemTest() {
     LCD.clear(); LCD.print("Caution, motors"); LCD.setCursor(0, 1); LCD.print("on in 3"); delay(3000);
 
+	LCD.clear(); LCD.print("Test Cliff align"); delay(1000);
+    while(!startbutton()) {
+        testCliffAlign();
+    }
+
     LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); delay(1000);
 	while(!startbutton()) {
 		testTurning();
 	}
 
-    LCD.clear(); LCD.print("Test Cliff align"); delay(1000);
-    while(!startbutton()) {
-        testCliffAlign();
-    }
     motorWheel.stop();
 
     LCD.clear(); LCD.print("Testing Bridge"); delay(1000);
@@ -187,15 +188,14 @@ void testCliffAlign() {
     if(foundLeftCliff() || foundRightCliff()) {
         motorWheel.reverse(160);
         while(foundLeftCliff() || foundRightCliff()) {}
-        
     }
-    motorWheel.reverse(160);
-    delay(150);
-    motorWheel.forward(200); // Hard stop
-    delay(20);
-    motorWheel.stop();
+	motorWheel.hardStop();
 
-    delay(3000);
+	delay(5000);
+    // motorWheel.reverse(160);
+    // motorWheel.hardStop();
+
+    // delay(3000);
 }
 
 void testBridge() {

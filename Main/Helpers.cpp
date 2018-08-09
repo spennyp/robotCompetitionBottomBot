@@ -117,23 +117,21 @@ void alignForBridgeDrop() {
 	motorWheel.forward(150);
 	while(!foundLeftCliff() && !foundRightCliff()) { delay(10); } // Gets to the cliff
 	motorWheel.stop();
-	unsigned long cliffAlignStartTime = millis();
-	while((millis() - cliffAlignStartTime) <= 2000) { 
-		if(alignCliffQRDs()) {
-			motorWheel.reverse(170);
-			delay(100);
-		}
-		delay(10); 
-	}
-	if(foundLeftCliff() || foundRightCliff()) {
-		motorWheel.reverse(170);
-		while(foundLeftCliff() || foundRightCliff()) {}
-		motorWheel.hardStop(false);
-	} else {
-		motorWheel.forward(160);
-		while(!foundLeftCliff() || !foundRightCliff()) {}
-		motorWheel.hardStop();
-	}
+
+    unsigned long cliffAlignStartTime = millis();
+    while((millis() - cliffAlignStartTime) <= 2000) { 
+        if(alignCliffQRDs()) {
+            motorWheel.reverse(160);
+            delay(100);
+        }
+        delay(10); 
+    }
+
+    if(foundLeftCliff() || foundRightCliff()) {
+        motorWheel.reverse(160);
+        while(foundLeftCliff() || foundRightCliff()) {}
+    }
+	motorWheel.hardStop();
 }
 
 bool alignCliffQRDs() {
