@@ -117,6 +117,10 @@ void alignForBridgeDrop() {
 	for(int i = 0; i <= 3; i++) {
 		alignCliffQRDs();
 	}
+	delay(800);
+	motorWheel.reverse(200);
+	delay(100);
+	motorWheel.hardStop(false);
 }
 
 void alignCliffQRDs() {
