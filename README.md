@@ -1,29 +1,19 @@
-# README #
+# Bottom Robot #
+UBC Engineering Physics Autonomous Robots Annual Competition 2018 - Star Wars Rescue <br/>
+This robot placed **2nd overall** <br/>
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Check out our website: https://breaching-tower.github.io/ 
 
-### What is this repository for? ###
+## Main Objective
+This robots job was to navigate the first part of the course, and deliver the top robot to the deploy position. It had to communicate with the top robot to know when to stop for ewoks, how long to wait, and when to drop the bridge. Then it had to perfectly line up for deployment.
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+## Features
+* FULLY AUTONOMOUS
+* Edge following
+* Cliff detecting
+* IR detectors to detect beacon, and follow the signal
+* Touch sensors for fine adjustments to get into the deploy position
+* LCD to access menu for on the go tuning
+* Brige deployment
 
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+#### This code was being run on the TINAH board, which is esentially an Arduino Uno sheild
