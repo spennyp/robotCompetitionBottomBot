@@ -15,7 +15,8 @@ This robots job was to navigate the first part of the course, and deliver the to
 * Touch sensors for fine adjustments to get into the deploy position
 * LCD to access menu for on the go tuning
 * Brige deployment
-* Full 
+* Full diagonistics mode to insure all systems are working
+* Test suite for each individual feature
 
 
 Check out the top bot: https://github.com/spennyp/robotCompetitionTopBot
